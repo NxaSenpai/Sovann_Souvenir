@@ -1,25 +1,16 @@
-# 🏺 Sovann Souvenir
-
 <div align="center">
+
+# Sovann Souvenir - Souvenir Market
 
 ![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?style=for-the-badge&logo=flutter&logoColor=white)
 ![Dart](https://img.shields.io/badge/Dart-3.x-0175C2?style=for-the-badge&logo=dart&logoColor=white)
-![Material 3](https://img.shields.io/badge/Material-3-757575?style=for-the-badge&logo=material-design&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-C8960C?style=for-the-badge)
 
-**A beautifully crafted Flutter app to browse and order handmade Cambodian gifts and souvenirs.**  
-Festive · Cultural · Khmer Motifs · Warm Earth Tones & Gold
 
+![cover](/assets/images/cover_image.png)
+
+**Sovann Souvenir** is an application that enables users to purchase unique souvenirs from Cambodia with just a few clicks.
 </div>
 
----
-
-**Sovann Souvenir** is a frontend-only Flutter application built as part of a university group project. It allows users to explore handcrafted Cambodian products — silk kramas, silverware, wooden carvings, artisanal food, and jewelry — each accompanied by the story of the artisan who made it.
-
-The app celebrates Cambodian cultural heritage through Khmer-inspired design motifs, a warm earth-tone and gold color palette, and a curated experience that connects buyers directly with artisans across Cambodia.
-
-> **Scope:** Frontend-only · Static mock data · UI-ready demo  
-> **Backend:** Not included in base version (bonus feature)
 
 ---
 
@@ -30,12 +21,9 @@ The app celebrates Cambodian cultural heritage through Khmer-inspired design mot
 - **Category browsing** — Textile, Silver, Wood, Edible, Jewelry
 - **Curated collections** — For Him, For Her, Wedding, Songkran Gift Set, Tourist Essentials
 - **Product detail** — Image gallery with PageView, artisan info, materials, dimensions, and the story behind each item
-- **Artisan profiles** — Photo, region, craft specialty, personal story, and their product lineup
 
 ### ❤️ Personalization
 - **Favorites** — Save items and collections, persisted across sessions via `shared_preferences`
-- **Gift Finder Quiz** — 4-question quiz that recommends products based on recipient, budget, type, and occasion
-- **Multi-step booking flow** — Item → Gift Wrap → Personal Message → Delivery Date & Time → Confirmation
 
 ### 🗺️ Discovery
 - **Interactive map** — `flutter_map` with cultural pin icons for all shop/atelier locations
@@ -49,34 +37,7 @@ The app celebrates Cambodian cultural heritage through Khmer-inspired design mot
 ### 🎨 Galleries
 - **Photos/Videos** — Masonry-style gallery with full-screen pinch-to-zoom viewer and making-of video thumbnails
 
-### ⚙️ App Polish
-- Light **and** dark mode with a custom Khmer-inspired theme
-- Onboarding flow (3 slides) shown on first launch
-- Empty states, loading shimmers, and error placeholder widgets
-- Hero transitions, page transitions, and list animations
-- Responsive layout (phone portrait + tablet)
-- Custom app icon and native splash screen
-
 ---
-
-## 📸 Screenshots
-
-| Home | Product Detail | Artisan Profile |
-|:----:|:--------------:|:---------------:|
-| ![Home](screenshots/home.png) | ![Detail](screenshots/detail.png) | ![Artisan](screenshots/artisan.png) |
-
-| Booking Flow | Map | Gift Quiz |
-|:------------:|:---:|:---------:|
-| ![Booking](screenshots/booking.png) | ![Map](screenshots/map.png) | ![Quiz](screenshots/quiz.png) |
-
-| Chat | Gallery | Promotions |
-|:----:|:-------:|:----------:|
-| ![Chat](screenshots/chat.png) | ![Gallery](screenshots/gallery.png) | ![Promos](screenshots/promos.png) |
-
-> *Add screenshots to a `/screenshots` folder in the repo root after building.*
-
----
-
 
 ## 🚀 Getting Started
 
@@ -135,23 +96,23 @@ flutter build ios --release
 ---
 
 
-## 👥 Team
+## 👥 Team Members
 
 | Name           | Role  |
 |----------------|-------|
-| Souery Sreyno  | Blank |
+| Soeury Sreyno  | Blank |
 | Tang Nakry     | Blank |
 | Soth Pichpanha | Blank |
 
 ---
 
 
+<div align="center">
+
 ## 📄 License
 
-This project is for educational purposes as part of a university course.
+This project is for educational purposes as part of a Introduction of Mobile Application course.
 
----
 
-<div align="center">
   Made with ❤️ and inspired by the artisans of Cambodia 🇰🇭
 </div>
