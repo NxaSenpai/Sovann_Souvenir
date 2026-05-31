@@ -8,6 +8,7 @@ class Product {
   final double rating;
   final int reviewCount;
   final List<String> images;
+  final String description;
   final String materials;
   final String dimensions;
   final String story;
@@ -24,6 +25,7 @@ class Product {
     required this.rating,
     required this.reviewCount,
     required this.images,
+    required this.description,
     required this.materials,
     required this.dimensions,
     required this.story,
@@ -41,6 +43,7 @@ class Product {
     rating: (json['rating'] as num).toDouble(),
     reviewCount: json['reviewCount'],
     images: List<String>.from(json['images']),
+    description: json['description'],
     materials: json['materials'],
     dimensions: json['dimensions'],
     story: json['story'],
