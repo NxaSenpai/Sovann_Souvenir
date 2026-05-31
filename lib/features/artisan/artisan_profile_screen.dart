@@ -45,14 +45,14 @@ class ArtisanProfileScreen extends StatelessWidget {
               Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(artisan.name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
                 Text(artisan.craft, style: const TextStyle(color: AppColors.gold, fontSize: 14)),
-                Text(artisan.region, style: const TextStyle(color: AppColors.warmGray, fontSize: 13)),
+                Text(artisan.region, style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6), fontSize: 13)),
                 Text('${artisan.yearsOfExperience} years of experience', style: const TextStyle(fontSize: 12)),
               ])),
             ]),
             const SizedBox(height: 20),
             const Text('Their Story', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
             const SizedBox(height: 8),
-            Text(artisan.story, style: const TextStyle(height: 1.6, color: AppColors.warmGray)),
+            Text(artisan.story, style: TextStyle(height: 1.6, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7))),
             const SizedBox(height: 20),
             ElevatedButton.icon(
               icon: const Icon(Icons.chat_bubble_outline),

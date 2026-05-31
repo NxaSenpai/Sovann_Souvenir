@@ -44,73 +44,59 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               const SizedBox(height: 24),
 
-              // --- Product Name & Price ---
-              _productHeader(product),
+            const Divider(height: 32),
 
-              const SizedBox(height: 16),
-
-              // --- Rating ---
-              _ratingRow(product),
-
-              const SizedBox(height: 28),
-
-              // --- Description ---
-              _sectionTitle('Description'),
-              const SizedBox(height: 10),
-              _descriptionCard(product.description),
-
-              const SizedBox(height: 28),
-
-              // --- Story ---
-              _sectionTitle('The Story'),
-              const SizedBox(height: 10),
-              _storyCard(product.story),
-
-              const SizedBox(height: 28),
-
-              // --- Artisan ---
-              if (artisan != null) ...[
-                _sectionTitle('Artisan'),
-                const SizedBox(height: 10),
-                _artisanCard(artisan),
-                const SizedBox(height: 28),
-              ],
+            // Artisan info
+            if (artisan != null)
+              GestureDetector(
+                onTap: () => context.push('/artisan/${artisan.id}'),
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.goldLight.withOpacity(0.4)),
+                  ),
+                  child: Row(children: [
+                    CircleAvatar(backgroundImage: CachedNetworkImageProvider(artisan.avatar)),
+                    const SizedBox(width: 12),
+                    Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Text('Made by ${artisan.name}', style: const TextStyle(fontWeight: FontWeight.w700)),
+                      Text(artisan.region, style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7))),
+                    ])),
+                    const Icon(Icons.chevron_right, color: AppColors.gold),
+                  ]),
+                ),
+              ),
 
               // --- Details ---
               _sectionTitle('Details'),
               const SizedBox(height: 10),
               _detailsCard(product.materials, product.dimensions),
 
-              const SizedBox(height: 24),
+            // Story
+            Text('The Story', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: AppColors.gold)),
+            const SizedBox(height: 8),
+            Text(product.story, style: TextStyle(height: 1.6, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8))),
 
               // --- Tags ---
               _tags(product.tags),
 
-              const SizedBox(height: 24),
+            // Specs
+            Text('Details', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
+            const SizedBox(height: 12),
+            _specRow(context, 'Materials', product.materials),
+            _specRow(context, 'Dimensions', product.dimensions),
 
               // --- Gallery CTA ---
               _galleryButton(product.id),
 
-              const SizedBox(height: 100),
-            ]),
-          ),
-        ]),
-      ),
-
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 8, 24, 12),
-          child: SizedBox(
-            width: double.infinity,
-            height: 56,
-            child: ElevatedButton.icon(
-              icon: const Icon(Icons.card_giftcard, size: 22),
-              label: const Text('Order as Gift', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-              onPressed: () => context.push('/booking/${product.id}'),
-              style: ElevatedButton.styleFrom(
-                elevation: 0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-              ),
+            // Tags
+            Wrap(
+              spacing: 8, runSpacing: 8,
+              children: product.tags.map((tag) => Chip(
+                label: Text(tag, style: const TextStyle(fontSize: 11)),
+              )).toList(),
             ),
           ),
         ),
@@ -301,52 +287,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     );
   }
 
-  Widget _specRow(IconData icon, String label, String value) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, size: 18, color: AppColors.gold.withOpacity(0.8)),
-        const SizedBox(width: 10),
-        SizedBox(
-          width: 90,
-          child: Text(label, style: const TextStyle(color: AppColors.warmGray, fontSize: 15)),
-        ),
-        Expanded(
-          child: Text(value, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: AppColors.charcoal)),
-        ),
-      ],
-    );
-  }
-
-  Widget _tags(List<String> tags) {
-    return Wrap(
-      spacing: 8, runSpacing: 8,
-      children: tags.map((tag) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: AppColors.gold.withOpacity(0.12),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.gold.withOpacity(0.2)),
-        ),
-        child: Text(tag, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: AppColors.goldDark)),
-      )).toList(),
-    );
-  }
-
-  Widget _galleryButton(String productId) {
-    return SizedBox(
-      width: double.infinity,
-      child: OutlinedButton.icon(
-        icon: const Icon(Icons.photo_library_outlined, size: 20),
-        label: const Text('View Gallery & Making-of', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
-        onPressed: () => context.push('/gallery/$productId'),
-        style: OutlinedButton.styleFrom(
-          foregroundColor: AppColors.gold,
-          side: BorderSide(color: AppColors.gold.withOpacity(0.4)),
-          padding: const EdgeInsets.symmetric(vertical: 14),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-        ),
-      ),
-    );
-  }
+  Widget _specRow(BuildContext context, String label, String value) => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 6),
+    child: Row(children: [
+      SizedBox(width: 100, child: Text(label, style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6), fontSize: 13))),
+      Expanded(child: Text(value, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13))),
+    ]),
+  );
 }

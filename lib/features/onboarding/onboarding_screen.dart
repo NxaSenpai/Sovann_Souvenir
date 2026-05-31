@@ -29,10 +29,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.cream,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(child: Column(children: [
         Align(alignment: Alignment.centerRight, child: TextButton(
-            onPressed: _finish, child: const Text('Skip', style: TextStyle(color: AppColors.warmGray)))),
+            onPressed: _finish, child: Text('Skip', style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5))))),
         Expanded(child: PageView.builder(
           controller: _controller,
           onPageChanged: (i) => setState(() => _page = i),
@@ -44,9 +44,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(p['emoji']!, style: const TextStyle(fontSize: 100)),
                 const SizedBox(height: 32),
-                Text(p['title']!, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: AppColors.charcoal), textAlign: TextAlign.center),
+                Text(p['title']!, style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: Theme.of(context).colorScheme.onSurface), textAlign: TextAlign.center),
                 const SizedBox(height: 16),
-                Text(p['sub']!, style: const TextStyle(fontSize: 15, color: AppColors.warmGray, height: 1.6), textAlign: TextAlign.center),
+                Text(p['sub']!, style: TextStyle(fontSize: 15, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7), height: 1.6), textAlign: TextAlign.center),
               ]),
             );
           },
@@ -54,7 +54,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         SmoothPageIndicator(
           controller: _controller,
           count: _pages.length,
-          effect: const ExpandingDotsEffect(activeDotColor: AppColors.gold, dotHeight: 8),
+          effect: ExpandingDotsEffect(
+            activeDotColor: AppColors.gold, 
+            dotColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+            dotHeight: 8
+          ),
         ),
         const SizedBox(height: 32),
         Padding(
