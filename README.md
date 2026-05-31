@@ -41,7 +41,7 @@
 
 ## 🚀 Getting Started
 
-### Prerequisites
+### Requirement
 
 - [Flutter SDK](https://docs.flutter.dev/get-started/install) 3.x or later
 - Dart 3.x (bundled with Flutter)
@@ -52,8 +52,8 @@
 
 **1. Clone the repository**
 ```bash
-git clone https://github.com/yourusername/khmer_gift.git
-cd khmer_gift
+git clone https://github.com/NxaSenpai/Sovann_Souvenir.git
+cd Sovann_Souvenir
 ```
 
 **2. Install dependencies**
@@ -64,25 +64,6 @@ flutter pub get
 **3. Run the app**
 ```bash
 flutter run
-```
-
-**4. Run on a specific device**
-```bash
-flutter devices          # list available devices
-flutter run -d <device>  # run on specific device
-```
-
-### Build APK (Android)
-
-```bash
-flutter build apk --release
-```
-The output APK is at: `build/app/outputs/flutter-apk/app-release.apk`
-
-### Build for iOS
-
-```bash
-flutter build ios --release
 ```
 
 ---

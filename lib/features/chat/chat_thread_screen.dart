@@ -98,12 +98,18 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
                   const SizedBox(width: 8),
                   Container(
                     padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(color: AppColors.lightGray, borderRadius: BorderRadius.circular(16)),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceContainerHighest, 
+                      borderRadius: BorderRadius.circular(16)
+                    ),
                     child: Row(children: List.generate(3, (j) => AnimatedContainer(
                       duration: Duration(milliseconds: 400 + j * 150),
                       margin: const EdgeInsets.symmetric(horizontal: 2),
                       width: 6, height: 6,
-                      decoration: BoxDecoration(color: AppColors.warmGray, shape: BoxShape.circle),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4), 
+                        shape: BoxShape.circle
+                      ),
                     ))),
                   ),
                 ]);
@@ -116,7 +122,7 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                   constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
                   decoration: BoxDecoration(
-                    color: msg.isMe ? AppColors.gold : AppColors.lightGray,
+                    color: msg.isMe ? AppColors.gold : Theme.of(context).colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.only(
                       topLeft: const Radius.circular(16),
                       topRight: const Radius.circular(16),
@@ -124,7 +130,9 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
                       bottomRight: Radius.circular(msg.isMe ? 4 : 16),
                     ),
                   ),
-                  child: Text(msg.text, style: TextStyle(color: msg.isMe ? Colors.white : AppColors.charcoal)),
+                  child: Text(msg.text, style: TextStyle(
+                    color: msg.isMe ? Colors.white : Theme.of(context).colorScheme.onSurface
+                  )),
                 ),
               );
             },
@@ -132,17 +140,17 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
         ),
         // Input bar
         Container(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           child: Row(children: [
-            IconButton(icon: const Icon(Icons.attach_file, color: AppColors.warmGray), onPressed: () {}),
+            IconButton(icon: Icon(Icons.attach_file, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)), onPressed: () {}),
             Expanded(child: TextField(
               controller: _controller,
               onSubmitted: (_) => _send(),
               decoration: InputDecoration(
                 hintText: 'Type a message...',
                 filled: true,
-                fillColor: AppColors.cream,
+                fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(50), borderSide: BorderSide.none),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               ),

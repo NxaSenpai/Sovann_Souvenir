@@ -21,9 +21,17 @@ class ProductCard extends ConsumerWidget {
       child: Container(
         width: width,
         decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
+          color: Theme.of(context).cardTheme.color,
           borderRadius: BorderRadius.circular(16),
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4))],
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).brightness == Brightness.light 
+                  ? Colors.black.withOpacity(0.05) 
+                  : Colors.black.withOpacity(0.3), 
+              blurRadius: 8, 
+              offset: const Offset(0, 4)
+            )
+          ],
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           // Image
@@ -33,9 +41,9 @@ class ProductCard extends ConsumerWidget {
               child: CachedNetworkImage(
                 imageUrl: product.images.first,
                 height: 150, width: double.infinity, fit: BoxFit.cover,
-                placeholder: (c, u) => Container(color: AppColors.lightGray, height: 150),
+                placeholder: (c, u) => Container(color: Theme.of(context).colorScheme.surfaceContainerHighest, height: 150),
                 errorWidget: (c, u, e) => Container(
-                  color: AppColors.lightGray, height: 150,
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest, height: 150,
                   child: const Icon(Icons.image_not_supported),
                 ),
               ),
@@ -45,7 +53,8 @@ class ProductCard extends ConsumerWidget {
               child: GestureDetector(
                 onTap: () => ref.read(favoritesProvider.notifier).toggle(product.id),
                 child: CircleAvatar(
-                  radius: 18, backgroundColor: Colors.white,
+                  radius: 18, 
+                  backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.9),
                   child: Icon(
                     isFav ? Icons.favorite : Icons.favorite_border,
                     color: isFav ? Colors.red : AppColors.warmGray, size: 18,

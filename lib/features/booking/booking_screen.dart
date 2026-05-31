@@ -46,14 +46,15 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: List.generate(steps.length * 2 - 1, (i) {
-              if (i.isOdd) return Expanded(child: Container(height: 1, color: AppColors.lightGray));
+              if (i.isOdd) return Expanded(child: Container(height: 1, color: Theme.of(context).dividerColor));
               final step = i ~/ 2;
               final isActive = step <= booking.step;
               return CircleAvatar(
                 radius: 14,
-                backgroundColor: isActive ? AppColors.gold : AppColors.lightGray,
+                backgroundColor: isActive ? AppColors.gold : Theme.of(context).colorScheme.surfaceContainerHighest,
                 child: Text('${step + 1}', style: TextStyle(
-                    color: isActive ? Colors.white : AppColors.warmGray, fontSize: 11, fontWeight: FontWeight.w700)),
+                    color: isActive ? Colors.white : Theme.of(context).colorScheme.onSurface.withOpacity(0.5), 
+                    fontSize: 11, fontWeight: FontWeight.w700)),
               );
             }),
           ),
@@ -116,7 +117,7 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: b.giftWrap == opt['val'] ? AppColors.gold : AppColors.lightGray,
+                    color: b.giftWrap == opt['val'] ? AppColors.gold : Theme.of(context).dividerColor,
                     width: b.giftWrap == opt['val'] ? 2 : 1,
                   ),
                   borderRadius: BorderRadius.circular(12),
@@ -143,7 +144,7 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
           decoration: InputDecoration(
             hintText: 'Write your heartfelt message here...',
             filled: true,
-            fillColor: Colors.white,
+            fillColor: Theme.of(context).colorScheme.surface,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
           ),
           onChanged: (v) => ref.read(bookingProvider.notifier).setMessage(v),
@@ -167,6 +168,14 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
           calendarStyle: CalendarStyle(
             selectedDecoration: const BoxDecoration(color: AppColors.gold, shape: BoxShape.circle),
             todayDecoration: BoxDecoration(color: AppColors.gold.withOpacity(0.3), shape: BoxShape.circle),
+            defaultTextStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+            weekendTextStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
+          ),
+          headerStyle: HeaderStyle(
+            titleTextStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 16, fontWeight: FontWeight.bold),
+            formatButtonVisible: false,
+            leftChevronIcon: Icon(Icons.chevron_left, color: Theme.of(context).colorScheme.onSurface),
+            rightChevronIcon: Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.onSurface),
           ),
         ),
         const SizedBox(height: 16),
@@ -180,7 +189,7 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
               duration: const Duration(milliseconds: 200),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               decoration: BoxDecoration(
-                color: b.timeSlot == slot ? AppColors.gold : Colors.white,
+                color: b.timeSlot == slot ? AppColors.gold : Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(50),
                 border: Border.all(color: AppColors.gold),
               ),
@@ -203,11 +212,11 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
         const SizedBox(height: 16),
         const Text('Order Confirmed! 🎉', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800)),
         const SizedBox(height: 24),
-        _confirmRow('Item', b.product?.name ?? ''),
-        _confirmRow('Gift Wrap', b.giftWrap ? 'Yes' : 'No'),
-        if (b.personalMessage.isNotEmpty) _confirmRow('Message', b.personalMessage),
-        if (b.deliveryDate != null) _confirmRow('Delivery Date', '${b.deliveryDate!.day}/${b.deliveryDate!.month}/${b.deliveryDate!.year}'),
-        if (b.timeSlot.isNotEmpty) _confirmRow('Time', b.timeSlot),
+        _confirmRow(context, 'Item', b.product?.name ?? ''),
+        _confirmRow(context, 'Gift Wrap', b.giftWrap ? 'Yes' : 'No'),
+        if (b.personalMessage.isNotEmpty) _confirmRow(context, 'Message', b.personalMessage),
+        if (b.deliveryDate != null) _confirmRow(context, 'Delivery Date', '${b.deliveryDate!.day}/${b.deliveryDate!.month}/${b.deliveryDate!.year}'),
+        if (b.timeSlot.isNotEmpty) _confirmRow(context, 'Time', b.timeSlot),
         const SizedBox(height: 32),
         ElevatedButton(
           onPressed: () {
@@ -221,10 +230,10 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
     );
   }
 
-  Widget _confirmRow(String label, String value) => Padding(
+  Widget _confirmRow(BuildContext context, String label, String value) => Padding(
     padding: const EdgeInsets.symmetric(vertical: 8),
     child: Row(children: [
-      SizedBox(width: 110, child: Text(label, style: const TextStyle(color: AppColors.warmGray))),
+      SizedBox(width: 110, child: Text(label, style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)))),
       Expanded(child: Text(value, style: const TextStyle(fontWeight: FontWeight.w600))),
     ]),
   );

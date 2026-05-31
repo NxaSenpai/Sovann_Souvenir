@@ -49,11 +49,10 @@ class _HomeScreenState extends State<HomeScreen> {
             const Text('✦', style: TextStyle(color: AppColors.gold, fontSize: 20)),
             const SizedBox(width: 8),
             Text('Sovann Souvenir', style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700, color: AppColors.charcoal)),
+                fontWeight: FontWeight.w700)),
           ]),
           actions: [
             IconButton(icon: const Icon(Icons.chat_bubble_outline), onPressed: () => context.push('/chat')),
-            IconButton(icon: const Icon(Icons.search), onPressed: () {}),
           ],
         ),
 
@@ -111,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 hintText: 'Search gifts, artisans...',
                 prefixIcon: const Icon(Icons.search, color: AppColors.gold),
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: Theme.of(context).colorScheme.surface,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(50),
                   borderSide: BorderSide.none,
@@ -144,9 +143,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Container(
                     width: 70, margin: const EdgeInsets.only(right: 12),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).cardTheme.color,
                       borderRadius: BorderRadius.circular(16),
-                      boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 6)],
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context).brightness == Brightness.light 
+                              ? Colors.black.withOpacity(0.05) 
+                              : Colors.black.withOpacity(0.2), 
+                          blurRadius: 6
+                        )
+                      ],
                     ),
                     child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                       Text(cat['emoji']!, style: const TextStyle(fontSize: 24)),

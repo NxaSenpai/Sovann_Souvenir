@@ -95,7 +95,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 child: Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: AppColors.cream,
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: AppColors.goldLight.withOpacity(0.4)),
                   ),
@@ -104,7 +104,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     const SizedBox(width: 12),
                     Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Text('Made by ${artisan.name}', style: const TextStyle(fontWeight: FontWeight.w700)),
-                      Text(artisan.region, style: const TextStyle(fontSize: 12, color: AppColors.warmGray)),
+                      Text(artisan.region, style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7))),
                     ])),
                     const Icon(Icons.chevron_right, color: AppColors.gold),
                   ]),
@@ -116,15 +116,15 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             // Story
             Text('The Story', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: AppColors.gold)),
             const SizedBox(height: 8),
-            Text(product.story, style: const TextStyle(height: 1.6, color: AppColors.warmGray)),
+            Text(product.story, style: TextStyle(height: 1.6, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8))),
 
             const SizedBox(height: 20),
 
             // Specs
             Text('Details', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
             const SizedBox(height: 12),
-            _specRow('Materials', product.materials),
-            _specRow('Dimensions', product.dimensions),
+            _specRow(context, 'Materials', product.materials),
+            _specRow(context, 'Dimensions', product.dimensions),
 
             const SizedBox(height: 20),
 
@@ -133,7 +133,6 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               spacing: 8, runSpacing: 8,
               children: product.tags.map((tag) => Chip(
                 label: Text(tag, style: const TextStyle(fontSize: 11)),
-                backgroundColor: AppColors.lightGray,
               )).toList(),
             ),
 
@@ -171,10 +170,10 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     );
   }
 
-  Widget _specRow(String label, String value) => Padding(
+  Widget _specRow(BuildContext context, String label, String value) => Padding(
     padding: const EdgeInsets.symmetric(vertical: 6),
     child: Row(children: [
-      SizedBox(width: 100, child: Text(label, style: const TextStyle(color: AppColors.warmGray, fontSize: 13))),
+      SizedBox(width: 100, child: Text(label, style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6), fontSize: 13))),
       Expanded(child: Text(value, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13))),
     ]),
   );
