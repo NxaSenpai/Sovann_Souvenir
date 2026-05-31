@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../data/mock_repository.dart';
+import '../../models/artisan.dart';
+import '../../models/product.dart';
 import '../../state/favorites_provider.dart';
 import '../../theme/app_colors.dart';
 import '../../widgets/rating_stars.dart';
@@ -20,162 +22,331 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   final repo = MockRepository.instance;
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final product = repo.products.firstWhere((p) => p.id == widget.productId);
     final artisan = repo.artisanById(product.artisanId);
     final isFav = ref.watch(favoritesProvider).contains(product.id);
 
     return Scaffold(
-      body: CustomScrollView(slivers: [
-        // Image Gallery as SliverAppBar
-        SliverAppBar(
-          expandedHeight: 320,
-          pinned: true,
-          leading: IconButton(
-            icon: const CircleAvatar(backgroundColor: Colors.white70, child: Icon(Icons.arrow_back, color: Colors.black)),
-            onPressed: () => context.pop(),
-          ),
-          actions: [
-            IconButton(
-              icon: CircleAvatar(backgroundColor: Colors.white70,
-                  child: Icon(isFav ? Icons.favorite : Icons.favorite_border,
-                      color: isFav ? Colors.red : Colors.black)),
-              onPressed: () => ref.read(favoritesProvider.notifier).toggle(product.id),
-            ),
-          ],
-          flexibleSpace: FlexibleSpaceBar(
-            background: Stack(children: [
-              PageView.builder(
-                controller: _pageController,
-                itemCount: product.images.length,
-                onPageChanged: (i) => setState(() => _currentImage = i),
-                itemBuilder: (context, i) => CachedNetworkImage(
-                    imageUrl: product.images[i], fit: BoxFit.cover),
-              ),
-              Positioned(bottom: 12, left: 0, right: 0,
-                child: Row(mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(product.images.length, (i) => AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    margin: const EdgeInsets.symmetric(horizontal: 3),
-                    width: _currentImage == i ? 20 : 6, height: 6,
-                    decoration: BoxDecoration(
-                      color: _currentImage == i ? AppColors.gold : Colors.white70,
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                  )),
-                ),
-              ),
+      body: SingleChildScrollView(
+        child: Column(children: [
+          // --- Image Carousel ---
+          _imageCarousel(product, isFav),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const SizedBox(height: 24),
+
+              // --- Product Name & Price ---
+              _productHeader(product),
+
+              const SizedBox(height: 16),
+
+              // --- Rating ---
+              _ratingRow(product),
+
+              const SizedBox(height: 28),
+
+              // --- Description ---
+              _sectionTitle('Description'),
+              const SizedBox(height: 10),
+              _descriptionCard(product.description),
+
+              const SizedBox(height: 28),
+
+              // --- Story ---
+              _sectionTitle('The Story'),
+              const SizedBox(height: 10),
+              _storyCard(product.story),
+
+              const SizedBox(height: 28),
+
+              // --- Artisan ---
+              if (artisan != null) ...[
+                _sectionTitle('Artisan'),
+                const SizedBox(height: 10),
+                _artisanCard(artisan),
+                const SizedBox(height: 28),
+              ],
+
+              // --- Details ---
+              _sectionTitle('Details'),
+              const SizedBox(height: 10),
+              _detailsCard(product.materials, product.dimensions),
+
+              const SizedBox(height: 24),
+
+              // --- Tags ---
+              _tags(product.tags),
+
+              const SizedBox(height: 24),
+
+              // --- Gallery CTA ---
+              _galleryButton(product.id),
+
+              const SizedBox(height: 100),
             ]),
           ),
-        ),
+        ]),
+      ),
 
-        SliverToBoxAdapter(child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            // Name + Price
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Expanded(child: Text(product.name, style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800))),
-              Text('\$${product.price.toStringAsFixed(2)}', style: const TextStyle(color: AppColors.gold, fontSize: 22, fontWeight: FontWeight.w900)),
-            ]),
-            const SizedBox(height: 8),
-            Row(children: [
-              RatingStars(rating: product.rating),
-              const SizedBox(width: 8),
-              Text('(${product.reviewCount} reviews)', style: const TextStyle(color: AppColors.warmGray, fontSize: 12)),
-              const Spacer(),
-              TextButton(onPressed: () => context.push('/reviews/${product.id}'), child: const Text('See all')),
-            ]),
-
-            const Divider(height: 32),
-
-            // Artisan info
-            if (artisan != null)
-              GestureDetector(
-                onTap: () => context.push('/artisan/${artisan.id}'),
-                child: Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: AppColors.cream,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.goldLight.withOpacity(0.4)),
-                  ),
-                  child: Row(children: [
-                    CircleAvatar(backgroundImage: CachedNetworkImageProvider(artisan.avatar)),
-                    const SizedBox(width: 12),
-                    Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Text('Made by ${artisan.name}', style: const TextStyle(fontWeight: FontWeight.w700)),
-                      Text(artisan.region, style: const TextStyle(fontSize: 12, color: AppColors.warmGray)),
-                    ])),
-                    const Icon(Icons.chevron_right, color: AppColors.gold),
-                  ]),
-                ),
-              ),
-
-            const SizedBox(height: 20),
-
-            // Story
-            Text('The Story', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: AppColors.gold)),
-            const SizedBox(height: 8),
-            Text(product.story, style: const TextStyle(height: 1.6, color: AppColors.warmGray)),
-
-            const SizedBox(height: 20),
-
-            // Specs
-            Text('Details', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
-            const SizedBox(height: 12),
-            _specRow('Materials', product.materials),
-            _specRow('Dimensions', product.dimensions),
-
-            const SizedBox(height: 20),
-
-            // Tags
-            Wrap(
-              spacing: 8, runSpacing: 8,
-              children: product.tags.map((tag) => Chip(
-                label: Text(tag, style: const TextStyle(fontSize: 11)),
-                backgroundColor: AppColors.lightGray,
-              )).toList(),
-            ),
-
-            const SizedBox(height: 20),
-
-            // View Gallery Button
-            OutlinedButton.icon(
-              icon: const Icon(Icons.photo_library_outlined),
-              label: const Text('View Gallery & Making-of'),
-              onPressed: () => context.push('/gallery/${product.id}'),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: AppColors.gold,
-                side: const BorderSide(color: AppColors.gold),
-                minimumSize: const Size(double.infinity, 48),
-              ),
-            ),
-
-            const SizedBox(height: 100),
-          ]),
-        )),
-      ]),
-
-      // Bottom CTA
       bottomNavigationBar: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: ElevatedButton.icon(
-            icon: const Icon(Icons.card_giftcard),
-            label: const Text('Order as Gift', style: TextStyle(fontSize: 16)),
-            onPressed: () => context.push('/booking/${product.id}'),
-            style: ElevatedButton.styleFrom(minimumSize: const Size(double.infinity, 54)),
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 12),
+          child: SizedBox(
+            width: double.infinity,
+            height: 56,
+            child: ElevatedButton.icon(
+              icon: const Icon(Icons.card_giftcard, size: 22),
+              label: const Text('Order as Gift', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+              onPressed: () => context.push('/booking/${product.id}'),
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              ),
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _specRow(String label, String value) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 6),
-    child: Row(children: [
-      SizedBox(width: 100, child: Text(label, style: const TextStyle(color: AppColors.warmGray, fontSize: 13))),
-      Expanded(child: Text(value, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13))),
-    ]),
-  );
+  // ──────────────────────────────────────
+  // Widgets
+  // ──────────────────────────────────────
+
+  Widget _imageCarousel(Product product, bool isFav) {
+    return SizedBox(
+      height: 340,
+      child: Stack(children: [
+        PageView.builder(
+          controller: _pageController,
+          itemCount: product.images.length,
+          onPageChanged: (i) => setState(() => _currentImage = i),
+          itemBuilder: (context, i) => CachedNetworkImage(
+            imageUrl: product.images[i],
+            width: double.infinity,
+            height: 340,
+            fit: BoxFit.cover,
+            placeholder: (_, __) => Container(color: AppColors.lightGray),
+          ),
+        ),
+        Positioned(top: 52, left: 16,
+          child: CircleAvatar(
+            backgroundColor: Colors.white.withOpacity(0.9),
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back, color: AppColors.charcoal),
+              onPressed: () => context.pop(),
+              padding: EdgeInsets.zero,
+            ),
+          ),
+        ),
+        Positioned(top: 52, right: 16,
+          child: CircleAvatar(
+            backgroundColor: Colors.white.withOpacity(0.9),
+            child: IconButton(
+              icon: Icon(
+                isFav ? Icons.favorite : Icons.favorite_border,
+                color: isFav ? Colors.red : AppColors.charcoal,
+              ),
+              onPressed: () => ref.read(favoritesProvider.notifier).toggle(product.id),
+              padding: EdgeInsets.zero,
+            ),
+          ),
+        ),
+        if (product.images.length > 1)
+          Positioned(
+            bottom: 16, left: 0, right: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(product.images.length, (i) => AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                margin: const EdgeInsets.symmetric(horizontal: 3),
+                width: _currentImage == i ? 20 : 6,
+                height: 6,
+                decoration: BoxDecoration(
+                  color: _currentImage == i ? AppColors.gold : Colors.white.withOpacity(0.6),
+                  borderRadius: BorderRadius.circular(3),
+                ),
+              )),
+            ),
+          ),
+      ]),
+    );
+  }
+
+  Widget _productHeader(Product product) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Text(product.name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w800, height: 1.2)),
+        ),
+        const SizedBox(width: 16),
+        Text('\$${product.price.toStringAsFixed(2)}',
+            style: const TextStyle(color: AppColors.gold, fontSize: 22, fontWeight: FontWeight.w900)),
+      ],
+    );
+  }
+
+  Widget _ratingRow(Product product) {
+    return GestureDetector(
+      onTap: () => context.push('/reviews/${product.id}'),
+      child: Row(children: [
+        RatingStars(rating: product.rating),
+        const SizedBox(width: 8),
+        Text(product.rating.toStringAsFixed(1), style: const TextStyle(fontWeight: FontWeight.w600)),
+        Text(' (${product.reviewCount})', style: const TextStyle(color: AppColors.warmGray, fontSize: 14)),
+        const Spacer(),
+        Text('See all reviews', style: const TextStyle(color: AppColors.gold, fontWeight: FontWeight.w500, fontSize: 14)),
+        Icon(Icons.chevron_right, color: AppColors.gold, size: 18),
+      ]),
+    );
+  }
+
+  Widget _sectionTitle(String title) {
+    return Row(children: [
+      Container(width: 3, height: 18, color: AppColors.gold),
+      const SizedBox(width: 10),
+      Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+    ]);
+  }
+
+  Widget _descriptionCard(String text) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: AppColors.ivory,
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Text(text, style: const TextStyle(fontSize: 15, height: 1.6, color: AppColors.charcoal)),
+    );
+  }
+
+  Widget _storyCard(String story) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: AppColors.lightGray.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Icon(Icons.auto_stories, size: 20, color: AppColors.gold.withOpacity(0.7)),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(story, style: const TextStyle(fontSize: 15, height: 1.6, color: AppColors.warmGray, fontStyle: FontStyle.italic)),
+        ),
+      ]),
+    );
+  }
+
+  Widget _artisanCard(Artisan artisan) {
+    return GestureDetector(
+      onTap: () => context.push('/artisan/${artisan.id}'),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppColors.lightGray.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: AppColors.lightGray, width: 1),
+        ),
+        child: Row(children: [
+          CircleAvatar(
+            radius: 26,
+            backgroundImage: CachedNetworkImageProvider(artisan.avatar),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(artisan.name, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
+              const SizedBox(height: 3),
+              Row(children: [
+                Icon(Icons.location_on_outlined, size: 14, color: AppColors.warmGray),
+                const SizedBox(width: 4),
+                Text(artisan.region, style: const TextStyle(fontSize: 14, color: AppColors.warmGray)),
+              ]),
+            ]),
+          ),
+          Icon(Icons.chevron_right, color: AppColors.warmGray, size: 22),
+        ]),
+      ),
+    );
+  }
+
+  Widget _detailsCard(String materials, String dimensions) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: AppColors.lightGray.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.lightGray, width: 1),
+      ),
+      child: Column(children: [
+        _specRow(Icons.brush_outlined, 'Materials', materials),
+        const SizedBox(height: 14),
+        Divider(color: AppColors.lightGray, height: 1, thickness: 1),
+        const SizedBox(height: 14),
+        _specRow(Icons.straighten, 'Dimensions', dimensions),
+      ]),
+    );
+  }
+
+  Widget _specRow(IconData icon, String label, String value) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, size: 18, color: AppColors.gold.withOpacity(0.8)),
+        const SizedBox(width: 10),
+        SizedBox(
+          width: 90,
+          child: Text(label, style: const TextStyle(color: AppColors.warmGray, fontSize: 15)),
+        ),
+        Expanded(
+          child: Text(value, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: AppColors.charcoal)),
+        ),
+      ],
+    );
+  }
+
+  Widget _tags(List<String> tags) {
+    return Wrap(
+      spacing: 8, runSpacing: 8,
+      children: tags.map((tag) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: AppColors.gold.withOpacity(0.12),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: AppColors.gold.withOpacity(0.2)),
+        ),
+        child: Text(tag, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: AppColors.goldDark)),
+      )).toList(),
+    );
+  }
+
+  Widget _galleryButton(String productId) {
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton.icon(
+        icon: const Icon(Icons.photo_library_outlined, size: 20),
+        label: const Text('View Gallery & Making-of', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+        onPressed: () => context.push('/gallery/$productId'),
+        style: OutlinedButton.styleFrom(
+          foregroundColor: AppColors.gold,
+          side: BorderSide(color: AppColors.gold.withOpacity(0.4)),
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        ),
+      ),
+    );
+  }
 }
