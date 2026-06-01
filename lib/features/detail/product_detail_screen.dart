@@ -43,65 +43,57 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               const SizedBox(height: 24),
+              _productHeader(product),
+              const SizedBox(height: 8),
+              _ratingRow(product),
+              const SizedBox(height: 16),
+              const Divider(height: 32),
 
-            const Divider(height: 32),
-
-            // Artisan info
-            if (artisan != null)
-              GestureDetector(
-                onTap: () => context.push('/artisan/${artisan.id}'),
-                child: Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.goldLight.withOpacity(0.4)),
+              // Artisan info
+              if (artisan != null)
+                GestureDetector(
+                  onTap: () => context.push('/artisan/${artisan.id}'),
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: AppColors.goldLight.withOpacity(0.4)),
+                    ),
+                    child: Row(children: [
+                      CircleAvatar(backgroundImage: CachedNetworkImageProvider(artisan.avatar)),
+                      const SizedBox(width: 12),
+                      Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                        Text('Made by ${artisan.name}', style: const TextStyle(fontWeight: FontWeight.w700)),
+                        Text(artisan.region, style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7))),
+                      ])),
+                      const Icon(Icons.chevron_right, color: AppColors.gold),
+                    ]),
                   ),
-                  child: Row(children: [
-                    CircleAvatar(backgroundImage: CachedNetworkImageProvider(artisan.avatar)),
-                    const SizedBox(width: 12),
-                    Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Text('Made by ${artisan.name}', style: const TextStyle(fontWeight: FontWeight.w700)),
-                      Text(artisan.region, style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7))),
-                    ])),
-                    const Icon(Icons.chevron_right, color: AppColors.gold),
-                  ]),
                 ),
-              ),
+
+              // Story
+              _sectionTitle('The Story'),
+              const SizedBox(height: 10),
+              _storyCard(product.story),
 
               // --- Details ---
               _sectionTitle('Details'),
               const SizedBox(height: 10),
               _detailsCard(product.materials, product.dimensions),
 
-            // Story
-            Text('The Story', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: AppColors.gold)),
-            const SizedBox(height: 8),
-            Text(product.story, style: TextStyle(height: 1.6, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8))),
-
               // --- Tags ---
+              _sectionTitle('Tags'),
+              const SizedBox(height: 10),
               _tags(product.tags),
 
-            // Specs
-            Text('Details', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
-            const SizedBox(height: 12),
-            _specRow(context, 'Materials', product.materials),
-            _specRow(context, 'Dimensions', product.dimensions),
-
               // --- Gallery CTA ---
+              const SizedBox(height: 16),
               _galleryButton(product.id),
-
-            // Tags
-            Wrap(
-              spacing: 8, runSpacing: 8,
-              children: product.tags.map((tag) => Chip(
-                label: Text(tag, style: const TextStyle(fontSize: 11)),
-              )).toList(),
-            ),
+            ]),
           ),
-        ),
-      ),
-    );
+        ]),
+    ));
   }
 
   // ──────────────────────────────────────
@@ -278,12 +270,36 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         border: Border.all(color: AppColors.lightGray, width: 1),
       ),
       child: Column(children: [
-        _specRow(Icons.brush_outlined, 'Materials', materials),
+        _specRow(context, 'Materials', materials),
         const SizedBox(height: 14),
         Divider(color: AppColors.lightGray, height: 1, thickness: 1),
         const SizedBox(height: 14),
-        _specRow(Icons.straighten, 'Dimensions', dimensions),
+        _specRow(context, 'Dimensions', dimensions),
       ]),
+    );
+  }
+
+  Widget _tags(List<String> tags) {
+    return Wrap(
+      spacing: 8, runSpacing: 8,
+      children: tags.map((tag) => Chip(
+        label: Text(tag, style: const TextStyle(fontSize: 11)),
+      )).toList(),
+    );
+  }
+
+  Widget _galleryButton(String productId) {
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton.icon(
+        icon: const Icon(Icons.photo_library_outlined),
+        label: const Text('View Gallery'),
+        onPressed: () => context.push('/gallery/$productId'),
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        ),
+      ),
     );
   }
 

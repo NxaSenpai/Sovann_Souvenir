@@ -261,16 +261,19 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
           spacing: 8, runSpacing: 8,
           children: slots.map((slot) => GestureDetector(
             onTap: () => ref.read(bookingProvider.notifier).setTimeSlot(slot),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
+            child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               decoration: BoxDecoration(
                 color: b.timeSlot == slot ? AppColors.gold : Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(50),
                 border: Border.all(color: AppColors.gold),
               ),
-            );
-          }).toList(),
+              child: Text(slot, style: TextStyle(
+                color: b.timeSlot == slot ? Colors.white : AppColors.gold,
+                fontWeight: FontWeight.w600,
+              )),
+            ),
+          )).toList(),
         ),
       ]),
     );
@@ -378,6 +381,18 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
             ),
           ),
         ),
+      ]),
+    );
+  }
+
+  Widget _detailRow(IconData icon, String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(children: [
+        Icon(icon, size: 18, color: AppColors.warmGray),
+        const SizedBox(width: 12),
+        SizedBox(width: 100, child: Text(label, style: const TextStyle(fontSize: 13, color: AppColors.warmGray))),
+        Expanded(child: Text(value, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13))),
       ]),
     );
   }

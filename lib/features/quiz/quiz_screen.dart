@@ -54,7 +54,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
   String _categoryFromAnswers() {
     final giftType = _answers.length > 2 ? _answers[2] : 0;
-    final experience =t _answers.length > 3 ? _answers[3] : 0;
+    final experience = _answers.length > 3 ? _answers[3] : 0;
     final base = switch (giftType) {
       0 => _answers[0] == 0 ? 'textile' : 'silver',
       1 => 'wood',
