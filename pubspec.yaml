@@ -23,6 +23,7 @@ dependencies:
   # Map
   flutter_map: ^8.3.0
   latlong2: ^0.9.1
+  geolocator: ^13.0.0
 
   # Images
   cached_network_image: ^3.4.0
