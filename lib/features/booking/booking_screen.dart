@@ -71,24 +71,7 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
         ),
       ),
       body: Column(children: [
-        // Step indicator
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: List.generate(steps.length * 2 - 1, (i) {
-              if (i.isOdd) return Expanded(child: Container(height: 1, color: Theme.of(context).dividerColor));
-              final step = i ~/ 2;
-              final isActive = step <= booking.step;
-              return CircleAvatar(
-                radius: 14,
-                backgroundColor: isActive ? AppColors.gold : Theme.of(context).colorScheme.surfaceContainerHighest,
-                child: Text('${step + 1}', style: TextStyle(
-                    color: isActive ? Colors.white : Theme.of(context).colorScheme.onSurface.withOpacity(0.5), 
-                    fontSize: 11, fontWeight: FontWeight.w700)),
-              );
-            }),
-          ),
-        ),
+        _StepIndicator(steps: steps, currentStep: booking.step),
 
         Expanded(child: [
           _buildStep0(context, booking),
@@ -121,9 +104,7 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
     if (p == null) return const SizedBox();
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text('Your item', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
-        const SizedBox(height: 16),
+      child: Column(children: [
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -174,106 +155,305 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
 
   Widget _buildStep1(BuildContext context, BookingState b) {
     return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(children: [
-        const Text('Would you like gift wrapping?', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+      padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text('Would you like gift wrapping?', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+        const SizedBox(height: 4),
+        Text('Choose a wrapping option for your order.', style: TextStyle(fontSize: 14, color: AppColors.warmGray)),
         const SizedBox(height: 24),
-        ...[ {'label': 'Yes, wrap it beautifully 🎁', 'val': true},
-          {'label': 'No gift wrap', 'val': false}].map((opt) =>
-            GestureDetector(
-              onTap: () => ref.read(bookingProvider.notifier).setGiftWrap(opt['val'] as bool),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                margin: const EdgeInsets.only(bottom: 12),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: b.giftWrap == opt['val'] ? AppColors.gold : Theme.of(context).dividerColor,
-                    width: b.giftWrap == opt['val'] ? 2 : 1,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                  color: b.giftWrap == opt['val'] ? AppColors.gold.withOpacity(0.08) : null,
-                ),
-                child: Text(opt['label'] as String, style: const TextStyle(fontSize: 15)),
-              ),
-            ),
+        _giftWrapOption(
+          context, b,
+          icon: Icons.card_giftcard,
+          title: 'Gift Wrap',
+          subtitle: 'Signature Khmer silk-inspired wrapping with a gold ribbon',
+          value: true,
+          price: '\$5.99',
+        ),
+        const SizedBox(height: 12),
+        _giftWrapOption(
+          context, b,
+          icon: Icons.inventory_2_outlined,
+          title: 'No Gift Wrap',
+          subtitle: 'Item will be packaged in a standard branded box',
+          value: false,
         ),
       ]),
     );
   }
 
+  Widget _giftWrapOption(
+    BuildContext context, BookingState b, {
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required bool value,
+    String? price,
+  }) {
+    final selected = b.giftWrap == value;
+    return GestureDetector(
+      onTap: () => ref.read(bookingProvider.notifier).setGiftWrap(value),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeInOut,
+        width: double.infinity,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.gold.withOpacity(0.08) : Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: selected ? AppColors.gold : AppColors.lightGray,
+            width: selected ? 2 : 1,
+          ),
+        ),
+        child: Row(children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 250),
+            width: 48, height: 48,
+            decoration: BoxDecoration(
+              color: selected ? AppColors.gold.withOpacity(0.12) : AppColors.lightGray.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: selected ? AppColors.gold : AppColors.warmGray, size: 24),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(children: [
+                Text(title, style: TextStyle(
+                  fontSize: 15, fontWeight: FontWeight.w600,
+                  color: selected ? AppColors.charcoal : AppColors.charcoal,
+                )),
+                if (price != null) ...[
+                  const SizedBox(width: 8),
+                  Text(price, style: const TextStyle(
+                    fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.gold,
+                  )),
+                ],
+              ]),
+              const SizedBox(height: 3),
+              Text(subtitle, style: TextStyle(fontSize: 12, color: AppColors.warmGray, height: 1.3)),
+            ]),
+          ),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 250),
+            width: selected ? 24 : 20,
+            height: selected ? 24 : 20,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: selected ? AppColors.gold : Colors.transparent,
+              border: Border.all(
+                color: selected ? AppColors.gold : AppColors.lightGray,
+                width: selected ? 0 : 2,
+              ),
+            ),
+            child: selected
+                ? const Icon(Icons.check, color: Colors.white, size: 14)
+                : null,
+          ),
+        ]),
+      ),
+    );
+  }
+
   Widget _buildStep2(BuildContext context, BookingState b) {
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text('Personal message', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
+        Text('Personal message', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
         const SizedBox(height: 4),
-        Text('Add a heartfelt note (optional).',
+        Text('Add a heartfelt note to accompany your gift (optional).',
             style: TextStyle(fontSize: 14, color: AppColors.warmGray)),
         const SizedBox(height: 20),
+        Text('Quick templates', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.warmGray)),
+        const SizedBox(height: 10),
+        Wrap(
+          spacing: 8, runSpacing: 8,
+          children: _messageTemplates.map((t) => GestureDetector(
+            onTap: () => ref.read(bookingProvider.notifier).setMessage(t),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              decoration: BoxDecoration(
+                color: b.personalMessage == t ? AppColors.gold.withOpacity(0.12) : AppColors.lightGray.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: b.personalMessage == t ? AppColors.gold : Colors.transparent,
+                ),
+              ),
+              child: Text(t, style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: b.personalMessage == t ? AppColors.goldDark : AppColors.warmGray,
+              )),
+            ),
+          )).toList(),
+        ),
+        const SizedBox(height: 20),
+        // Message input
         TextFormField(
           initialValue: b.personalMessage,
-          maxLines: 6,
+          maxLines: 5,
           maxLength: 200,
           style: const TextStyle(fontSize: 15, height: 1.5),
           decoration: InputDecoration(
-            hintText: 'Write your message here...',
+            hintText: 'Or write your own message...',
             hintStyle: TextStyle(color: AppColors.lightGray),
             filled: true,
             fillColor: Theme.of(context).colorScheme.surface,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+            counterStyle: TextStyle(fontSize: 12, color: AppColors.warmGray),
           ),
           onChanged: (v) => ref.read(bookingProvider.notifier).setMessage(v),
         ),
+        if (b.personalMessage.isNotEmpty) ...[
+          const SizedBox(height: 20),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.cream,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.goldLight.withOpacity(0.3)),
+            ),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(children: [
+                Icon(Icons.auto_stories, size: 16, color: AppColors.gold.withOpacity(0.7)),
+                const SizedBox(width: 8),
+                Text('Message preview', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.warmGray)),
+              ]),
+              const SizedBox(height: 10),
+              Text(b.personalMessage, style: const TextStyle(
+                fontSize: 14, height: 1.5, fontStyle: FontStyle.italic, color: AppColors.charcoal,
+              )),
+            ]),
+          ),
+        ],
       ]),
     );
   }
+
+  static const _messageTemplates = [
+    'Happy Birthday! Wishing you a wonderful day.',
+    'Thank you for everything. I truly appreciate you.',
+    'I love you more than words can say.',
+    'Congratulations on your special day!',
+    'Thinking of you always. With love.',
+  ];
 
   Widget _buildStep3(BuildContext context, BookingState b) {
     final slots = ['09:00 AM', '11:00 AM', '02:00 PM', '04:00 PM', '06:00 PM'];
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        TableCalendar(
-          firstDay: DateTime.now(),
-          lastDay: DateTime.now().add(const Duration(days: 60)),
-          focusedDay: b.deliveryDate ?? DateTime.now().add(const Duration(days: 3)),
-          selectedDayPredicate: (day) => isSameDay(b.deliveryDate, day),
-          onDaySelected: (selected, _) =>
-              ref.read(bookingProvider.notifier).setDeliveryDate(selected),
-          calendarStyle: CalendarStyle(
-            selectedDecoration: const BoxDecoration(color: AppColors.gold, shape: BoxShape.circle),
-            todayDecoration: BoxDecoration(color: AppColors.gold.withOpacity(0.3), shape: BoxShape.circle),
-            defaultTextStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-            weekendTextStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
+        // Date section
+        Row(children: [
+          Icon(Icons.calendar_month, size: 18, color: AppColors.goldDark),
+          const SizedBox(width: 8),
+          Text('Select delivery date', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+        ]),
+        const SizedBox(height: 12),
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.lightGray),
           ),
-          headerStyle: HeaderStyle(
-            titleTextStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 16, fontWeight: FontWeight.bold),
-            formatButtonVisible: false,
-            leftChevronIcon: Icon(Icons.chevron_left, color: Theme.of(context).colorScheme.onSurface),
-            rightChevronIcon: Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.onSurface),
+          padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+          child: TableCalendar(
+            firstDay: DateTime.now(),
+            lastDay: DateTime.now().add(const Duration(days: 60)),
+            focusedDay: b.deliveryDate ?? DateTime.now().add(const Duration(days: 3)),
+            selectedDayPredicate: (day) => isSameDay(b.deliveryDate, day),
+            onDaySelected: (selected, _) =>
+                ref.read(bookingProvider.notifier).setDeliveryDate(selected),
+            calendarStyle: CalendarStyle(
+              selectedDecoration: const BoxDecoration(color: AppColors.gold, shape: BoxShape.circle),
+              todayDecoration: BoxDecoration(color: AppColors.gold.withOpacity(0.3), shape: BoxShape.circle),
+              defaultTextStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+              weekendTextStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
+              outsideTextStyle: TextStyle(color: AppColors.lightGray, fontSize: 13),
+              cellMargin: const EdgeInsets.all(4),
+            ),
+            headerStyle: HeaderStyle(
+              titleTextStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 16, fontWeight: FontWeight.bold),
+              formatButtonVisible: false,
+              leftChevronIcon: Icon(Icons.chevron_left, color: Theme.of(context).colorScheme.onSurface),
+              rightChevronIcon: Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.onSurface),
+            ),
           ),
         ),
-        const SizedBox(height: 24),
-        Text('Available time slots', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-        const SizedBox(height: 12),
-        Wrap(
-          spacing: 8, runSpacing: 8,
-          children: slots.map((slot) => GestureDetector(
-            onTap: () => ref.read(bookingProvider.notifier).setTimeSlot(slot),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              decoration: BoxDecoration(
-                color: b.timeSlot == slot ? AppColors.gold : Theme.of(context).colorScheme.surface,
-                borderRadius: BorderRadius.circular(50),
-                border: Border.all(color: AppColors.gold),
-              ),
-              child: Text(slot, style: TextStyle(
-                color: b.timeSlot == slot ? Colors.white : AppColors.gold,
-                fontWeight: FontWeight.w600,
-              )),
+
+        // Selected date summary
+        if (b.deliveryDate != null) ...[
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            decoration: BoxDecoration(
+              color: AppColors.gold.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(10),
             ),
-          )).toList(),
+            child: Row(children: [
+              Icon(Icons.check_circle, size: 16, color: AppColors.gold),
+              const SizedBox(width: 8),
+              Text('Selected: ', style: TextStyle(fontSize: 13, color: AppColors.warmGray)),
+              Text(
+                '${b.deliveryDate!.day}/${b.deliveryDate!.month}/${b.deliveryDate!.year}',
+                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.charcoal),
+              ),
+            ]),
+          ),
+        ],
+
+        const SizedBox(height: 24),
+        const Divider(color: AppColors.lightGray, height: 1),
+        const SizedBox(height: 20),
+
+        // Time slots section
+        Row(children: [
+          Icon(Icons.schedule, size: 18, color: AppColors.goldDark),
+          const SizedBox(width: 8),
+          Text('Available time slots', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+        ]),
+        const SizedBox(height: 4),
+        Text('Choose a preferred delivery time.',
+            style: TextStyle(fontSize: 13, color: AppColors.warmGray)),
+        const SizedBox(height: 14),
+        Wrap(
+          spacing: 10, runSpacing: 10,
+          children: slots.map((slot) {
+            final selected = b.timeSlot == slot;
+            return GestureDetector(
+              onTap: () => ref.read(bookingProvider.notifier).setTimeSlot(slot),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+                decoration: BoxDecoration(
+                  color: selected ? AppColors.gold : Theme.of(context).colorScheme.surface,
+                  borderRadius: BorderRadius.circular(50),
+                  border: Border.all(
+                    color: selected ? AppColors.gold : AppColors.lightGray,
+                    width: selected ? 1.5 : 1,
+                  ),
+                  boxShadow: selected
+                      ? [BoxShadow(color: AppColors.gold.withOpacity(0.25), blurRadius: 8, offset: const Offset(0, 2))]
+                      : null,
+                ),
+                child: Row(mainAxisSize: MainAxisSize.min, children: [
+                  if (selected)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 6),
+                      child: Icon(Icons.access_time, size: 14, color: Colors.white),
+                    ),
+                  Text(slot, style: TextStyle(
+                    color: selected ? Colors.white : AppColors.charcoal,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  )),
+                ]),
+              ),
+            );
+          }).toList(),
         ),
       ]),
     );
@@ -359,12 +539,6 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
           ]),
         ),
 
-        const SizedBox(height: 24),
-        _confirmRow(context, 'Item', b.product?.name ?? ''),
-        _confirmRow(context, 'Gift Wrap', b.giftWrap ? 'Yes' : 'No'),
-        if (b.personalMessage.isNotEmpty) _confirmRow(context, 'Message', b.personalMessage),
-        if (b.deliveryDate != null) _confirmRow(context, 'Delivery Date', '${b.deliveryDate!.day}/${b.deliveryDate!.month}/${b.deliveryDate!.year}'),
-        if (b.timeSlot.isNotEmpty) _confirmRow(context, 'Time', b.timeSlot),
         const SizedBox(height: 32),
         ElevatedButton.icon(
           onPressed: () {
@@ -397,13 +571,6 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
     );
   }
 
-  Widget _confirmRow(BuildContext context, String label, String value) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 8),
-    child: Row(children: [
-      SizedBox(width: 110, child: Text(label, style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)))),
-      Expanded(child: Text(value, style: const TextStyle(fontWeight: FontWeight.w600))),
-    ]),
-  );
 }
 
 class _StepIndicator extends StatelessWidget {
@@ -470,73 +637,4 @@ class _StepIndicator extends StatelessWidget {
   }
 }
 
-class _OptionCard extends StatelessWidget {
-  final bool selected;
-  final VoidCallback onTap;
-  final IconData icon;
-  final String title;
-  final String subtitle;
 
-  const _OptionCard({
-    required this.selected,
-    required this.onTap,
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        width: double.infinity,
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: selected ? AppColors.gold.withOpacity(0.06) : Colors.white,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: selected ? AppColors.gold : AppColors.lightGray,
-            width: selected ? 2 : 1,
-          ),
-        ),
-        child: Row(children: [
-          Container(
-            width: 44, height: 44,
-            decoration: BoxDecoration(
-              color: selected ? AppColors.gold.withOpacity(0.12) : AppColors.lightGray.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(icon, color: selected ? AppColors.gold : AppColors.warmGray, size: 22),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(title, style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: selected ? AppColors.charcoal : AppColors.charcoal,
-              )),
-              const SizedBox(height: 2),
-              Text(subtitle, style: TextStyle(
-                fontSize: 12,
-                color: AppColors.warmGray,
-                height: 1.3,
-              )),
-            ]),
-          ),
-          if (selected)
-            Container(
-              width: 22, height: 22,
-              decoration: const BoxDecoration(
-                color: AppColors.gold,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(Icons.check, color: Colors.white, size: 14),
-            ),
-        ]),
-      ),
-    );
-  }
-}

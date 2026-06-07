@@ -50,46 +50,38 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               const Divider(height: 32),
 
               // Artisan info
-              if (artisan != null)
-                GestureDetector(
-                  onTap: () => context.push('/artisan/${artisan.id}'),
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.goldLight.withOpacity(0.4)),
-                    ),
-                    child: Row(children: [
-                      CircleAvatar(backgroundImage: CachedNetworkImageProvider(artisan.avatar)),
-                      const SizedBox(width: 12),
-                      Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        Text('Made by ${artisan.name}', style: const TextStyle(fontWeight: FontWeight.w700)),
-                        Text(artisan.region, style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7))),
-                      ])),
-                      const Icon(Icons.chevron_right, color: AppColors.gold),
-                    ]),
-                  ),
-                ),
+              if (artisan != null) _artisanCard(artisan),
 
               // Story
+              const SizedBox(height: 20),
               _sectionTitle('The Story'),
               const SizedBox(height: 10),
               _storyCard(product.story),
 
-              // --- Details ---
+              // Description
+              const SizedBox(height: 20),
+              _sectionTitle('Description'),
+              const SizedBox(height: 10),
+              _descriptionCard(product.description),
+
+              // Details
+              const SizedBox(height: 20),
               _sectionTitle('Details'),
               const SizedBox(height: 10),
               _detailsCard(product.materials, product.dimensions),
 
-              // --- Tags ---
+              // Tags
+              const SizedBox(height: 20),
               _sectionTitle('Tags'),
               const SizedBox(height: 10),
               _tags(product.tags),
 
-              // --- Gallery CTA ---
-              const SizedBox(height: 16),
+              // Actions
+              const SizedBox(height: 24),
               _galleryButton(product.id),
+              const SizedBox(height: 12),
+              _bookingButton(product.id),
+              const SizedBox(height: 32),
             ]),
           ),
         ]),
@@ -231,30 +223,23 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     return GestureDetector(
       onTap: () => context.push('/artisan/${artisan.id}'),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: AppColors.lightGray.withOpacity(0.3),
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: AppColors.lightGray, width: 1),
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppColors.goldLight.withOpacity(0.4)),
         ),
         child: Row(children: [
-          CircleAvatar(
-            radius: 26,
-            backgroundImage: CachedNetworkImageProvider(artisan.avatar),
-          ),
-          const SizedBox(width: 14),
+          CircleAvatar(backgroundImage: CachedNetworkImageProvider(artisan.avatar)),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(artisan.name, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
-              const SizedBox(height: 3),
-              Row(children: [
-                Icon(Icons.location_on_outlined, size: 14, color: AppColors.warmGray),
-                const SizedBox(width: 4),
-                Text(artisan.region, style: const TextStyle(fontSize: 14, color: AppColors.warmGray)),
-              ]),
+              Text('Made by ${artisan.name}', style: const TextStyle(fontWeight: FontWeight.w700)),
+              Text(artisan.region,
+                  style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7))),
             ]),
           ),
-          Icon(Icons.chevron_right, color: AppColors.warmGray, size: 22),
+          const Icon(Icons.chevron_right, color: AppColors.gold),
         ]),
       ),
     );
@@ -285,6 +270,21 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
       children: tags.map((tag) => Chip(
         label: Text(tag, style: const TextStyle(fontSize: 11)),
       )).toList(),
+    );
+  }
+
+  Widget _bookingButton(String productId) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton.icon(
+        icon: const Icon(Icons.event_outlined),
+        label: const Text('Book Now', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+        onPressed: () => context.push('/booking/$productId'),
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        ),
+      ),
     );
   }
 
