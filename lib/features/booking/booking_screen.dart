@@ -167,7 +167,7 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
           title: 'Gift Wrap',
           subtitle: 'Signature Khmer silk-inspired wrapping with a gold ribbon',
           value: true,
-          price: '\$5.99',
+          price: '\$${giftWrapFee.toStringAsFixed(2)}',
         ),
         const SizedBox(height: 12),
         _giftWrapOption(
@@ -536,6 +536,14 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
               const SizedBox(height: 16),
               _detailRow(Icons.schedule, 'Time', b.timeSlot),
             ],
+            const Divider(height: 28, color: AppColors.lightGray),
+            const Text('Price Summary', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
+            const SizedBox(height: 16),
+            _priceRow('Item', p?.price ?? 0),
+            if (b.giftWrap) _priceRow('Gift Wrap', giftWrapFee),
+            const Divider(height: 20, color: AppColors.lightGray),
+            _priceRow('Total', (p?.price ?? 0) + (b.giftWrap ? giftWrapFee : 0),
+                isTotal: true),
           ]),
         ),
 
@@ -555,6 +563,28 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
             ),
           ),
         ),
+      ]),
+    );
+  }
+
+  static const double giftWrapFee = 5.99;
+
+  Widget _priceRow(String label, double amount, {bool isTotal = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(children: [
+        Expanded(
+          child: Text(label, style: TextStyle(
+            fontSize: isTotal ? 15 : 13,
+            fontWeight: isTotal ? FontWeight.w700 : FontWeight.w500,
+            color: isTotal ? AppColors.charcoal : AppColors.warmGray,
+          )),
+        ),
+        Text('\$${amount.toStringAsFixed(2)}', style: TextStyle(
+          fontSize: isTotal ? 16 : 13,
+          fontWeight: isTotal ? FontWeight.w900 : FontWeight.w600,
+          color: isTotal ? AppColors.gold : AppColors.charcoal,
+        )),
       ]),
     );
   }
