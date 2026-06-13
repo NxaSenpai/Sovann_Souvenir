@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../data/mock_repository.dart';
+import '../../models/cart_item.dart';
 import '../../state/booking_provider.dart';
+import '../../state/cart_provider.dart';
 import '../../theme/app_colors.dart';
 
 class BookingScreen extends ConsumerStatefulWidget {
@@ -14,6 +16,8 @@ class BookingScreen extends ConsumerStatefulWidget {
 }
 
 class _BookingScreenState extends ConsumerState<BookingScreen> {
+  bool _savedToCart = false;
+
   @override
   void initState() {
     super.initState();
@@ -22,6 +26,27 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(bookingProvider.notifier).setProduct(product);
     });
+  }
+
+  void _saveToCart() {
+    if (_savedToCart) return;
+    _savedToCart = true;
+    final b = ref.read(bookingProvider);
+    final p = b.product;
+    if (p == null) return;
+    final total = p.price + (b.giftWrap ? giftWrapFee : 0);
+    final item = CartItem(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      product: p,
+      giftWrap: b.giftWrap,
+      personalMessage: b.personalMessage,
+      deliveryDate: b.deliveryDate,
+      timeSlot: b.timeSlot,
+      totalPrice: total,
+      status: CartItemStatus.pending,
+      createdAt: DateTime.now(),
+    );
+    ref.read(cartProvider.notifier).addItem(item);
   }
 
   void _handleContinue(BookingState booking) {
@@ -550,11 +575,12 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
         const SizedBox(height: 32),
         ElevatedButton.icon(
           onPressed: () {
+            _saveToCart();
             ref.read(bookingProvider.notifier).reset();
-            context.go('/');
+            context.go('/cart');
           },
-          icon: const Icon(Icons.home_outlined, size: 20),
-          label: const Text('Back to Home', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+          icon: const Icon(Icons.shopping_cart_outlined, size: 20),
+          label: const Text('View My Cart', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
           style: ElevatedButton.styleFrom(
             minimumSize: const Size(double.infinity, 54),
             elevation: 0,

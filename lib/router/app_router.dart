@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../features/home/home_screen.dart';
 import '../features/detail/product_detail_screen.dart';
 import '../features/artisan/artisan_profile_screen.dart';
@@ -8,7 +7,6 @@ import '../features/collection/collection_detail_screen.dart';
 import '../features/favorites/favorites_screen.dart';
 import '../features/map/map_screen.dart';
 import '../features/nearby/nearby_screen.dart';
-import '../features/promotions/promotions_screen.dart';
 import '../features/booking/booking_screen.dart';
 import '../features/chat/chat_list_screen.dart';
 import '../features/chat/chat_thread_screen.dart';
@@ -16,6 +14,7 @@ import '../features/reviews/reviews_screen.dart';
 import '../features/gallery/gallery_screen.dart';
 import '../features/quiz/quiz_screen.dart';
 import '../features/settings/settings_screen.dart';
+import '../features/cart/cart_screen.dart';
 import '../widgets/main_shell.dart';
 
 // Shell pages (tab indices)
@@ -35,7 +34,7 @@ final appRouter = GoRouter(
         GoRoute(path: '/',           builder: (c, s) => const HomeScreen()),
         GoRoute(path: '/favorites',  builder: (c, s) => const FavoritesScreen()),
         GoRoute(path: '/map',        builder: (c, s) => const MapScreen()),
-        GoRoute(path: '/promotions', builder: (c, s) => const PromotionsScreen()),
+        GoRoute(path: '/cart',       builder: (c, s) => const CartScreen()),
         GoRoute(path: '/settings',   builder: (c, s) => const SettingsScreen()),
       ],
     ),
