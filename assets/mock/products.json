@@ -33,7 +33,7 @@
       "https://basketeer.com/cdn/shop/files/CB23-011-2.jpg?v=1773921671&width=823",
       "https://basketeer.com/cdn/shop/files/CB23-011-1-1.jpg?v=1773921671&width=823"
     ],
-    "description": "ASpoil her with pink perfection! A stunning pink rose bouquet, cuddly pink teddy bear, and dreamy pink heart balloons—the ultimate Valentine’s Day gift!",
+    "description": "Spoil her with pink perfection! A stunning pink rose bouquet, cuddly pink teddy bear, and dreamy pink heart balloons—the ultimate Valentine’s Day gift!",
     "materials": "Sterling silver 925",
     "dimensions": "2.5 cm × 2.5 cm",
     "story": "Inspired by the sacred lotus that rises from the mud, this pendant is a timeless token of love and hope.",
@@ -82,7 +82,7 @@
   },
   {
     "id": "p5",
-    "name": "SValentine’s Red Rose Surprise Bouquet",
+    "name": "Valentine’s Red Rose Surprise Bouquet",
     "artisanId": "a1",
     "categoryId": "textile",
     "collectionIds": ["c2","c4"],
@@ -90,8 +90,8 @@
     "rating": 4.8,
     "reviewCount": 41,
     "images": [
-      "Valentine’s Red Rose Surprise Bouquet",
-      "Valentine’s Red Rose Surprise Bouquet"
+      "https://picsum.photos/seed/rosebouquet1/600/600",
+      "https://picsum.photos/seed/rosebouquet2/600/600"
     ],
     "description": "Express love with the Valentine's Red Rose Surprise Bouquet—fresh premium red roses, elegantly wrapped for a romantic, unforgettable gift.",
     "materials": "Cambodian silk, wire stem",
