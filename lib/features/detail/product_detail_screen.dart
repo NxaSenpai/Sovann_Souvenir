@@ -100,12 +100,15 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           controller: _pageController,
           itemCount: product.images.length,
           onPageChanged: (i) => setState(() => _currentImage = i),
-          itemBuilder: (context, i) => CachedNetworkImage(
-            imageUrl: product.images[i],
-            width: double.infinity,
-            height: 340,
-            fit: BoxFit.cover,
-            placeholder: (_, __) => Container(color: AppColors.lightGray),
+          itemBuilder: (context, i) => Container(
+            color: AppColors.lightGray,
+            child: CachedNetworkImage(
+              imageUrl: product.images[i],
+              width: double.infinity,
+              height: 340,
+              fit: BoxFit.contain,
+              placeholder: (_, __) => const SizedBox(),
+            ),
           ),
         ),
         Positioned(top: 52, left: 16,

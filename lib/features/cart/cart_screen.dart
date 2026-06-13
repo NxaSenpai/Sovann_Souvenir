@@ -44,11 +44,14 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final items = ref.watch(cartProvider);
+    final cartAsync = ref.watch(cartProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('My Cart')),
-      body: items.isEmpty
+      body: cartAsync.when(
+        error: (e, _) => Center(child: Text('Error: $e')),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        data: (items) => items.isEmpty
           ? const EmptyState(
               icon: Icons.shopping_cart_outlined,
               title: 'Your cart is empty',
@@ -64,17 +67,95 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                 return _CartItemCard(item: item, remaining: _remainingSeconds[item.id]);
               },
             ),
+      ),
     );
   }
 }
 
-class _CartItemCard extends StatelessWidget {
+class _CartItemCard extends ConsumerWidget {
   final CartItem item;
   final int? remaining;
   const _CartItemCard({required this.item, this.remaining});
 
+  Future<void> _confirmCancel(BuildContext context, WidgetRef ref) async {
+    final confirmed = await showModalBottomSheet<bool>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (ctx) => Padding(
+        padding: const EdgeInsets.fromLTRB(28, 24, 28, 32),
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Container(
+            width: 40, height: 4,
+            decoration: BoxDecoration(
+              color: AppColors.lightGray,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          const SizedBox(height: 24),
+          Container(
+            width: 64, height: 64,
+            decoration: BoxDecoration(
+              color: AppColors.error.withOpacity(0.1),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(Icons.delete_outline_rounded,
+                color: AppColors.error, size: 32),
+          ),
+          const SizedBox(height: 20),
+          const Text('Cancel this order?',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+          const SizedBox(height: 8),
+          Text(
+            item.product.name,
+            style: TextStyle(fontSize: 14, color: AppColors.warmGray),
+            textAlign: TextAlign.center,
+            maxLines: 2, overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(height: 6),
+          Text('\$${item.totalPrice.toStringAsFixed(2)}',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.gold)),
+          const SizedBox(height: 28),
+          Row(children: [
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () => Navigator.of(ctx).pop(false),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  side: const BorderSide(color: AppColors.lightGray),
+                ),
+                child: const Text('Keep it',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.charcoal)),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () => Navigator.of(ctx).pop(true),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.error,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  elevation: 0,
+                ),
+                child: const Text('Yes, cancel',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+              ),
+            ),
+          ]),
+        ]),
+      ),
+    );
+    if (confirmed == true && context.mounted) {
+      ref.read(cartProvider.notifier).removeItem(item.id);
+    }
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isPending = item.status == CartItemStatus.pending;
     return Container(
       decoration: BoxDecoration(
@@ -164,6 +245,28 @@ class _CartItemCard extends StatelessWidget {
                 ),
             ]),
           ),
+        // Cancel button
+        const Divider(height: 1, thickness: 1, color: AppColors.lightGray),
+        InkWell(
+          onTap: () => _confirmCancel(context, ref),
+          borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.close_rounded, size: 18, color: AppColors.error.withOpacity(0.8)),
+                const SizedBox(width: 6),
+                Text('Cancel order',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.error.withOpacity(0.8),
+                    )),
+              ],
+            ),
+          ),
+        ),
       ]),
     );
   }

@@ -1,25 +1,50 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/cart_item.dart';
 
-class CartNotifier extends Notifier<List<CartItem>> {
-  @override
-  List<CartItem> build() => [];
+const _kCartKey = 'cart_items';
 
-  void addItem(CartItem item) {
-    state = [...state, item];
+class CartNotifier extends AsyncNotifier<List<CartItem>> {
+  @override
+  Future<List<CartItem>> build() async {
+    final prefs = await SharedPreferences.getInstance();
+    final stored = prefs.getString(_kCartKey);
+    if (stored == null || stored.isEmpty) return [];
+    try {
+      return CartItem.listFromJson(stored);
+    } catch (_) {
+      return [];
+    }
+  }
+
+  List<CartItem> get _items => state.value ?? [];
+
+  Future<void> _persist(List<CartItem> items) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_kCartKey, CartItem.listToJson(items));
+  }
+
+  Future<void> addItem(CartItem item) async {
+    final items = [..._items, item];
+    state = AsyncValue.data(items);
+    await _persist(items);
     _scheduleAutoConfirm(item);
   }
 
-  void removeItem(String id) {
-    state = state.where((item) => item.id != id).toList();
+  Future<void> removeItem(String id) async {
+    final items = _items.where((item) => item.id != id).toList();
+    state = AsyncValue.data(items);
+    await _persist(items);
   }
 
-  void markConfirmed(String id) {
-    state = state.map((item) {
+  Future<void> markConfirmed(String id) async {
+    final items = _items.map((item) {
       if (item.id == id) return item.copyWith(status: CartItemStatus.confirmed);
       return item;
     }).toList();
+    state = AsyncValue.data(items);
+    await _persist(items);
   }
 
   void _scheduleAutoConfirm(CartItem item) {
@@ -29,6 +54,6 @@ class CartNotifier extends Notifier<List<CartItem>> {
   }
 }
 
-final cartProvider = NotifierProvider<CartNotifier, List<CartItem>>(
+final cartProvider = AsyncNotifierProvider<CartNotifier, List<CartItem>>(
   CartNotifier.new,
 );
