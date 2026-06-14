@@ -1,3 +1,5 @@
+import '../data/content_translations.dart';
+
 class Product {
   final String id;
   final String name;
@@ -50,4 +52,28 @@ class Product {
     isFeatured: json['isFeatured'],
     tags: List<String>.from(json['tags']),
   );
+
+  /// Returns a copy with translated fields for the given [locale].
+  /// Structural fields (id, price, rating, image URLs) are never translated.
+  Product translated(String locale) {
+    final t = ContentTranslations.instance.get(locale, 'products', id);
+    if (t == null) return this;
+    return Product(
+      id: id,
+      name: t['name'] as String? ?? name,
+      artisanId: artisanId,
+      categoryId: categoryId,
+      collectionIds: collectionIds,
+      price: price,
+      rating: rating,
+      reviewCount: reviewCount,
+      images: images,
+      description: t['description'] as String? ?? description,
+      materials: t['materials'] as String? ?? materials,
+      dimensions: t['dimensions'] as String? ?? dimensions,
+      story: t['story'] as String? ?? story,
+      isFeatured: isFeatured,
+      tags: (t['tags'] as List?)?.cast<String>() ?? tags,
+    );
+  }
 }

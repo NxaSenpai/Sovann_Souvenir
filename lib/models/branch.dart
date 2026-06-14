@@ -1,3 +1,5 @@
+import '../data/content_translations.dart';
+
 class Branch {
   final String id;
   final String name;
@@ -28,4 +30,19 @@ class Branch {
     distance: (json['distance'] as num).toDouble(),
     imageUrl: json['imageUrl'],
   );
+
+  Branch translated(String locale) {
+    final t = ContentTranslations.instance.get(locale, 'branches', id);
+    if (t == null) return this;
+    return Branch(
+      id: id,
+      name: t['name'] as String? ?? name,
+      address: t['address'] as String? ?? address,
+      lat: lat, lng: lng, phone: phone,
+      openHours: t['openHours'] as String? ?? openHours,
+      isOpenNow: isOpenNow,
+      rating: rating, distance: distance,
+      imageUrl: imageUrl,
+    );
+  }
 }

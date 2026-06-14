@@ -20,30 +20,34 @@ class ProductCard extends ConsumerWidget {
       onTap: () => context.push('/product/${product.id}'),
       child: Container(
         width: width,
+        clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: Theme.of(context).cardTheme.color,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).brightness == Brightness.light 
-                  ? Colors.black.withOpacity(0.05) 
-                  : Colors.black.withOpacity(0.3), 
-              blurRadius: 8, 
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Colors.black.withOpacity(0.05)
+                  : Colors.black.withOpacity(0.3),
+              blurRadius: 8,
               offset: const Offset(0, 4)
             )
           ],
         ),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
           // Image
           Stack(children: [
             ClipRRect(
               borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
               child: CachedNetworkImage(
                 imageUrl: product.images.first,
-                height: 150, width: double.infinity, fit: BoxFit.cover,
-                placeholder: (c, u) => Container(color: Theme.of(context).colorScheme.surfaceContainerHighest, height: 150),
+                height: 140, width: double.infinity, fit: BoxFit.cover,
+                placeholder: (c, u) => Container(color: Theme.of(context).colorScheme.surfaceContainerHighest, height: 140),
                 errorWidget: (c, u, e) => Container(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest, height: 150,
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest, height: 140,
                   child: const Icon(Icons.image_not_supported),
                 ),
               ),

@@ -1,3 +1,5 @@
+import '../data/content_translations.dart';
+
 class GiftCollection {
   final String id;
   final String name;
@@ -17,4 +19,17 @@ class GiftCollection {
     productIds: List<String>.from(json['productIds']),
     tag: json['tag'],
   );
+
+  GiftCollection translated(String locale) {
+    final t = ContentTranslations.instance.get(locale, 'collections', id);
+    if (t == null) return this;
+    return GiftCollection(
+      id: id,
+      name: t['name'] as String? ?? name,
+      description: t['description'] as String? ?? description,
+      coverImage: coverImage,
+      productIds: productIds,
+      tag: t['tag'] as String? ?? tag,
+    );
+  }
 }

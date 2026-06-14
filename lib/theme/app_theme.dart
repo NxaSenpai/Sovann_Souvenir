@@ -64,7 +64,7 @@ class AppTheme {
       onPrimary: AppColors.charcoal,
       onSecondary: Colors.white,
       onSurface: AppColors.cream,
-      surfaceContainerHighest: AppColors.darkBg,
+      surfaceContainerHighest: AppColors.darkSurface,
     ),
     scaffoldBackgroundColor: AppColors.darkBg,
     appBarTheme: const AppBarTheme(
@@ -91,7 +91,7 @@ class AppTheme {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
     ),
     dividerTheme: const DividerThemeData(
-      color: AppColors.charcoal,
+      color: AppColors.darkCard,
       thickness: 1,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -101,6 +101,26 @@ class AppTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
       ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: AppColors.darkCard,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: AppColors.darkSurface),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: AppColors.goldLight, width: 2),
+      ),
+    ),
+    listTileTheme: const ListTileThemeData(
+      textColor: AppColors.cream,
+      iconColor: AppColors.goldLight,
     ),
   );
 }

@@ -4,23 +4,25 @@ import '../../data/mock_repository.dart';
 import '../../state/favorites_provider.dart';
 import '../../widgets/product_card.dart';
 import '../../widgets/empty_state.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 class FavoritesScreen extends ConsumerWidget {
   const FavoritesScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final favIds = ref.watch(favoritesProvider);
     final all = MockRepository.instance.products;
     final favs = all.where((p) => favIds.contains(p.id)).toList();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Saved Gifts')),
+      appBar: AppBar(title: Text(l10n.savedGifts)),
       body: favs.isEmpty
-          ? const EmptyState(icon: Icons.favorite_border, title: 'No saved gifts yet', subtitle: 'Tap the heart on any item to save it here')
+          ? EmptyState(icon: Icons.favorite_border, title: l10n.noSavedGifts, subtitle: l10n.tapHeartToSave)
           : GridView.builder(
         padding: const EdgeInsets.all(16),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, crossAxisSpacing: 16, mainAxisSpacing: 16, childAspectRatio: 0.7),
+            crossAxisCount: 2, crossAxisSpacing: 16, mainAxisSpacing: 16, childAspectRatio: 0.67),
         itemCount: favs.length,
         itemBuilder: (context, i) => ProductCard(product: favs[i], width: double.infinity),
       ),

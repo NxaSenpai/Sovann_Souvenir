@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/promotion.dart';
 import '../theme/app_colors.dart';
+import '../l10n/generated/app_localizations.dart';
 
 class CouponCard extends StatelessWidget {
   final Promotion promo;
@@ -9,12 +10,19 @@ class CouponCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 8)],
+        boxShadow: [
+          BoxShadow(
+            color: isDark ? Colors.black38 : Colors.black12,
+            blurRadius: 8,
+          ),
+        ],
       ),
       child: Row(children: [
         // Left color strip
@@ -33,7 +41,10 @@ class CouponCard extends StatelessWidget {
           children: [
             Text(promo.title, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
             const SizedBox(height: 4),
-            Text(promo.subtitle, style: const TextStyle(fontSize: 13, color: AppColors.warmGray)),
+            Text(promo.subtitle, style: TextStyle(
+              fontSize: 13,
+              color: isDark ? AppColors.cream.withOpacity(0.7) : AppColors.warmGray,
+            )),
             const SizedBox(height: 8),
             Row(children: [
               Container(
@@ -49,7 +60,7 @@ class CouponCard extends StatelessWidget {
                 onTap: () {
                   Clipboard.setData(ClipboardData(text: promo.code));
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Code copied!')),
+                    SnackBar(content: Text(l10n.codeCopied)),
                   );
                 },
                 child: const Icon(Icons.copy, size: 16, color: AppColors.warmGray),
@@ -63,7 +74,10 @@ class CouponCard extends StatelessWidget {
           child: Column(children: [
             Text(promo.discount, style: const TextStyle(
                 color: AppColors.gold, fontWeight: FontWeight.w900, fontSize: 18)),
-            Text('OFF', style: TextStyle(color: AppColors.warmGray, fontSize: 11)),
+            Text(l10n.off, style: TextStyle(
+              color: isDark ? AppColors.cream.withOpacity(0.7) : AppColors.warmGray,
+              fontSize: 11,
+            )),
           ]),
         ),
       ]),

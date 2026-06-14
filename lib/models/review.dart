@@ -1,3 +1,5 @@
+import '../data/content_translations.dart';
+
 class Review {
   final String id;
   final String productId;
@@ -20,4 +22,19 @@ class Review {
     date: json['date'], comment: json['comment'],
     photoUrl: json['photoUrl'],
   );
+
+  Review translated(String locale) {
+    final t = ContentTranslations.instance.get(locale, 'reviews', id);
+    if (t == null) return this;
+    return Review(
+      id: id,
+      productId: productId,
+      userName: t['userName'] as String? ?? userName,
+      userAvatar: userAvatar,
+      rating: rating,
+      date: date,
+      comment: t['comment'] as String? ?? comment,
+      photoUrl: photoUrl,
+    );
+  }
 }

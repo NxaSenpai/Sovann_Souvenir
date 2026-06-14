@@ -4,6 +4,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import '../../data/mock_repository.dart';
 import '../../theme/app_colors.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 class GalleryScreen extends StatefulWidget {
   final String productId;
@@ -16,12 +17,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
   int _selected = 0;
   late PageController _pageController;
 
-  // Extra "making-of" gallery images
   final _makingOf = [
-    'https://picsum.photos/seed/making1/600/400',
-    'https://picsum.photos/seed/making2/600/400',
-    'https://picsum.photos/seed/making3/600/400',
-    'https://picsum.photos/seed/making4/600/400',
   ];
 
   @override
@@ -31,7 +27,14 @@ class _GalleryScreenState extends State<GalleryScreen> {
   }
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final product = MockRepository.instance.products.firstWhere((p) => p.id == widget.productId);
     final allImages = [...product.images, ..._makingOf];
 
@@ -98,9 +101,11 @@ class _GalleryScreenState extends State<GalleryScreen> {
 
         // Label: making-of vs product
         Padding(
-          padding: const EdgeInsets.only(bottom: 16),
+          padding: EdgeInsets.only(
+            bottom: 16 + MediaQuery.of(context).padding.bottom,
+          ),
           child: Text(
-            _selected < product.images.length ? 'Product Photos' : 'Making-of',
+            _selected < product.images.length ? l10n.productPhotos : l10n.makingOf,
             style: const TextStyle(color: Colors.white70, fontSize: 12),
           ),
         ),
