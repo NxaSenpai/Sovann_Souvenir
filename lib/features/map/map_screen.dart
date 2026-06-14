@@ -11,6 +11,7 @@ import '../../models/branch.dart';
 import '../../state/map_providers.dart';
 import '../../theme/app_colors.dart';
 import '../../widgets/rating_stars.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -77,7 +78,8 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, child) {
-        final branches = repo.branches;
+        final l10n = AppLocalizations.of(context);
+        final branches = repo.branchesTr;
         final selected = ref.watch(selectedBranchProvider);
         final searchQuery = ref.watch(searchQueryProvider);
         final filterOpenOnly = ref.watch(filterOpenOnlyProvider);
@@ -99,7 +101,7 @@ class _MapScreenState extends State<MapScreen> {
                 onChanged: (v) =>
                     ref.read(searchQueryProvider.notifier).state = v,
                 decoration: InputDecoration(
-                  hintText: 'Search branches...',
+                  hintText: l10n.searchBranches,
                   hintStyle: const TextStyle(fontSize: 14),
                   prefixIcon: const Icon(Icons.search, size: 20),
                   contentPadding:
@@ -118,7 +120,7 @@ class _MapScreenState extends State<MapScreen> {
               Padding(
                 padding: const EdgeInsets.only(right: 4),
                 child: FilterChip(
-                  label: const Text('Open', style: TextStyle(fontSize: 12)),
+                  label: Text(l10n.open, style: const TextStyle(fontSize: 12)),
                   selected: filterOpenOnly,
                   onSelected: (v) =>
                       ref.read(filterOpenOnlyProvider.notifier).state = v,
@@ -130,7 +132,7 @@ class _MapScreenState extends State<MapScreen> {
               IconButton(
                 icon: const Icon(Icons.view_list),
                 onPressed: () => context.push('/nearby'),
-                tooltip: 'List view',
+                tooltip: l10n.listView,
               ),
             ],
           ),
@@ -321,20 +323,22 @@ class _BranchSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Positioned(
       bottom: 0,
       left: 0,
       right: 0,
       child: Container(
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        decoration: BoxDecoration(
+          color: isDark ? AppColors.darkSurface : Colors.white,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           boxShadow: [
             BoxShadow(
-              color: Colors.black26,
+              color: isDark ? Colors.black54 : Colors.black26,
               blurRadius: 24,
-              offset: Offset(0, -4),
+              offset: const Offset(0, -4),
             ),
           ],
         ),
@@ -347,7 +351,7 @@ class _BranchSheet extends StatelessWidget {
                 width: 32,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
+                  color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -365,12 +369,12 @@ class _BranchSheet extends StatelessWidget {
                       height: 52,
                       fit: BoxFit.cover,
                       placeholder: (_, __) => Container(
-                        color: Colors.grey.shade200,
-                        child: const Icon(Icons.store, color: Colors.grey),
+                        color: isDark ? AppColors.darkCard : Colors.grey.shade200,
+                        child: Icon(Icons.store, color: isDark ? Colors.grey.shade500 : Colors.grey),
                       ),
                       errorWidget: (_, __, ___) => Container(
-                        color: Colors.grey.shade200,
-                        child: const Icon(Icons.store, color: Colors.grey),
+                        color: isDark ? AppColors.darkCard : Colors.grey.shade200,
+                        child: Icon(Icons.store, color: isDark ? Colors.grey.shade500 : Colors.grey),
                       ),
                     ),
                   ),
@@ -402,7 +406,7 @@ class _BranchSheet extends StatelessWidget {
                               borderRadius: BorderRadius.circular(50),
                             ),
                             child: Text(
-                              branch.isOpenNow ? 'Open' : 'Closed',
+                              branch.isOpenNow ? l10n.open : l10n.closed,
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 11,
@@ -426,13 +430,13 @@ class _BranchSheet extends StatelessWidget {
                           ),
                           const SizedBox(width: 10),
                           Icon(Icons.near_me,
-                              size: 13, color: Colors.grey.shade600),
+                              size: 13, color: isDark ? Colors.grey.shade500 : Colors.grey.shade600),
                           const SizedBox(width: 3),
                           Text(
                             '${branch.distance.toStringAsFixed(1)} km',
                             style: TextStyle(
                               fontSize: 12,
-                              color: Colors.grey.shade600,
+                              color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
                             ),
                           ),
                         ],
@@ -445,10 +449,11 @@ class _BranchSheet extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
+                      color: isDark ? AppColors.darkCard : Colors.grey.shade200,
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.close, size: 16),
+                    child: Icon(Icons.close, size: 16,
+                      color: isDark ? Colors.grey.shade400 : Colors.black87),
                   ),
                 ),
               ],
@@ -458,13 +463,15 @@ class _BranchSheet extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Icon(Icons.location_on,
-                    size: 14, color: Colors.grey.shade600),
+                    size: 14, color: isDark ? Colors.grey.shade500 : Colors.grey.shade600),
                 const SizedBox(width: 4),
                 Expanded(
                   child: Text(
                     branch.address,
-                    style:
-                        TextStyle(fontSize: 12, color: Colors.grey.shade700),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: isDark ? Colors.grey.shade400 : Colors.grey.shade700,
+                    ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -475,12 +482,14 @@ class _BranchSheet extends StatelessWidget {
               const SizedBox(height: 4),
               Row(
                 children: [
-                  Icon(Icons.phone, size: 14, color: Colors.grey.shade600),
+                  Icon(Icons.phone, size: 14, color: isDark ? Colors.grey.shade500 : Colors.grey.shade600),
                   const SizedBox(width: 4),
                   Text(
                     branch.phone,
-                    style:
-                        TextStyle(fontSize: 12, color: Colors.grey.shade700),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: isDark ? Colors.grey.shade400 : Colors.grey.shade700,
+                    ),
                   ),
                 ],
               ),
@@ -489,12 +498,14 @@ class _BranchSheet extends StatelessWidget {
             Row(
               children: [
                 Icon(Icons.access_time,
-                    size: 14, color: Colors.grey.shade600),
+                    size: 14, color: isDark ? Colors.grey.shade500 : Colors.grey.shade600),
                 const SizedBox(width: 4),
                 Text(
                   branch.openHours,
-                  style:
-                      TextStyle(fontSize: 12, color: Colors.grey.shade700),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: isDark ? Colors.grey.shade400 : Colors.grey.shade700,
+                  ),
                 ),
               ],
             ),
@@ -504,7 +515,7 @@ class _BranchSheet extends StatelessWidget {
                 Expanded(
                   child: OutlinedButton.icon(
                     icon: const Icon(Icons.near_me, size: 16),
-                    label: const Text('Center'),
+                    label: Text(l10n.center),
                     onPressed: onNavigate,
                   ),
                 ),
@@ -512,7 +523,7 @@ class _BranchSheet extends StatelessWidget {
                 Expanded(
                   child: FilledButton.icon(
                     icon: const Icon(Icons.directions, size: 16),
-                    label: const Text('Directions'),
+                    label: Text(l10n.directions),
                     onPressed: () async {
                       final uri = Uri.parse(
                         'https://www.google.com/maps/dir/?api=1&destination=${branch.lat},${branch.lng}',

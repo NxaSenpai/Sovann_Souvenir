@@ -8,6 +8,7 @@ import '../../models/product.dart';
 import '../../state/favorites_provider.dart';
 import '../../theme/app_colors.dart';
 import '../../widgets/rating_stars.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 class ProductDetailScreen extends ConsumerStatefulWidget {
   final String productId;
@@ -29,14 +30,14 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final product = repo.products.firstWhere((p) => p.id == widget.productId);
-    final artisan = repo.artisanById(product.artisanId);
+    final l10n = AppLocalizations.of(context);
+    final product = repo.productsTr.firstWhere((p) => p.id == widget.productId);
+    final artisan = repo.artisanByIdTr(product.artisanId);
     final isFav = ref.watch(favoritesProvider).contains(product.id);
 
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(children: [
-          // --- Image Carousel ---
           _imageCarousel(product, isFav),
 
           Padding(
@@ -47,45 +48,31 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               const SizedBox(height: 8),
               _ratingRow(product),
               const SizedBox(height: 16),
-              const Divider(height: 32),
-
-              // Artisan info
-              if (artisan != null) _artisanCard(artisan),
-
-              // Story
-              const SizedBox(height: 20),
-              _sectionTitle('The Story'),
-              const SizedBox(height: 10),
-              _storyCard(product.story),
-
-              // Description
-              const SizedBox(height: 20),
-              _sectionTitle('Description'),
-              const SizedBox(height: 10),
               _descriptionCard(product.description),
-
-              // Details
-              const SizedBox(height: 20),
-              _sectionTitle('Details'),
+              const Divider(height: 32),
+              if (artisan != null) ...[
+                _artisanCard(artisan),
+                const SizedBox(height: 24),
+              ],
+              _sectionTitle(l10n.details),
               const SizedBox(height: 10),
-              _detailsCard(product.materials, product.dimensions),
-
-              // Tags
-              const SizedBox(height: 20),
-              _sectionTitle('Tags'),
+              _detailsCard(context, product.materials, product.dimensions),
+              const SizedBox(height: 24),
+              Text(l10n.theStory, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: AppColors.gold)),
+              const SizedBox(height: 8),
+              _storyCard(product.story),
+              const SizedBox(height: 24),
+              _sectionTitle(l10n.tags),
               const SizedBox(height: 10),
               _tags(product.tags),
-
-              // Actions
               const SizedBox(height: 24),
               _galleryButton(product.id),
-              const SizedBox(height: 12),
-              _bookingButton(product.id),
-              const SizedBox(height: 32),
+              SizedBox(height: 24 + MediaQuery.of(context).padding.bottom),
             ]),
           ),
         ]),
-    ));
+      ),
+    );
   }
 
   // ──────────────────────────────────────
@@ -167,6 +154,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   }
 
   Widget _ratingRow(Product product) {
+    final l10n = AppLocalizations.of(context);
     return GestureDetector(
       onTap: () => context.push('/reviews/${product.id}'),
       child: Row(children: [
@@ -175,7 +163,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         Text(product.rating.toStringAsFixed(1), style: const TextStyle(fontWeight: FontWeight.w600)),
         Text(' (${product.reviewCount})', style: const TextStyle(color: AppColors.warmGray, fontSize: 14)),
         const Spacer(),
-        Text('See all reviews', style: const TextStyle(color: AppColors.gold, fontWeight: FontWeight.w500, fontSize: 14)),
+        Text(l10n.seeAllReviews, style: const TextStyle(color: AppColors.gold, fontWeight: FontWeight.w500, fontSize: 14)),
         Icon(Icons.chevron_right, color: AppColors.gold, size: 18),
       ]),
     );
@@ -190,44 +178,57 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   }
 
   Widget _descriptionCard(String text) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.ivory,
+        color: isDark ? AppColors.darkCard : AppColors.ivory,
         borderRadius: BorderRadius.circular(14),
       ),
-      child: Text(text, style: const TextStyle(fontSize: 15, height: 1.6, color: AppColors.charcoal)),
+      child: Text(text, style: TextStyle(
+        fontSize: 15, height: 1.6,
+        color: isDark ? AppColors.cream : AppColors.charcoal,
+      )),
     );
   }
 
   Widget _storyCard(String story) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.lightGray.withOpacity(0.3),
+        color: isDark ? AppColors.darkCard : AppColors.lightGray.withOpacity(0.3),
         borderRadius: BorderRadius.circular(14),
       ),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Icon(Icons.auto_stories, size: 20, color: AppColors.gold.withOpacity(0.7)),
         const SizedBox(width: 12),
         Expanded(
-          child: Text(story, style: const TextStyle(fontSize: 15, height: 1.6, color: AppColors.warmGray, fontStyle: FontStyle.italic)),
+          child: Text(story, style: TextStyle(
+            fontSize: 15, height: 1.6,
+            color: isDark ? AppColors.cream.withOpacity(0.8) : AppColors.warmGray,
+            fontStyle: FontStyle.italic,
+          )),
         ),
       ]),
     );
   }
 
   Widget _artisanCard(Artisan artisan) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: () => context.push('/artisan/${artisan.id}'),
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.goldLight.withOpacity(0.4)),
+          color: isDark ? AppColors.darkCard : AppColors.lightGray.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: isDark ? AppColors.darkSurface : AppColors.lightGray,
+            width: 1,
+          ),
         ),
         child: Row(children: [
           CircleAvatar(backgroundImage: CachedNetworkImageProvider(artisan.avatar)),
@@ -245,21 +246,29 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     );
   }
 
-  Widget _detailsCard(String materials, String dimensions) {
+  Widget _detailsCard(BuildContext context, String materials, String dimensions) {
+    final l10n = AppLocalizations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.lightGray.withOpacity(0.3),
+        color: isDark ? AppColors.darkCard : AppColors.lightGray.withOpacity(0.3),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.lightGray, width: 1),
+        border: Border.all(
+          color: isDark ? AppColors.darkSurface : AppColors.lightGray,
+          width: 1,
+        ),
       ),
       child: Column(children: [
-        _specRow(context, 'Materials', materials),
+        _specRow(context, l10n.materials, materials),
         const SizedBox(height: 14),
-        Divider(color: AppColors.lightGray, height: 1, thickness: 1),
+        Divider(
+          color: isDark ? AppColors.darkSurface : AppColors.lightGray,
+          height: 1, thickness: 1,
+        ),
         const SizedBox(height: 14),
-        _specRow(context, 'Dimensions', dimensions),
+        _specRow(context, l10n.dimensions, dimensions),
       ]),
     );
   }
@@ -273,32 +282,16 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     );
   }
 
-  Widget _bookingButton(String productId) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton.icon(
-        icon: const Icon(Icons.event_outlined),
-        label: const Text('Book Now', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-        onPressed: () => context.push('/booking/$productId'),
-        style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 14),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-        ),
-      ),
-    );
-  }
-
   Widget _galleryButton(String productId) {
-    return SizedBox(
-      width: double.infinity,
-      child: OutlinedButton.icon(
-        icon: const Icon(Icons.photo_library_outlined),
-        label: const Text('View Gallery'),
-        onPressed: () => context.push('/gallery/$productId'),
-        style: OutlinedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 14),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-        ),
+    final l10n = AppLocalizations.of(context);
+    return OutlinedButton.icon(
+      onPressed: () => context.push('/gallery/$productId'),
+      icon: const Icon(Icons.photo_library_outlined),
+      label: Text(l10n.viewGallery),
+      style: OutlinedButton.styleFrom(
+        foregroundColor: AppColors.gold,
+        side: const BorderSide(color: AppColors.gold),
+        minimumSize: const Size(double.infinity, 48),
       ),
     );
   }
