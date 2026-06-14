@@ -7,6 +7,7 @@ import '../../data/mock_repository.dart';
 import '../../theme/app_colors.dart';
 import '../../widgets/product_card.dart';
 import '../../widgets/khmer_pattern_divider.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,25 +20,29 @@ class _HomeScreenState extends State<HomeScreen> {
   final _searchController = TextEditingController();
   final repo = MockRepository.instance;
 
-  final _heroItems = [
-    {'image': 'https://picsum.photos/seed/hero1/800/400', 'title': 'Crafted in Cambodia', 'sub': 'Artisan-made gifts with a story'},
-    {'image': 'https://picsum.photos/seed/hero2/800/400', 'title': 'Pure Silk Tradition', 'sub': 'Woven by hand for generations'},
-    {'image': 'https://picsum.photos/seed/hero3/800/400', 'title': 'Silver & Soul', 'sub': 'Royal court craftsmanship'},
-  ];
-
-  final _categories = [
-    {'id': 'textile',  'label': 'Textile',  'emoji': '🧵'},
-    {'id': 'silver',   'label': 'Silver',   'emoji': '🥈'},
-    {'id': 'wood',     'label': 'Wood',     'emoji': '🪵'},
-    {'id': 'edible',   'label': 'Edible',   'emoji': '🫙'},
-    {'id': 'jewelry',  'label': 'Jewelry',  'emoji': '💎'},
-  ];
+  late List<Map<String, String>> _heroItems;
+  late List<Map<String, String>> _categories;
 
   @override
   Widget build(BuildContext context) {
-    final featured = repo.featured;
-    final collections = repo.collections;
-    final artisans = repo.artisans;
+    final l10n = AppLocalizations.of(context);
+    final featured = repo.featuredTr;
+    final collections = repo.collectionsTr;
+    final artisans = repo.artisansTr;
+
+    // Build localized hero + category data
+    _heroItems = [
+      {'image': 'https://picsum.photos/seed/hero1/800/400', 'title': l10n.heroTitle1, 'sub': l10n.heroSub1},
+      {'image': 'https://picsum.photos/seed/hero2/800/400', 'title': l10n.heroTitle2, 'sub': l10n.heroSub2},
+      {'image': 'https://picsum.photos/seed/hero3/800/400', 'title': l10n.heroTitle3, 'sub': l10n.heroSub3},
+    ];
+    _categories = [
+      {'id': 'textile',  'label': l10n.textile,  'emoji': '🧵'},
+      {'id': 'silver',   'label': l10n.silver,   'emoji': '🥈'},
+      {'id': 'wood',     'label': l10n.wood,     'emoji': '🪵'},
+      {'id': 'edible',   'label': l10n.edible,   'emoji': '🫙'},
+      {'id': 'jewelry',  'label': l10n.jewelry,  'emoji': '💎'},
+    ];
 
     return Scaffold(
       body: CustomScrollView(slivers: [
@@ -48,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
           title: Row(children: [
             const Text('✦', style: TextStyle(color: AppColors.gold, fontSize: 20)),
             const SizedBox(width: 8),
-            Text('Sovann Souvenir', style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            Text(l10n.appTitle, style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w700)),
           ]),
           actions: [
@@ -58,7 +63,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
         SliverToBoxAdapter(child: Column(children: [
 
-          // Hero Carousel (Story-style)
           SizedBox(
             height: 220,
             child: Stack(children: [
@@ -107,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Search gifts, artisans...',
+                hintText: l10n.searchGifts,
                 prefixIcon: const Icon(Icons.search, color: AppColors.gold),
                 filled: true,
                 fillColor: Theme.of(context).colorScheme.surface,
@@ -126,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text('Categories', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
+              Text(l10n.categories, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
             ]),
           ),
           const SizedBox(height: 12),
@@ -173,8 +177,8 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text('Featured', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
-              TextButton(onPressed: () {}, child: const Text('See all')),
+              Text(l10n.featured, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
+              TextButton(onPressed: () {}, child: Text(l10n.seeAll)),
             ]),
           ),
           SizedBox(
@@ -195,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // Curated Collections
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text('Collections', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
+            child: Text(l10n.collections, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
           ),
           const SizedBox(height: 12),
           ...collections.map((col) => GestureDetector(
@@ -246,7 +250,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text('Meet the Artisans', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
+              Text(l10n.meetArtisans, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
             ]),
           ),
           const SizedBox(height: 12),
@@ -291,15 +295,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 const Text('🎁', style: TextStyle(fontSize: 40)),
                 const SizedBox(width: 16),
                 Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  const Text('Not sure what to get?', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16)),
+                  Text(l10n.notSureWhatToGet, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16)),
                   const SizedBox(height: 4),
-                  Text('Take our Gift Finder Quiz', style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 13)),
+                  Text(l10n.takeQuiz, style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 13)),
                 ])),
                 const Icon(Icons.arrow_forward_ios, color: Colors.white, size: 16),
               ]),
             ),
           ),
 
+          // Extra space so content clears the bottom NavigationBar
           const SizedBox(height: 80),
         ])),
       ]),

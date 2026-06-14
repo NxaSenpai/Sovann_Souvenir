@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../features/home/home_screen.dart';
 import '../features/detail/product_detail_screen.dart';
 import '../features/artisan/artisan_profile_screen.dart';

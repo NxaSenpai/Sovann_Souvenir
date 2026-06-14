@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../l10n/generated/app_localizations.dart';
 
 class MainShell extends StatelessWidget {
   final Widget child;
@@ -16,6 +17,7 @@ class MainShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       body: child,
       bottomNavigationBar: NavigationBar(
@@ -29,12 +31,12 @@ class MainShell extends StatelessWidget {
             case 4: context.go('/settings');
           }
         },
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.home_outlined),   selectedIcon: Icon(Icons.home),       label: 'Home'),
-          NavigationDestination(icon: Icon(Icons.favorite_outline), selectedIcon: Icon(Icons.favorite),   label: 'Saved'),
-          NavigationDestination(icon: Icon(Icons.map_outlined),     selectedIcon: Icon(Icons.map),        label: 'Map'),
-          NavigationDestination(icon: Icon(Icons.local_offer_outlined), selectedIcon: Icon(Icons.local_offer), label: 'Promos'),
-          NavigationDestination(icon: Icon(Icons.settings_outlined),selectedIcon: Icon(Icons.settings),   label: 'Settings'),
+        destinations: [
+          NavigationDestination(icon: const Icon(Icons.home_outlined),   selectedIcon: const Icon(Icons.home),       label: l10n.home),
+          NavigationDestination(icon: const Icon(Icons.favorite_outline), selectedIcon: const Icon(Icons.favorite),   label: l10n.saved),
+          NavigationDestination(icon: const Icon(Icons.map_outlined),     selectedIcon: const Icon(Icons.map),        label: l10n.map),
+          NavigationDestination(icon: const Icon(Icons.local_offer_outlined), selectedIcon: const Icon(Icons.local_offer), label: l10n.promos),
+          NavigationDestination(icon: const Icon(Icons.settings_outlined),selectedIcon: const Icon(Icons.settings),   label: l10n.settings),
         ],
       ),
     );

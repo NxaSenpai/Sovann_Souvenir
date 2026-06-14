@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../data/mock_repository.dart';
 import '../../theme/app_colors.dart';
 import '../../widgets/rating_stars.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 class ReviewsScreen extends StatelessWidget {
   final String productId;
@@ -10,11 +11,12 @@ class ReviewsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final reviews = MockRepository.instance.reviewsForProduct(productId);
     final avgRating = reviews.isEmpty ? 0.0 : reviews.map((r) => r.rating).reduce((a, b) => a + b) / reviews.length;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Reviews')),
+      appBar: AppBar(title: Text(l10n.reviews)),
       body: CustomScrollView(slivers: [
         // Rating summary
         SliverToBoxAdapter(child: Padding(
@@ -23,7 +25,7 @@ class ReviewsScreen extends StatelessWidget {
             Column(children: [
               Text(avgRating.toStringAsFixed(1), style: const TextStyle(fontSize: 48, fontWeight: FontWeight.w900, color: AppColors.gold)),
               RatingStars(rating: avgRating),
-              Text('${reviews.length} reviews', style: const TextStyle(color: AppColors.warmGray, fontSize: 12)),
+              Text(l10n.reviewsCount(reviews.length), style: const TextStyle(color: AppColors.warmGray, fontSize: 12)),
             ]),
             const SizedBox(width: 24),
             Expanded(child: Column(children: [5, 4, 3, 2, 1].map((star) {
@@ -36,7 +38,12 @@ class ReviewsScreen extends StatelessWidget {
                   const SizedBox(width: 8),
                   Expanded(child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),
-                    child: LinearProgressIndicator(value: pct, color: AppColors.gold, backgroundColor: AppColors.lightGray, minHeight: 8),
+                    child: LinearProgressIndicator(
+                      value: pct, color: AppColors.gold,
+                      backgroundColor: Theme.of(context).brightness == Brightness.dark
+                          ? AppColors.darkSurface : AppColors.lightGray,
+                      minHeight: 8,
+                    ),
                   )),
                 ]),
               );
@@ -49,7 +56,7 @@ class ReviewsScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: OutlinedButton.icon(
             icon: const Icon(Icons.edit_outlined),
-            label: const Text('Write a Review'),
+            label: Text(l10n.writeReview),
             onPressed: () {},
             style: OutlinedButton.styleFrom(
               foregroundColor: AppColors.gold,
@@ -91,6 +98,10 @@ class ReviewsScreen extends StatelessWidget {
             )),
           );
         }, childCount: reviews.length)),
+        // Extra bottom space for system nav bar
+        SliverToBoxAdapter(
+          child: SizedBox(height: MediaQuery.of(context).padding.bottom),
+        ),
       ]),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../data/mock_repository.dart';
 import '../../theme/app_colors.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 class _Message {
   final String text;
@@ -23,19 +24,13 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
   final _scrollController = ScrollController();
 
   final List<_Message> _messages = [
-    _Message(text: "Hello! I'm interested in your crafts.", isMe: true, time: DateTime.now().subtract(const Duration(minutes: 10))),
-    _Message(text: "Thank you for reaching out! Which items interest you?", isMe: false, time: DateTime.now().subtract(const Duration(minutes: 9))),
-    _Message(text: "I love the krama scarves. Do you ship internationally?", isMe: true, time: DateTime.now().subtract(const Duration(minutes: 5))),
-    _Message(text: "Yes, we ship worldwide! Delivery takes 7–14 days. 🙏", isMe: false, time: DateTime.now().subtract(const Duration(minutes: 4))),
+    _Message(text: '', isMe: true, time: DateTime.now().subtract(const Duration(minutes: 10))),
+    _Message(text: '', isMe: false, time: DateTime.now().subtract(const Duration(minutes: 9))),
+    _Message(text: '', isMe: true, time: DateTime.now().subtract(const Duration(minutes: 5))),
+    _Message(text: '', isMe: false, time: DateTime.now().subtract(const Duration(minutes: 4))),
   ];
 
-  final _autoReplies = [
-    "Thank you for your message! 🙏",
-    "Great choice! This item is very popular with our customers.",
-    "I handcraft every piece with love and care.",
-    "We use only the finest natural materials from Cambodia.",
-    "Would you like a custom size or color?",
-  ];
+  List<String> _autoReplies = [];
 
   void _send() {
     final text = _controller.text.trim();
@@ -72,16 +67,33 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final artisan = MockRepository.instance.artisanById(widget.artisanId);
+
+    // Initialize localized content on first build
+    if (_messages[0].text.isEmpty) {
+      _messages[0] = _Message(text: l10n.chatSeed1, isMe: true, time: DateTime.now().subtract(const Duration(minutes: 10)));
+      _messages[1] = _Message(text: l10n.chatSeed2, isMe: false, time: DateTime.now().subtract(const Duration(minutes: 9)));
+      _messages[2] = _Message(text: l10n.chatSeed3, isMe: true, time: DateTime.now().subtract(const Duration(minutes: 5)));
+      _messages[3] = _Message(text: l10n.chatSeed4, isMe: false, time: DateTime.now().subtract(const Duration(minutes: 4)));
+      _autoReplies = [
+        l10n.chatAutoReply1,
+        l10n.chatAutoReply2,
+        l10n.chatAutoReply3,
+        l10n.chatAutoReply4,
+        l10n.chatAutoReply5,
+      ];
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => context.pop()),
-        title: artisan == null ? const Text('Chat') : Row(children: [
+        title: artisan == null ? Text(l10n.chat) : Row(children: [
           CircleAvatar(backgroundImage: NetworkImage(artisan.avatar), radius: 16),
           const SizedBox(width: 8),
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(artisan.name, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
-            Text('Online', style: TextStyle(fontSize: 11, color: Colors.green.shade400)),
+            Text(l10n.online, style: TextStyle(fontSize: 11, color: Colors.green.shade400)),
           ]),
         ]),
       ),
@@ -141,14 +153,18 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
         // Input bar
         Container(
           color: Theme.of(context).colorScheme.surface,
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          padding: EdgeInsets.only(
+            left: 12, right: 12,
+            top: 8,
+            bottom: 8 + MediaQuery.of(context).padding.bottom,
+          ),
           child: Row(children: [
             IconButton(icon: Icon(Icons.attach_file, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)), onPressed: () {}),
             Expanded(child: TextField(
               controller: _controller,
               onSubmitted: (_) => _send(),
               decoration: InputDecoration(
-                hintText: 'Type a message...',
+                hintText: l10n.typeMessage,
                 filled: true,
                 fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(50), borderSide: BorderSide.none),
@@ -162,7 +178,6 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
             ),
           ]),
         ),
-        const SizedBox(height: 8),
       ]),
     );
   }

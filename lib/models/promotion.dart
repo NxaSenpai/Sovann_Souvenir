@@ -1,3 +1,5 @@
+import '../data/content_translations.dart';
+
 class Promotion {
   final String id;
   final String title;
@@ -21,4 +23,20 @@ class Promotion {
     expiryDate: json['expiryDate'], imageUrl: json['imageUrl'],
     colorHex: json['color'], occasion: json['occasion'],
   );
+
+  Promotion translated(String locale) {
+    final t = ContentTranslations.instance.get(locale, 'promotions', id);
+    if (t == null) return this;
+    return Promotion(
+      id: id,
+      title: t['title'] as String? ?? title,
+      subtitle: t['subtitle'] as String? ?? subtitle,
+      code: code,
+      discount: discount,
+      expiryDate: expiryDate,
+      imageUrl: imageUrl,
+      colorHex: colorHex,
+      occasion: occasion,
+    );
+  }
 }

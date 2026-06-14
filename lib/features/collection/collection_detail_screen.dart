@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../data/mock_repository.dart';
 import '../../theme/app_colors.dart';
 import '../../widgets/product_card.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 class CollectionDetailScreen extends StatelessWidget {
   final String collectionId;
@@ -11,9 +12,10 @@ class CollectionDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final repo = MockRepository.instance;
-    final col = repo.collectionById(collectionId)!;
-    final products = repo.byCollection(collectionId);
+    final col = repo.collectionByIdTr(collectionId)!;
+    final products = repo.byCollectionTr(collectionId);
 
     return Scaffold(
       body: CustomScrollView(slivers: [
@@ -40,21 +42,23 @@ class CollectionDetailScreen extends StatelessWidget {
             const SizedBox(height: 12),
             Text(col.description, style: const TextStyle(color: AppColors.warmGray, height: 1.6)),
             const SizedBox(height: 20),
-            Text('${products.length} items', style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
+            Text(l10n.itemsCount(products.length), style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
           ]),
         )),
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           sliver: SliverGrid(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, crossAxisSpacing: 16, mainAxisSpacing: 16, childAspectRatio: 0.7),
+                crossAxisCount: 2, crossAxisSpacing: 16, mainAxisSpacing: 16, childAspectRatio: 0.67),
             delegate: SliverChildBuilderDelegate(
                   (context, i) => ProductCard(product: products[i], width: double.infinity),
               childCount: products.length,
             ),
           ),
         ),
-        const SliverToBoxAdapter(child: SizedBox(height: 40)),
+        SliverToBoxAdapter(
+          child: SizedBox(height: 40 + MediaQuery.of(context).padding.bottom),
+        ),
       ]),
     );
   }

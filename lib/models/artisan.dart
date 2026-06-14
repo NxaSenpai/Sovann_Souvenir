@@ -1,3 +1,5 @@
+import '../data/content_translations.dart';
+
 class Artisan {
   final String id;
   final String name;
@@ -23,4 +25,20 @@ class Artisan {
     yearsOfExperience: json['yearsOfExperience'],
     productIds: List<String>.from(json['productIds']),
   );
+
+  Artisan translated(String locale) {
+    final t = ContentTranslations.instance.get(locale, 'artisans', id);
+    if (t == null) return this;
+    return Artisan(
+      id: id,
+      name: t['name'] as String? ?? name,
+      region: t['region'] as String? ?? region,
+      craft: t['craft'] as String? ?? craft,
+      coverImage: coverImage,
+      avatar: avatar,
+      story: t['story'] as String? ?? story,
+      yearsOfExperience: yearsOfExperience,
+      productIds: productIds,
+    );
+  }
 }
