@@ -4,15 +4,15 @@
     "name": "For Him",
     "description": "Thoughtful gifts curated for the men in your life — practical, artisan-made.",
     "coverImage": "https://picsum.photos/seed/col1/800/400",
-    "productIds": ["p1","p3","p4","p7","p8","p12"],
+    "productIds": ["p1","p3","p4","p7","p8","p12","p15","p18"],
     "tag": "Curated"
   },
   {
     "id": "c2",
     "name": "For Her",
-    "description": "Elegant Cambodian craftsmanship — silks, silver, and jewelry for the women you love.",
+    "description": "Elegant gifts with a feminine touch — flowers, jewelry, and silks for the women you love.",
     "coverImage": "https://picsum.photos/seed/col2/800/400",
-    "productIds": ["p1","p2","p5","p6","p10","p11"],
+    "productIds": ["p2","p4","p5","p6","p10","p11","p14","p16","p17"],
     "tag": "Curated"
   },
   {
@@ -20,7 +20,7 @@
     "name": "Songkran Gift Set",
     "description": "Celebrate Khmer New Year with a curated bundle of festive, meaningful gifts.",
     "coverImage": "https://picsum.photos/seed/col3/800/400",
-    "productIds": ["p4","p5","p7","p9","p10","p11","p12"],
+    "productIds": ["p1","p4","p7","p9","p10","p12","p15","p16"],
     "tag": "Seasonal"
   },
   {
@@ -28,7 +28,7 @@
     "name": "Tourist Essentials",
     "description": "Take a piece of Cambodia home — compact, authentic, and beautifully packaged.",
     "coverImage": "https://picsum.photos/seed/col4/800/400",
-    "productIds": ["p1","p2","p4","p7","p8"],
+    "productIds": ["p5","p8","p12","p13","p15","p18"],
     "tag": "Tourist"
   },
   {
@@ -36,7 +36,7 @@
     "name": "Wedding Gift Set",
     "description": "Traditional and elegant gifts to honour a Cambodian wedding.",
     "coverImage": "https://picsum.photos/seed/col5/800/400",
-    "productIds": ["p1","p2","p5","p6","p9","p11"],
+    "productIds": ["p2","p6","p9","p11","p14","p16","p17"],
     "tag": "Wedding"
   }
 ]
