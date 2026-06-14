@@ -66,7 +66,7 @@ class ArtisanProfileScreen extends StatelessWidget {
             Text(l10n.theirCrafts, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
             const SizedBox(height: 12),
             SizedBox(
-              height: 240,
+              height: 260,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: products.length,

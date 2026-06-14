@@ -73,7 +73,6 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/icons/
     - assets/mock/
     - assets/i18n/
 

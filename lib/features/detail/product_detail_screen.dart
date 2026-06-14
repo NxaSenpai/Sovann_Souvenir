@@ -221,7 +221,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     return GestureDetector(
       onTap: () => context.push('/artisan/${artisan.id}'),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: isDark ? AppColors.darkCard : AppColors.lightGray.withOpacity(0.3),
           borderRadius: BorderRadius.circular(14),
@@ -231,23 +231,16 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           ),
         ),
         child: Row(children: [
-          CircleAvatar(
-            radius: 26,
-            backgroundImage: CachedNetworkImageProvider(artisan.avatar),
-          ),
-          const SizedBox(width: 14),
+          CircleAvatar(backgroundImage: CachedNetworkImageProvider(artisan.avatar)),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(artisan.name, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
-              const SizedBox(height: 3),
-              Row(children: [
-                Icon(Icons.location_on_outlined, size: 14, color: AppColors.warmGray),
-                const SizedBox(width: 4),
-                Text(artisan.region, style: const TextStyle(fontSize: 14, color: AppColors.warmGray)),
-              ]),
+              Text('Made by ${artisan.name}', style: const TextStyle(fontWeight: FontWeight.w700)),
+              Text(artisan.region,
+                  style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7))),
             ]),
           ),
-          Icon(Icons.chevron_right, color: AppColors.warmGray, size: 22),
+          const Icon(Icons.chevron_right, color: AppColors.gold),
         ]),
       ),
     );

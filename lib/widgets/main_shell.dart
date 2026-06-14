@@ -10,7 +10,7 @@ class MainShell extends StatelessWidget {
     final location = GoRouterState.of(context).uri.toString();
     if (location.startsWith('/favorites'))  return 1;
     if (location.startsWith('/map'))        return 2;
-    if (location.startsWith('/promotions')) return 3;
+    if (location.startsWith('/cart'))       return 3;
     if (location.startsWith('/settings'))   return 4;
     return 0;
   }
@@ -27,7 +27,7 @@ class MainShell extends StatelessWidget {
             case 0: context.go('/');
             case 1: context.go('/favorites');
             case 2: context.go('/map');
-            case 3: context.go('/promotions');
+            case 3: context.go('/cart');
             case 4: context.go('/settings');
           }
         },

@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../data/mock_repository.dart';
+import '../../models/cart_item.dart';
 import '../../state/booking_provider.dart';
+import '../../state/cart_provider.dart';
 import '../../theme/app_colors.dart';
 import '../../l10n/generated/app_localizations.dart';
 
@@ -15,6 +17,8 @@ class BookingScreen extends ConsumerStatefulWidget {
 }
 
 class _BookingScreenState extends ConsumerState<BookingScreen> {
+  bool _savedToCart = false;
+
   @override
   void initState() {
     super.initState();
@@ -23,6 +27,27 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(bookingProvider.notifier).setProduct(product);
     });
+  }
+
+  void _saveToCart() {
+    if (_savedToCart) return;
+    _savedToCart = true;
+    final b = ref.read(bookingProvider);
+    final p = b.product;
+    if (p == null) return;
+    final total = p.price + (b.giftWrap ? giftWrapFee : 0);
+    final item = CartItem(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      product: p,
+      giftWrap: b.giftWrap,
+      personalMessage: b.personalMessage,
+      deliveryDate: b.deliveryDate,
+      timeSlot: b.timeSlot,
+      totalPrice: total,
+      status: CartItemStatus.pending,
+      createdAt: DateTime.now(),
+    );
+    ref.read(cartProvider.notifier).addItem(item);
   }
 
   void _handleContinue(BookingState booking) {
@@ -73,24 +98,7 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
         ),
       ),
       body: Column(children: [
-        // Step indicator
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: List.generate(steps.length * 2 - 1, (i) {
-              if (i.isOdd) return Expanded(child: Container(height: 1, color: Theme.of(context).dividerColor));
-              final step = i ~/ 2;
-              final isActive = step <= booking.step;
-              return CircleAvatar(
-                radius: 14,
-                backgroundColor: isActive ? AppColors.gold : Theme.of(context).colorScheme.surfaceContainerHighest,
-                child: Text('${step + 1}', style: TextStyle(
-                    color: isActive ? Colors.white : Theme.of(context).colorScheme.onSurface.withOpacity(0.5), 
-                    fontSize: 11, fontWeight: FontWeight.w700)),
-              );
-            }),
-          ),
-        ),
+        _StepIndicator(steps: steps, currentStep: booking.step),
 
         Expanded(child: [
           _buildStep0(context, booking),
@@ -209,6 +217,80 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
     );
   }
 
+  Widget _giftWrapOption(
+    BuildContext context, BookingState b, {
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required bool value,
+    String? price,
+  }) {
+    final selected = b.giftWrap == value;
+    return GestureDetector(
+      onTap: () => ref.read(bookingProvider.notifier).setGiftWrap(value),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeInOut,
+        width: double.infinity,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.gold.withOpacity(0.08) : Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: selected ? AppColors.gold : AppColors.lightGray,
+            width: selected ? 2 : 1,
+          ),
+        ),
+        child: Row(children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 250),
+            width: 48, height: 48,
+            decoration: BoxDecoration(
+              color: selected ? AppColors.gold.withOpacity(0.12) : AppColors.lightGray.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: selected ? AppColors.gold : AppColors.warmGray, size: 24),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(children: [
+                Text(title, style: TextStyle(
+                  fontSize: 15, fontWeight: FontWeight.w600,
+                  color: selected ? AppColors.charcoal : AppColors.charcoal,
+                )),
+                if (price != null) ...[
+                  const SizedBox(width: 8),
+                  Text(price, style: const TextStyle(
+                    fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.gold,
+                  )),
+                ],
+              ]),
+              const SizedBox(height: 3),
+              Text(subtitle, style: TextStyle(fontSize: 12, color: AppColors.warmGray, height: 1.3)),
+            ]),
+          ),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 250),
+            width: selected ? 24 : 20,
+            height: selected ? 24 : 20,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: selected ? AppColors.gold : Colors.transparent,
+              border: Border.all(
+                color: selected ? AppColors.gold : AppColors.lightGray,
+                width: selected ? 0 : 2,
+              ),
+            ),
+            child: selected
+                ? const Icon(Icons.check, color: Colors.white, size: 14)
+                : null,
+          ),
+        ]),
+      ),
+    );
+  }
+
   Widget _buildStep2(BuildContext context, BookingState b) {
     final l10n = AppLocalizations.of(context);
     return Padding(
@@ -219,9 +301,35 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
         Text(l10n.addHeartfeltNote,
             style: TextStyle(fontSize: 14, color: AppColors.warmGray)),
         const SizedBox(height: 20),
+        Text('Quick templates', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.warmGray)),
+        const SizedBox(height: 10),
+        Wrap(
+          spacing: 8, runSpacing: 8,
+          children: _messageTemplates.map((t) => GestureDetector(
+            onTap: () => ref.read(bookingProvider.notifier).setMessage(t),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              decoration: BoxDecoration(
+                color: b.personalMessage == t ? AppColors.gold.withOpacity(0.12) : AppColors.lightGray.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: b.personalMessage == t ? AppColors.gold : Colors.transparent,
+                ),
+              ),
+              child: Text(t, style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: b.personalMessage == t ? AppColors.goldDark : AppColors.warmGray,
+              )),
+            ),
+          )).toList(),
+        ),
+        const SizedBox(height: 20),
+        // Message input
         TextFormField(
           initialValue: b.personalMessage,
-          maxLines: 6,
+          maxLines: 5,
           maxLength: 200,
           style: const TextStyle(fontSize: 15, height: 1.5),
           decoration: InputDecoration(
@@ -230,12 +338,44 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
             filled: true,
             fillColor: Theme.of(context).colorScheme.surface,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+            counterStyle: TextStyle(fontSize: 12, color: AppColors.warmGray),
           ),
           onChanged: (v) => ref.read(bookingProvider.notifier).setMessage(v),
         ),
+        if (b.personalMessage.isNotEmpty) ...[
+          const SizedBox(height: 20),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.cream,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.goldLight.withOpacity(0.3)),
+            ),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(children: [
+                Icon(Icons.auto_stories, size: 16, color: AppColors.gold.withOpacity(0.7)),
+                const SizedBox(width: 8),
+                Text('Message preview', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.warmGray)),
+              ]),
+              const SizedBox(height: 10),
+              Text(b.personalMessage, style: const TextStyle(
+                fontSize: 14, height: 1.5, fontStyle: FontStyle.italic, color: AppColors.charcoal,
+              )),
+            ]),
+          ),
+        ],
       ]),
     );
   }
+
+  static const _messageTemplates = [
+    'Happy Birthday! Wishing you a wonderful day.',
+    'Thank you for everything. I truly appreciate you.',
+    'I love you more than words can say.',
+    'Congratulations on your special day!',
+    'Thinking of you always. With love.',
+  ];
 
   Widget _buildStep3(BuildContext context, BookingState b) {
     final l10n = AppLocalizations.of(context);
@@ -243,26 +383,66 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        TableCalendar(
-          firstDay: DateTime.now(),
-          lastDay: DateTime.now().add(const Duration(days: 60)),
-          focusedDay: b.deliveryDate ?? DateTime.now().add(const Duration(days: 3)),
-          selectedDayPredicate: (day) => isSameDay(b.deliveryDate, day),
-          onDaySelected: (selected, _) =>
-              ref.read(bookingProvider.notifier).setDeliveryDate(selected),
-          calendarStyle: CalendarStyle(
-            selectedDecoration: const BoxDecoration(color: AppColors.gold, shape: BoxShape.circle),
-            todayDecoration: BoxDecoration(color: AppColors.gold.withOpacity(0.3), shape: BoxShape.circle),
-            defaultTextStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-            weekendTextStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
+        // Date section
+        Row(children: [
+          Icon(Icons.calendar_month, size: 18, color: AppColors.goldDark),
+          const SizedBox(width: 8),
+          Text('Select delivery date', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+        ]),
+        const SizedBox(height: 12),
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.lightGray),
           ),
-          headerStyle: HeaderStyle(
-            titleTextStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 16, fontWeight: FontWeight.bold),
-            formatButtonVisible: false,
-            leftChevronIcon: Icon(Icons.chevron_left, color: Theme.of(context).colorScheme.onSurface),
-            rightChevronIcon: Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.onSurface),
+          padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+          child: TableCalendar(
+            firstDay: DateTime.now(),
+            lastDay: DateTime.now().add(const Duration(days: 60)),
+            focusedDay: b.deliveryDate ?? DateTime.now().add(const Duration(days: 3)),
+            selectedDayPredicate: (day) => isSameDay(b.deliveryDate, day),
+            onDaySelected: (selected, _) =>
+                ref.read(bookingProvider.notifier).setDeliveryDate(selected),
+            calendarStyle: CalendarStyle(
+              selectedDecoration: const BoxDecoration(color: AppColors.gold, shape: BoxShape.circle),
+              todayDecoration: BoxDecoration(color: AppColors.gold.withOpacity(0.3), shape: BoxShape.circle),
+              defaultTextStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+              weekendTextStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
+              outsideTextStyle: TextStyle(color: AppColors.lightGray, fontSize: 13),
+              cellMargin: const EdgeInsets.all(4),
+            ),
+            headerStyle: HeaderStyle(
+              titleTextStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 16, fontWeight: FontWeight.bold),
+              formatButtonVisible: false,
+              leftChevronIcon: Icon(Icons.chevron_left, color: Theme.of(context).colorScheme.onSurface),
+              rightChevronIcon: Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.onSurface),
+            ),
           ),
         ),
+
+        // Selected date summary
+        if (b.deliveryDate != null) ...[
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            decoration: BoxDecoration(
+              color: AppColors.gold.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(children: [
+              Icon(Icons.check_circle, size: 16, color: AppColors.gold),
+              const SizedBox(width: 8),
+              Text('Selected: ', style: TextStyle(fontSize: 13, color: AppColors.warmGray)),
+              Text(
+                '${b.deliveryDate!.day}/${b.deliveryDate!.month}/${b.deliveryDate!.year}',
+                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.charcoal),
+              ),
+            ]),
+          ),
+        ],
+
         const SizedBox(height: 24),
         Text(l10n.availableTimeSlots, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
         const SizedBox(height: 12),
@@ -374,6 +554,14 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
               const SizedBox(height: 16),
               _detailRow(Icons.schedule, l10n.timeLabel, b.timeSlot),
             ],
+            const Divider(height: 28, color: AppColors.lightGray),
+            const Text('Price Summary', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
+            const SizedBox(height: 16),
+            _priceRow('Item', p?.price ?? 0),
+            if (b.giftWrap) _priceRow('Gift Wrap', giftWrapFee),
+            const Divider(height: 20, color: AppColors.lightGray),
+            _priceRow('Total', (p?.price ?? 0) + (b.giftWrap ? giftWrapFee : 0),
+                isTotal: true),
           ]),
         ),
 
@@ -386,8 +574,9 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
         const SizedBox(height: 32),
         ElevatedButton.icon(
           onPressed: () {
+            _saveToCart();
             ref.read(bookingProvider.notifier).reset();
-            context.go('/');
+            context.go('/cart');
           },
           icon: const Icon(Icons.home_outlined, size: 20),
           label: Text(l10n.backToHome, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
@@ -495,20 +684,6 @@ class _StepIndicator extends StatelessWidget {
   }
 }
 
-class _OptionCard extends StatelessWidget {
-  final bool selected;
-  final VoidCallback onTap;
-  final IconData icon;
-  final String title;
-  final String subtitle;
-
-  const _OptionCard({
-    required this.selected,
-    required this.onTap,
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-  });
 
   @override
   Widget build(BuildContext context) {
