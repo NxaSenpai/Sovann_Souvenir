@@ -199,48 +199,76 @@ class _HomeScreenState extends State<HomeScreen> {
           // Curated Collections
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(l10n.collections, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text('Collections', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
+              TextButton(onPressed: () {}, child: const Text('See all')),
+            ]),
           ),
           const SizedBox(height: 12),
-          ...collections.map((col) => GestureDetector(
-            onTap: () => context.push('/collection/${col.id}'),
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-              height: 100,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
-              child: Stack(fit: StackFit.expand, children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: CachedNetworkImage(imageUrl: col.coverImage, fit: BoxFit.cover),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    gradient: LinearGradient(
-                      colors: [Colors.black54, Colors.transparent],
-                      begin: Alignment.centerLeft,
+          SizedBox(
+            height: 170,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemCount: collections.length,
+              itemBuilder: (context, i) {
+                final col = collections[i];
+                return GestureDetector(
+                  onTap: () => context.push('/collection/${col.id}'),
+                  child: Container(
+                    width: 240,
+                    margin: const EdgeInsets.only(right: 14),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.08),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(18),
+                      child: Stack(fit: StackFit.expand, children: [
+                        CachedNetworkImage(imageUrl: col.coverImage, fit: BoxFit.cover),
+                        Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Colors.black.withOpacity(0.7), Colors.transparent],
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 14, right: 14, bottom: 14,
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                decoration: BoxDecoration(
+                                  color: AppColors.gold,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Text(col.tag,
+                                    style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w600)),
+                              ),
+                              const SizedBox(height: 6),
+                              Text(col.name,
+                                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 17),
+                                  maxLines: 2, overflow: TextOverflow.ellipsis),
+                            ],
+                          ),
+                        ),
+                      ]),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                        decoration: BoxDecoration(
-                            color: AppColors.gold, borderRadius: BorderRadius.circular(4)),
-                        child: Text(col.tag, style: const TextStyle(color: Colors.white, fontSize: 10)),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(col.name, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 18)),
-                    ],
-                  ),
-                ),
-              ]),
+                );
+              },
             ),
-          )),
+          ),
 
           const SizedBox(height: 24),
           const KhmerPatternDivider(),

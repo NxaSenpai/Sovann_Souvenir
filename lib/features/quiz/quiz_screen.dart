@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../data/mock_repository.dart';
 import '../../theme/app_colors.dart';
+import '../../widgets/rating_stars.dart';
 import '../../l10n/generated/app_localizations.dart';
 
 class _QuizQuestion {
@@ -27,6 +28,9 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
   int _step = 0;
   final _answers = <int>[];
   List<_QuizQuestion> _questions = [];
+  late AnimationController _fadeCtrl;
+  late Animation<double> _fadeAnim;
+  double get progress => _questions.isEmpty ? 0 : (_step + 1) / _questions.length;
 
   @override
   void initState() {
@@ -90,26 +94,31 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
         _QuizQuestion(
           question: l10n.quizWho,
           subtitle: l10n.quizWhoSub,
+          icon: Icons.person_outline,
           options: [l10n.quizHer, l10n.quizHim, l10n.quizCouple, l10n.quizMyself],
         ),
         _QuizQuestion(
           question: l10n.quizBudget,
           subtitle: l10n.quizBudgetSub,
+          icon: Icons.attach_money,
           options: [l10n.quizAffordable, l10n.quizModerate, l10n.quizMidRange, l10n.quizPremium],
         ),
         _QuizQuestion(
           question: l10n.quizType,
           subtitle: l10n.quizTypeSub,
+          icon: Icons.category_outlined,
           options: [l10n.quizWearable, l10n.quizDecorative, l10n.quizEdible, l10n.quizCollectible],
         ),
         _QuizQuestion(
           question: l10n.quizExperience,
           subtitle: l10n.quizExperienceSub,
+          icon: Icons.explore_outlined,
           options: [l10n.quizDiscovering, l10n.quizSomewhat, l10n.quizVery, l10n.quizCollector],
         ),
         _QuizQuestion(
           question: l10n.quizSeeking,
           subtitle: l10n.quizSeekingSub,
+          icon: Icons.search_outlined,
           options: [l10n.quizTraditional, l10n.quizModern, l10n.quizLuxurious, l10n.quizEveryday],
         ),
       ];
@@ -184,9 +193,10 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
                 )),
               ],
             ]),
-            const SizedBox(height: 28),
+          ),
+          const SizedBox(height: 28),
 
-            // Question card
+          // Question card
             Expanded(
               child: FadeTransition(
                 opacity: _fadeAnim,
@@ -234,7 +244,6 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
             ),
           ]),
         ),
-      ),
     );
   }
 
@@ -270,9 +279,9 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
               fontSize: 16, fontWeight: FontWeight.w500,
               color: Theme.of(context).colorScheme.onSurface,
             )),
-          ),
-        ]),
-      ),
+            ),
+          ]),
+        ),
     );
   }
 
@@ -311,17 +320,6 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
-              child: Column(children: [
-                const Icon(Icons.celebration_rounded, size: 48, color: Colors.white),
-                const SizedBox(height: 12),
-                const Text("We've got your match!",
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: Colors.white),
-                    textAlign: TextAlign.center),
-                const SizedBox(height: 6),
-                Text('Handpicked gifts tailored to your preferences.',
-                    style: TextStyle(fontSize: 14, color: Colors.white.withOpacity(0.85)),
-                    textAlign: TextAlign.center),
-              ]),
             ),
             child: Column(children: [
               const Text('🎁', style: TextStyle(fontSize: 48)),
@@ -375,12 +373,6 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
                             ),
                           ),
                           child: Row(children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.network(p.images.first,
-                                  width: 64, height: 64, fit: BoxFit.cover),
-                            ),
-                            child: Row(children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(14),
                                 child: Image.network(p.images.first,
@@ -430,9 +422,9 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
               ),
             ),
+          ),
           ]),
         ),
-      ),
     );
   }
 }

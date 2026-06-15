@@ -18,6 +18,7 @@ class BookingScreen extends ConsumerStatefulWidget {
 
 class _BookingScreenState extends ConsumerState<BookingScreen> {
   bool _savedToCart = false;
+  static const double giftWrapFee = 5.0;
 
   @override
   void initState() {
@@ -614,6 +615,25 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
       Expanded(child: Text(value, style: const TextStyle(fontWeight: FontWeight.w600))),
     ]),
   );
+
+  Widget _priceRow(String label, double amount, {bool isTotal = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(children: [
+        Text(label, style: TextStyle(
+          fontSize: isTotal ? 15 : 14,
+          fontWeight: isTotal ? FontWeight.w700 : FontWeight.w500,
+          color: isTotal ? AppColors.charcoal : AppColors.warmGray,
+        )),
+        const Spacer(),
+        Text('\$${amount.toStringAsFixed(2)}', style: TextStyle(
+          fontSize: isTotal ? 16 : 14,
+          fontWeight: isTotal ? FontWeight.w800 : FontWeight.w600,
+          color: isTotal ? AppColors.gold : AppColors.charcoal,
+        )),
+      ]),
+    );
+  }
 }
 
 class _StepIndicator extends StatelessWidget {
@@ -680,67 +700,6 @@ class _StepIndicator extends StatelessWidget {
           }),
         ),
       ]),
-    );
-  }
-}
-
-
-  @override
-  Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final surfaceColor = Theme.of(context).cardTheme.color ?? Colors.white;
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        width: double.infinity,
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: selected ? AppColors.gold.withOpacity(isDark ? 0.15 : 0.06) : surfaceColor,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: selected ? AppColors.gold : Theme.of(context).dividerColor,
-            width: selected ? 2 : 1,
-          ),
-        ),
-        child: Row(children: [
-          Container(
-            width: 44, height: 44,
-            decoration: BoxDecoration(
-              color: selected
-                  ? AppColors.gold.withOpacity(isDark ? 0.25 : 0.12)
-                  : (isDark ? AppColors.darkSurface : AppColors.lightGray.withOpacity(0.5)),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(icon, color: selected ? AppColors.gold : AppColors.warmGray, size: 22),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(title, style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).colorScheme.onSurface,
-              )),
-              const SizedBox(height: 2),
-              Text(subtitle, style: TextStyle(
-                fontSize: 12,
-                color: isDark ? AppColors.cream.withOpacity(0.7) : AppColors.warmGray,
-                height: 1.3,
-              )),
-            ]),
-          ),
-          if (selected)
-            Container(
-              width: 22, height: 22,
-              decoration: const BoxDecoration(
-                color: AppColors.gold,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(Icons.check, color: Colors.white, size: 14),
-            ),
-        ]),
-      ),
     );
   }
 }
