@@ -86,7 +86,6 @@ class CollectionDetailScreen extends StatelessWidget {
             Text(col.description,
                 style: const TextStyle(fontSize: 15, color: AppColors.charcoal, height: 1.6)),
             const SizedBox(height: 20),
-<<<<<<< HEAD
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               decoration: BoxDecoration(
@@ -100,9 +99,6 @@ class CollectionDetailScreen extends StatelessWidget {
                     style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: AppColors.gold)),
               ]),
             ),
-=======
-            Text(l10n.itemsCount(products.length), style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
->>>>>>> 2fc6de85368868614f4231e4540ab5a96b314751
           ]),
         )),
 
@@ -111,11 +107,7 @@ class CollectionDetailScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           sliver: SliverGrid(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-<<<<<<< HEAD
                 crossAxisCount: 2, crossAxisSpacing: 14, mainAxisSpacing: 14, childAspectRatio: 0.68),
-=======
-                crossAxisCount: 2, crossAxisSpacing: 16, mainAxisSpacing: 16, childAspectRatio: 0.67),
->>>>>>> 2fc6de85368868614f4231e4540ab5a96b314751
             delegate: SliverChildBuilderDelegate(
                   (context, i) => ProductCard(product: products[i], width: double.infinity),
               childCount: products.length,

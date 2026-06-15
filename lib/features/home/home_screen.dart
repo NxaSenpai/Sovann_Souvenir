@@ -199,14 +199,10 @@ class _HomeScreenState extends State<HomeScreen> {
           // Curated Collections
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-<<<<<<< HEAD
             child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Text('Collections', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
               TextButton(onPressed: () {}, child: const Text('See all')),
             ]),
-=======
-            child: Text(l10n.collections, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
->>>>>>> 2fc6de85368868614f4231e4540ab5a96b314751
           ),
           const SizedBox(height: 12),
           SizedBox(
