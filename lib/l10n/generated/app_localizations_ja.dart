@@ -39,7 +39,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get map => '地図';
 
   @override
-  String get promos => 'プロモ';
+  String get promos => 'カート';
 
   @override
   String get signIn => 'ログイン';

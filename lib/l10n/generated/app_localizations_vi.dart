@@ -39,7 +39,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get map => 'Bản đồ';
 
   @override
-  String get promos => 'Khuyến mãi';
+  String get promos => 'Giỏ hàng';
 
   @override
   String get signIn => 'Đăng nhập';

@@ -39,7 +39,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get map => '地图';
 
   @override
-  String get promos => '优惠';
+  String get promos => '购物车';
 
   @override
   String get signIn => '登录';

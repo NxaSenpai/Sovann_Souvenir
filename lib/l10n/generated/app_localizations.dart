@@ -167,7 +167,7 @@ abstract class AppLocalizations {
   /// No description provided for @promos.
   ///
   /// In en, this message translates to:
-  /// **'Promos'**
+  /// **'Cart'**
   String get promos;
 
   /// No description provided for @signIn.

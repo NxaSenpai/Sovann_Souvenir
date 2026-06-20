@@ -39,7 +39,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get map => 'Map';
 
   @override
-  String get promos => 'Promos';
+  String get promos => 'Cart';
 
   @override
   String get signIn => 'Sign In';

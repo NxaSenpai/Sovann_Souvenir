@@ -39,7 +39,7 @@ class AppLocalizationsKm extends AppLocalizations {
   String get map => 'ផែនទី';
 
   @override
-  String get promos => 'ប្រូម៉ូសិន';
+  String get promos => 'កន្ត្រក';
 
   @override
   String get signIn => 'ចូលគណនី';
