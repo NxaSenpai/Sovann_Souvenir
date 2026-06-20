@@ -272,6 +272,9 @@ class AppLocalizationsKm extends AppLocalizations {
   String get backToHome => 'ត្រឡប់ទៅទំព័រដើម';
 
   @override
+  String get bookNow => 'កក់ឥឡូវនេះ';
+
+  @override
   String get bookingNotice =>
       'អ្នកកំពុងកក់ការបញ្ជាទិញផ្ទាល់ខ្លួន។ យើងនឹងបញ្ជាក់ភាពអាចរកបានក្នុងរយៈពេល ២៤ ម៉ោង។';
 

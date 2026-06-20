@@ -620,6 +620,12 @@ abstract class AppLocalizations {
   /// **'Back to Home'**
   String get backToHome;
 
+  /// No description provided for @bookNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Book Now'**
+  String get bookNow;
+
   /// No description provided for @bookingNotice.
   ///
   /// In en, this message translates to:

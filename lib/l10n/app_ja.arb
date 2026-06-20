@@ -98,6 +98,7 @@
   "itemLabel": "商品",
   "deliveryDate": "配送日",
   "backToHome": "ホームに戻る",
+  "bookNow": "予約する",
   "bookingNotice": "カスタムオーダーを予約しています。24時間以内に在庫状況を確認します。",
   "chooseDeliveryDate": "カレンダーから配送日を選択してください",
   "selectTimeSlot": "配送時間帯を選択してください",

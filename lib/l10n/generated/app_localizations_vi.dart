@@ -273,6 +273,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get backToHome => 'Về trang chủ';
 
   @override
+  String get bookNow => 'Đặt ngay';
+
+  @override
   String get bookingNotice =>
       'Bạn đang đặt hàng tùy chỉnh. Chúng tôi sẽ xác nhận tình trạng có sẵn trong vòng 24 giờ.';
 

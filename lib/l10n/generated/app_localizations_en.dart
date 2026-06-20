@@ -272,6 +272,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get backToHome => 'Back to Home';
 
   @override
+  String get bookNow => 'Book Now';
+
+  @override
   String get bookingNotice =>
       'You\'re booking a custom order. We\'ll confirm availability within 24 hours.';
 

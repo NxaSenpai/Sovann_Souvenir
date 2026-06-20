@@ -271,6 +271,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get backToHome => '返回首页';
 
   @override
+  String get bookNow => '立即预订';
+
+  @override
   String get bookingNotice => '您正在预订定制订单。我们将在24小时内确认可用性。';
 
   @override

@@ -101,6 +101,7 @@
   "itemLabel": "Item",
   "deliveryDate": "Delivery Date",
   "backToHome": "Back to Home",
+  "bookNow": "Book Now",
   "bookingNotice": "You're booking a custom order. We'll confirm availability within 24 hours.",
   "chooseDeliveryDate": "Please choose a delivery date from the calendar",
   "selectTimeSlot": "Please select a delivery time slot",

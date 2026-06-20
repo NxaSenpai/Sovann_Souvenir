@@ -271,6 +271,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get backToHome => 'ホームに戻る';
 
   @override
+  String get bookNow => '予約する';
+
+  @override
   String get bookingNotice => 'カスタムオーダーを予約しています。24時間以内に在庫状況を確認します。';
 
   @override
