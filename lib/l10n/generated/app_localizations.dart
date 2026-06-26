@@ -167,7 +167,7 @@ abstract class AppLocalizations {
   /// No description provided for @promos.
   ///
   /// In en, this message translates to:
-  /// **'Promos'**
+  /// **'Cart'**
   String get promos;
 
   /// No description provided for @signIn.
@@ -619,6 +619,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Back to Home'**
   String get backToHome;
+
+  /// No description provided for @bookNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Book Now'**
+  String get bookNow;
 
   /// No description provided for @bookingNotice.
   ///

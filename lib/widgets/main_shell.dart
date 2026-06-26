@@ -35,7 +35,7 @@ class MainShell extends StatelessWidget {
           NavigationDestination(icon: const Icon(Icons.home_outlined),   selectedIcon: const Icon(Icons.home),       label: l10n.home),
           NavigationDestination(icon: const Icon(Icons.favorite_outline), selectedIcon: const Icon(Icons.favorite),   label: l10n.saved),
           NavigationDestination(icon: const Icon(Icons.map_outlined),     selectedIcon: const Icon(Icons.map),        label: l10n.map),
-          NavigationDestination(icon: const Icon(Icons.local_offer_outlined), selectedIcon: const Icon(Icons.local_offer), label: l10n.promos),
+          NavigationDestination(icon: const Icon(Icons.shopping_cart_outlined), selectedIcon: const Icon(Icons.shopping_cart), label: l10n.promos),
           NavigationDestination(icon: const Icon(Icons.settings_outlined),selectedIcon: const Icon(Icons.settings),   label: l10n.settings),
         ],
       ),

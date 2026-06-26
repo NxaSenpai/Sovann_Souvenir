@@ -126,6 +126,29 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
               child: Text(l10n.continueButton, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
             ),
           ),
+        if (booking.step == 4)
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              20, 8, 20,
+              20 + MediaQuery.of(context).padding.bottom,
+            ),
+            child: ElevatedButton.icon(
+              onPressed: () {
+                _saveToCart();
+                ref.read(bookingProvider.notifier).reset();
+                context.go('/cart');
+              },
+              icon: const Icon(Icons.home_outlined, size: 20),
+              label: Text(l10n.backToHome, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 54),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+            ),
+          ),
       ]),
     );
   }
@@ -189,106 +212,274 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
 
   Widget _buildStep1(BuildContext context, BookingState b) {
     final l10n = AppLocalizations.of(context);
-    return Padding(
-      padding: const EdgeInsets.all(16),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
       child: Column(children: [
-        Text(l10n.giftWrapQuestion, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-        const SizedBox(height: 24),
-        ...[ {'label': l10n.yesWrapIt, 'val': true},
-          {'label': l10n.noGiftWrap, 'val': false}].map((opt) =>
-            GestureDetector(
-              onTap: () => ref.read(bookingProvider.notifier).setGiftWrap(opt['val'] as bool),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                margin: const EdgeInsets.only(bottom: 12),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: b.giftWrap == opt['val'] ? AppColors.gold : Theme.of(context).dividerColor,
-                    width: b.giftWrap == opt['val'] ? 2 : 1,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                  color: b.giftWrap == opt['val'] ? AppColors.gold.withOpacity(0.08) : null,
-                ),
-                child: Text(opt['label'] as String, style: const TextStyle(fontSize: 15)),
+        // --- Hero header ---
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 28),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                AppColors.gold.withOpacity(0.1),
+                AppColors.gold.withOpacity(0.03),
+                Colors.transparent,
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(children: [
+            Container(
+              width: 72, height: 72,
+              decoration: BoxDecoration(
+                color: AppColors.gold.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(Icons.card_giftcard, size: 36, color: AppColors.gold),
+            ),
+            const SizedBox(height: 16),
+            Text(l10n.giftWrapQuestion,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w700,
               ),
             ),
-        ),
-      ]),
-    );
-  }
-
-  Widget _giftWrapOption(
-    BuildContext context, BookingState b, {
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required bool value,
-    String? price,
-  }) {
-    final selected = b.giftWrap == value;
-    return GestureDetector(
-      onTap: () => ref.read(bookingProvider.notifier).setGiftWrap(value),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeInOut,
-        width: double.infinity,
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: selected ? AppColors.gold.withOpacity(0.08) : Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: selected ? AppColors.gold : AppColors.lightGray,
-            width: selected ? 2 : 1,
-          ),
-        ),
-        child: Row(children: [
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 250),
-            width: 48, height: 48,
-            decoration: BoxDecoration(
-              color: selected ? AppColors.gold.withOpacity(0.12) : AppColors.lightGray.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(12),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32),
+              child: Text(
+                'Add a personal touch with premium gift wrapping',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 14, color: AppColors.warmGray, height: 1.4),
+              ),
             ),
-            child: Icon(icon, color: selected ? AppColors.gold : AppColors.warmGray, size: 24),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Row(children: [
-                Text(title, style: TextStyle(
-                  fontSize: 15, fontWeight: FontWeight.w600,
-                  color: selected ? AppColors.charcoal : AppColors.charcoal,
-                )),
-                if (price != null) ...[
-                  const SizedBox(width: 8),
-                  Text(price, style: const TextStyle(
-                    fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.gold,
-                  )),
-                ],
-              ]),
-              const SizedBox(height: 3),
-              Text(subtitle, style: TextStyle(fontSize: 12, color: AppColors.warmGray, height: 1.3)),
+          ]),
+        ),
+        const SizedBox(height: 28),
+
+        // --- Premium Wrap card ---
+        GestureDetector(
+          onTap: () => ref.read(bookingProvider.notifier).setGiftWrap(true),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.easeInOut,
+            width: double.infinity,
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(
+              color: b.giftWrap
+                  ? AppColors.gold.withOpacity(0.08)
+                  : Theme.of(context).cardTheme.color,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: b.giftWrap ? AppColors.gold : AppColors.lightGray,
+                width: b.giftWrap ? 2 : 1,
+              ),
+            ),
+            child: Row(children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                width: 52, height: 52,
+                decoration: BoxDecoration(
+                  color: b.giftWrap
+                      ? AppColors.gold.withOpacity(0.15)
+                      : AppColors.lightGray.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Icon(
+                  Icons.card_giftcard,
+                  color: b.giftWrap ? AppColors.gold : AppColors.warmGray,
+                  size: 26,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(children: [
+                      Flexible(
+                        child: Text(l10n.yesWrapIt,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: b.giftWrap
+                                ? AppColors.charcoal
+                                : Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: AppColors.gold.withOpacity(0.12),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          '\$${giftWrapFee.toStringAsFixed(2)}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.gold,
+                          ),
+                        ),
+                      ),
+                    ]),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Elegant silk ribbon & handmade paper',
+                      style: TextStyle(fontSize: 13, color: AppColors.warmGray),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                width: 26,
+                height: 26,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: b.giftWrap ? AppColors.gold : Colors.transparent,
+                  border: Border.all(
+                    color: b.giftWrap ? AppColors.gold : AppColors.lightGray,
+                    width: 2,
+                  ),
+                ),
+                child: b.giftWrap
+                    ? const Icon(Icons.check, color: Colors.white, size: 16)
+                    : null,
+              ),
             ]),
           ),
-          AnimatedContainer(
+        ),
+        const SizedBox(height: 12),
+
+        // --- Standard Packaging card ---
+        GestureDetector(
+          onTap: () => ref.read(bookingProvider.notifier).setGiftWrap(false),
+          child: AnimatedContainer(
             duration: const Duration(milliseconds: 250),
-            width: selected ? 24 : 20,
-            height: selected ? 24 : 20,
+            curve: Curves.easeInOut,
+            width: double.infinity,
+            padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: selected ? AppColors.gold : Colors.transparent,
+              color: !b.giftWrap
+                  ? AppColors.gold.withOpacity(0.08)
+                  : Theme.of(context).cardTheme.color,
+              borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: selected ? AppColors.gold : AppColors.lightGray,
-                width: selected ? 0 : 2,
+                color: !b.giftWrap ? AppColors.gold : AppColors.lightGray,
+                width: !b.giftWrap ? 2 : 1,
               ),
             ),
-            child: selected
-                ? const Icon(Icons.check, color: Colors.white, size: 14)
-                : null,
+            child: Row(children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                width: 52, height: 52,
+                decoration: BoxDecoration(
+                  color: !b.giftWrap
+                      ? AppColors.gold.withOpacity(0.15)
+                      : AppColors.lightGray.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Icon(
+                  Icons.shopping_bag_outlined,
+                  color: !b.giftWrap ? AppColors.gold : AppColors.warmGray,
+                  size: 26,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(children: [
+                      Flexible(
+                        child: Text(l10n.noGiftWrap,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: !b.giftWrap
+                                ? AppColors.charcoal
+                                : Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: AppColors.success.withOpacity(0.12),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: const Text(
+                          'Free',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.success,
+                          ),
+                        ),
+                      ),
+                    ]),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Secure eco-friendly box packaging',
+                      style: TextStyle(fontSize: 13, color: AppColors.warmGray),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                width: 26,
+                height: 26,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: !b.giftWrap ? AppColors.gold : Colors.transparent,
+                  border: Border.all(
+                    color: !b.giftWrap ? AppColors.gold : AppColors.lightGray,
+                    width: 2,
+                  ),
+                ),
+                child: !b.giftWrap
+                    ? const Icon(Icons.check, color: Colors.white, size: 16)
+                    : null,
+              ),
+            ]),
           ),
-        ]),
-      ),
+        ),
+
+        // --- Eco-friendly note when gift wrap selected ---
+        if (b.giftWrap) ...[
+          const SizedBox(height: 20),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: AppColors.gold.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.gold.withOpacity(0.2)),
+            ),
+            child: Row(children: [
+              Icon(Icons.auto_awesome, size: 18, color: AppColors.gold),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'Each wrap is handcrafted with eco-friendly materials',
+                  style: TextStyle(fontSize: 13, color: AppColors.warmGray, height: 1.4),
+                ),
+              ),
+            ]),
+          ),
+        ],
+      ]),
     );
   }
 
@@ -573,22 +764,6 @@ class _BookingScreenState extends ConsumerState<BookingScreen> {
         if (b.deliveryDate != null) _confirmRow(context, l10n.deliveryDate, '${b.deliveryDate!.day}/${b.deliveryDate!.month}/${b.deliveryDate!.year}'),
         if (b.timeSlot.isNotEmpty) _confirmRow(context, l10n.timeLabel, b.timeSlot),
         const SizedBox(height: 32),
-        ElevatedButton.icon(
-          onPressed: () {
-            _saveToCart();
-            ref.read(bookingProvider.notifier).reset();
-            context.go('/cart');
-          },
-          icon: const Icon(Icons.home_outlined, size: 20),
-          label: Text(l10n.backToHome, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-          style: ElevatedButton.styleFrom(
-            minimumSize: const Size(double.infinity, 54),
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14),
-            ),
-          ),
-        ),
       ]),
     );
   }

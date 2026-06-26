@@ -39,7 +39,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get map => 'Map';
 
   @override
-  String get promos => 'Promos';
+  String get promos => 'Cart';
 
   @override
   String get signIn => 'Sign In';
@@ -270,6 +270,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get backToHome => 'Back to Home';
+
+  @override
+  String get bookNow => 'Book Now';
 
   @override
   String get bookingNotice =>

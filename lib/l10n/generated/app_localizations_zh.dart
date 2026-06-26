@@ -39,7 +39,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get map => '地图';
 
   @override
-  String get promos => '优惠';
+  String get promos => '购物车';
 
   @override
   String get signIn => '登录';
@@ -269,6 +269,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get backToHome => '返回首页';
+
+  @override
+  String get bookNow => '立即预订';
 
   @override
   String get bookingNotice => '您正在预订定制订单。我们将在24小时内确认可用性。';

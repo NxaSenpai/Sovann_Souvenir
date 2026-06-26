@@ -18,7 +18,7 @@ import '../features/cart/cart_screen.dart';
 import '../widgets/main_shell.dart';
 
 // Shell pages (tab indices)
-// 0=Home, 1=Favorites, 2=Map, 3=Promotions, 4=Settings
+// 0=Home, 1=Favorites, 2=Map, 3=Cart, 4=Settings
 
 final _rootKey = GlobalKey<NavigatorState>();
 final _shellKey = GlobalKey<NavigatorState>();

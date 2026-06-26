@@ -67,11 +67,12 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               _tags(product.tags),
               const SizedBox(height: 24),
               _galleryButton(product.id),
-              SizedBox(height: 24 + MediaQuery.of(context).padding.bottom),
+              const SizedBox(height: 24),
             ]),
           ),
         ]),
       ),
+      bottomNavigationBar: _bookingButton(product),
     );
   }
 
@@ -292,6 +293,37 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         foregroundColor: AppColors.gold,
         side: const BorderSide(color: AppColors.gold),
         minimumSize: const Size(double.infinity, 48),
+      ),
+    );
+  }
+
+  Widget _bookingButton(Product product) {
+    final l10n = AppLocalizations.of(context);
+    return SafeArea(
+      child: Container(
+        padding: EdgeInsets.fromLTRB(20, 12, 20, MediaQuery.of(context).padding.bottom > 0 ? 4 : 12),
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 8,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        child: ElevatedButton.icon(
+          onPressed: () => context.push('/booking/${product.id}'),
+          icon: const Icon(Icons.calendar_today, size: 20),
+          label: Text(l10n.bookNow, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size(double.infinity, 54),
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -39,7 +39,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get map => '地図';
 
   @override
-  String get promos => 'プロモ';
+  String get promos => 'カート';
 
   @override
   String get signIn => 'ログイン';
@@ -269,6 +269,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get backToHome => 'ホームに戻る';
+
+  @override
+  String get bookNow => '予約する';
 
   @override
   String get bookingNotice => 'カスタムオーダーを予約しています。24時間以内に在庫状況を確認します。';
