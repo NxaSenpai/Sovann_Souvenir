@@ -1,0 +1,88 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../../data/mock_repository.dart';
+import '../../theme/app_colors.dart';
+import '../../widgets/product_card.dart';
+import '../../l10n/generated/app_localizations.dart';
+
+class ArtisanProfileScreen extends StatelessWidget {
+  final String artisanId;
+  const ArtisanProfileScreen({super.key, required this.artisanId});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final repo = MockRepository.instance;
+    final artisan = repo.artisanByIdTr(artisanId)!;
+    final products = repo.productsTr.where((p) => p.artisanId == artisanId).toList();
+
+    return Scaffold(
+      body: CustomScrollView(slivers: [
+        SliverAppBar(
+          expandedHeight: 240,
+          pinned: true,
+          leading: IconButton(
+            icon: const CircleAvatar(backgroundColor: Colors.white70, child: Icon(Icons.arrow_back, color: Colors.black)),
+            onPressed: () => context.pop(),
+          ),
+          flexibleSpace: FlexibleSpaceBar(
+            background: Stack(fit: StackFit.expand, children: [
+              CachedNetworkImage(imageUrl: artisan.coverImage, fit: BoxFit.cover),
+              Container(
+                decoration: BoxDecoration(gradient: LinearGradient(
+                  colors: [Colors.transparent, Colors.black.withOpacity(0.6)],
+                  begin: Alignment.topCenter, end: Alignment.bottomCenter,
+                )),
+              ),
+            ]),
+          ),
+        ),
+        SliverToBoxAdapter(child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Row(children: [
+              CircleAvatar(radius: 36, backgroundImage: CachedNetworkImageProvider(artisan.avatar)),
+              const SizedBox(width: 16),
+              Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(artisan.name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
+                Text(artisan.craft, style: const TextStyle(color: AppColors.gold, fontSize: 14)),
+                Text(artisan.region, style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6), fontSize: 13)),
+                Text(l10n.yearsExperience(artisan.yearsOfExperience), style: const TextStyle(fontSize: 12)),
+              ])),
+            ]),
+            const SizedBox(height: 20),
+            Text(l10n.theirStory, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
+            const SizedBox(height: 8),
+            Text(artisan.story, style: TextStyle(height: 1.6, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7))),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.chat_bubble_outline),
+              label: Text(l10n.messageArtisan),
+              onPressed: () => context.push('/chat/${artisan.id}'),
+              style: ElevatedButton.styleFrom(minimumSize: const Size(double.infinity, 48)),
+            ),
+            const SizedBox(height: 24),
+            Text(l10n.theirCrafts, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
+            const SizedBox(height: 12),
+            SizedBox(
+              height: 260,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: products.length,
+                itemBuilder: (context, i) => Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: SizedBox(
+                    width: 180,
+                    child: ProductCard(product: products[i]),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: MediaQuery.of(context).padding.bottom),
+          ]),
+        )),
+      ]),
+    );
+  }
+}

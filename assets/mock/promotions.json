@@ -1,0 +1,35 @@
+[
+  {
+    "id": "promo1",
+    "title": "Khmer New Year Special",
+    "subtitle": "15% off all silk products",
+    "code": "KHMNYR25",
+    "discount": "15%",
+    "expiryDate": "2025-04-16",
+    "imageUrl": "https://picsum.photos/seed/promo1/600/300",
+    "color": "0xFFC8960C",
+    "occasion": "Khmer New Year"
+  },
+  {
+    "id": "promo2",
+    "title": "Pchum Ben Festival",
+    "subtitle": "Free gift wrap on orders over $30",
+    "code": "PCHUM2025",
+    "discount": "Free Wrap",
+    "expiryDate": "2025-10-04",
+    "imageUrl": "https://picsum.photos/seed/promo2/600/300",
+    "color": "0xFF7B3F00",
+    "occasion": "Pchum Ben"
+  },
+  {
+    "id": "promo3",
+    "title": "First Order Welcome",
+    "subtitle": "Get $5 off your first order",
+    "code": "WELCOME5",
+    "discount": "$5 OFF",
+    "expiryDate": "2025-12-31",
+    "imageUrl": "https://picsum.photos/seed/promo3/600/300",
+    "color": "0xFF4A7C59",
+    "occasion": "General"
+  }
+]

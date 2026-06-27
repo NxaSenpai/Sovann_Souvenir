@@ -1,0 +1,32 @@
+[
+  {
+    "id": "r1",
+    "productId": "p1",
+    "userName": "Sarah K.",
+    "userAvatar": "https://picsum.photos/seed/user1/100/100",
+    "rating": 5,
+    "date": "2024-11-15",
+    "comment": "Absolutely beautiful krama! The indigo dye is vibrant and the quality is exceptional. Will definitely buy again.",
+    "photoUrl": "https://picsum.photos/seed/review1/300/300"
+  },
+  {
+    "id": "r2",
+    "productId": "p1",
+    "userName": "Marc D.",
+    "userAvatar": "https://picsum.photos/seed/user2/100/100",
+    "rating": 4,
+    "date": "2024-10-22",
+    "comment": "Great quality, fast delivery. The scarf is exactly as described. A little thinner than I expected but still lovely.",
+    "photoUrl": null
+  },
+  {
+    "id": "r3",
+    "productId": "p2",
+    "userName": "Linh N.",
+    "userAvatar": "https://picsum.photos/seed/user3/100/100",
+    "rating": 5,
+    "date": "2024-12-01",
+    "comment": "The Apsara pendant is stunning. It arrived beautifully packaged and looks even better in person.",
+    "photoUrl": "https://picsum.photos/seed/review3/300/300"
+  }
+]

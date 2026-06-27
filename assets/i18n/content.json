@@ -1,0 +1,478 @@
+{
+  "km": {
+    "products": {
+      "p1": {
+        "name": "ក្រមាសូត្រ — ពណ៌ឥន្ទនីល",
+        "description": "កន្សែងសូត្រត្បាញដោយដៃ ជ្រលក់ពណ៌ឥន្ទនីលធម្មជាតិ ល្អឥតខ្ចោះសម្រាប់បន្ថែមភាពឆើតឆាយបែបខ្មែរទៅក្នុងសម្លៀកបំពាក់ណាមួយ។",
+        "materials": "សូត្រខ្មែរ ១០០%",
+        "dimensions": "១៧០ សម × ៨០ សម",
+        "story": "ត្បាញដោយដៃនៅខេត្តតាកែវ ដោយប្រើបច្ចេកទេសជ្រលក់ពណ៌ឥន្ទនីលបុរាណដែលបានបន្សល់ទុកជាងប្រាំមួយជំនាន់។",
+        "tags": ["សូត្រ","ក្រមា","វាយនភណ្ឌ","ប្រពៃណី"]
+      },
+      "p2": {
+        "name": "ខ្សែកប្រាក់អប្សរា",
+        "description": "ខ្សែកប្រាក់ឆ្លាក់ដោយដៃយ៉ាងល្អិតល្អន់ បង្ហាញពីរូបអប្សរាសួគ៌ ដែលជានិមិត្តសញ្ញាមិនចេះនឿយហត់នៃសិល្បៈខ្មែរ។",
+        "materials": "ប្រាក់សុទ្ធ ៩២៥",
+        "dimensions": "៣ សម × ២ សម",
+        "story": "ខ្សែកនីមួយៗត្រូវបានឆ្លាក់ដោយដៃដើម្បីពណ៌នាពីអ្នករាំអប្សរាសួគ៌នៃប្រាសាទអង្គរវត្ត។",
+        "tags": ["ប្រាក់","គ្រឿងអលង្ការ","អប្សរា","អង្គរ"]
+      },
+      "p3": {
+        "name": "រូបដំរីឆ្លាក់ពីឈើ",
+        "description": "រូបដំរីឈើប្រណីតឆ្លាក់ដោយដៃ នាំមកនូវសិល្បៈខ្មែរបុរាណចូលក្នុងការតុបតែងគេហដ្ឋានរបស់អ្នក។",
+        "materials": "ឈើប្រណីត",
+        "dimensions": "១៥ សម × ១០ សម",
+        "story": "ឆ្លាក់ពីឈើប្រណីតដែលមានប្រភពប្រកបដោយនិរន្តរភាពដោយសិប្បករនៅខេត្តកំពង់ធំ។",
+        "tags": ["ឈើ","ដំរី","ចម្លាក់","ការតុបតែង"]
+      },
+      "p4": {
+        "name": "ឈុតអំណោយម្រេចកំពត",
+        "description": "ឈុតអំណោយម្រេចកំពតពិសេសដែលបានជ្រើសរើស — ខ្មៅ ក្រហម និងស — រសជាតិពិតប្រាកដរបស់កម្ពុជា។",
+        "materials": "ម្រេចកំពតសរីរាង្គ ១០០%",
+        "dimensions": "ឈុត ៣ ពាង × ៥០ក្រាម",
+        "story": "ម្រេចកំពតត្រូវបានគេស្គាល់ទូទាំងពិភពលោក។ ឈុតនេះមានប្រភេទក្រហម ខ្មៅ និងស។",
+        "tags": ["អាហារ","ម្រេច","កំពត","អាហារ","ឈុតអំណោយ"]
+      },
+      "p5": {
+        "name": "កាបូបស្មាសូត្រ — ក្បាច់ផ្កាឈូក",
+        "description": "កាបូបស្មាសូត្រដ៏ប្រណីតតុបតែងដោយក្បាច់ផ្កាឈូកប៉ាក់ដោយដៃ រួមបញ្ចូលប្រពៃណីជាមួយស្ទីលទំនើប។",
+        "materials": "សូត្រខ្មែរ ស្រទាប់កប្បាស",
+        "dimensions": "៣០ សម × ២៥ សម",
+        "story": "បង្ហាញពីផ្កាឈូកដ៏ពិសិដ្ឋ កាបូបនេះមានទាំងមុខងារនិងជាស្នាដៃសិល្បៈដែលអាចពាក់បាន។",
+        "tags": ["សូត្រ","កាបូប","ផ្កាឈូក","ម៉ូត"]
+      }
+    },
+    "artisans": {
+      "a1": {
+        "name": "សោភា មាស",
+        "region": "ខេត្តតាកែវ",
+        "craft": "តម្បាញសូត្រ",
+        "story": "សោភាបានរៀនត្បាញនៅលើតម្បាញរបស់ជីដូននៅអាយុប្រាំពីរឆ្នាំ។ សព្វថ្ងៃនេះនាងដឹកនាំសហករណ៍ស្ត្រីតម្បាញ ២០ នាក់ដែលរក្សាក្បាច់អ៊ីកាត់បុរាណ។"
+      },
+      "a2": {
+        "name": "រិទ្ធី ចាន់",
+        "region": "ភ្នំពេញ",
+        "craft": "សិប្បកម្មប្រាក់",
+        "story": "រិទ្ធីជាសិប្បករប្រាក់ចុងក្រោយម្នាក់ដែលបានបណ្តុះបណ្តាលក្នុងប្រពៃណីរាជវាំង។ ស្នាដៃរបស់គាត់ត្រូវបានប្រមូលទិញជាអន្តរជាតិ។"
+      },
+      "a3": {
+        "name": "បូរី សុខ",
+        "region": "សៀមរាប",
+        "craft": "ចម្លាក់ឈើ និងតម្បាញផ្តៅ",
+        "story": "រស់នៅក្រោមម្លប់ប្រាសាទអង្គរវត្ត បូរីទាញការបំផុសគំនិតពីចម្លាក់ប្រាសាទដើម្បីបង្កើតសិល្បៈឈើសហសម័យ។"
+      },
+      "a4": {
+        "name": "ដារ៉ា កែវ",
+        "region": "កំពត និងកំពង់ស្ពឺ",
+        "craft": "ផលិតផលម្ហូបអាហារសិប្បកម្ម",
+        "story": "ដារ៉ាប្រមូលគ្រឿងផ្សំដោយផ្ទាល់ពីកសិករខ្នាតតូច ហើយវេចខ្ចប់វាទៅជាឈុតអំណោយដ៏ស្រស់ស្អាតដែលផ្សព្វផ្សាយម្ហូបអាហារកម្ពុជាទូទាំងពិភពលោក។"
+      }
+    },
+    "collections": {
+      "c1": {
+        "name": "សម្រាប់បុរស",
+        "description": "អំណោយដែលបានជ្រើសរើសដោយយកចិត្តទុកដាក់សម្រាប់បុរសក្នុងជីវិតរបស់អ្នក — ជាក់ស្តែង ធ្វើដោយសិប្បករ។",
+        "tag": "បានជ្រើសរើស"
+      },
+      "c2": {
+        "name": "សម្រាប់នាង",
+        "description": "សិល្បៈខ្មែរដ៏ឆើតឆាយ — សូត្រ ប្រាក់ និងគ្រឿងអលង្ការសម្រាប់ស្ត្រីដែលអ្នកស្រលាញ់។",
+        "tag": "បានជ្រើសរើស"
+      },
+      "c3": {
+        "name": "ឈុតអំណោយសង្ក្រាន្ត",
+        "description": "អបអរសាទរចូលឆ្នាំខ្មែរជាមួយនឹងឈុតអំណោយដែលមានអត្ថន័យ និងរីករាយ។",
+        "tag": "រដូវកាល"
+      },
+      "c4": {
+        "name": "សម្ភារៈចាំបាច់សម្រាប់ភ្ញៀវទេសចរ",
+        "description": "យកបំណែកនៃកម្ពុជាទៅផ្ទះ — តូចល្អិត ពិតប្រាកដ និងវេចខ្ចប់យ៉ាងស្រស់ស្អាត។",
+        "tag": "ទេសចរណ៍"
+      },
+      "c5": {
+        "name": "ឈុតអំណោយអាពាហ៍ពិពាហ៍",
+        "description": "អំណោយបែបប្រពៃណី និងឆើតឆាយដើម្បីគោរពដល់ពិធីមង្គលការខ្មែរ។",
+        "tag": "អាពាហ៍ពិពាហ៍"
+      }
+    },
+    "branches": {
+      "b1": {
+        "name": "សាខាធំភ្នំពេញ",
+        "address": "១៣៦ មហាវិថីព្រះនរោត្តម ភ្នំពេញ",
+        "openHours": "០៨:០០ – ២០:០០"
+      },
+      "b2": {
+        "name": "ផ្សារសិប្បករសៀមរាប",
+        "address": "តំបន់ផ្សារចាស់ សៀមរាប",
+        "openHours": "០៩:០០ – ២១:០០"
+      },
+      "b3": {
+        "name": "ផ្ទះម្រេចកំពត",
+        "address": "៥ ផ្លូវមាត់ទន្លេ កំពត",
+        "openHours": "០៨:០០ – ១៨:០០"
+      },
+      "b4": {
+        "name": "ស្ទូឌីយោសូត្របាត់ដំបង",
+        "address": "២២ ផ្លូវផ្សារណាត់ បាត់ដំបង",
+        "openHours": "០៩:០០ – ១៨:០០"
+      }
+    }
+  },
+  "zh": {
+    "products": {
+      "p1": {
+        "name": "丝绸格罗麻围巾 — 靛蓝色",
+        "description": "手工编织的丝绸围巾，采用天然靛蓝染色，为任何服饰增添柬埔寨优雅气息。",
+        "materials": "100% 柬埔寨丝绸",
+        "dimensions": "170 厘米 × 80 厘米",
+        "story": "在茶胶省手工编织，采用传承六代的传统靛蓝染色技艺。",
+        "tags": ["丝绸","格罗麻","纺织品","传统"]
+      },
+      "p2": {
+        "name": "银质阿普萨拉吊坠",
+        "description": "精美手工雕刻的银质吊坠，描绘天女阿普萨拉舞者，是高棉艺术的永恒象征。",
+        "materials": "925 纯银",
+        "dimensions": "3 厘米 × 2 厘米",
+        "story": "每个吊坠均为手工雕刻，描绘吴哥窟的天女阿普萨拉舞者。",
+        "tags": ["银","珠宝","阿普萨拉","吴哥"]
+      },
+      "p3": {
+        "name": "手工雕刻木象",
+        "description": "精美手工雕刻的柚木大象，将传统高棉工艺带入您的家居装饰。",
+        "materials": "柚木",
+        "dimensions": "15 厘米 × 10 厘米",
+        "story": "由磅通省工匠使用可持续来源的柚木雕刻而成。",
+        "tags": ["木","大象","雕刻","装饰"]
+      },
+      "p4": {
+        "name": "贡布胡椒礼品套装",
+        "description": "精选优质贡布胡椒礼品套装——黑、红、白三种——真正的柬埔寨味道。",
+        "materials": "100% 有机贡布胡椒",
+        "dimensions": "3 罐 × 50 克套装",
+        "story": "贡布胡椒享誉全球。本套装包含红、黑、白三种品种。",
+        "tags": ["食品","胡椒","贡布","食品","礼品套装"]
+      },
+      "p5": {
+        "name": "丝绸肩包 — 莲花图案",
+        "description": "豪华丝绸肩包，饰有手工刺绣莲花图案，将传统与现代风格融为一体。",
+        "materials": "柬埔寨丝绸，棉质内衬",
+        "dimensions": "30 厘米 × 25 厘米",
+        "story": "以神圣的莲花为特色，这款包既实用又是一件可穿戴的艺术品。",
+        "tags": ["丝绸","包","莲花","时尚"]
+      }
+    },
+    "artisans": {
+      "a1": {
+        "name": "Sophea Meas",
+        "region": "茶胶省",
+        "craft": "丝绸织造",
+        "story": "Sophea 七岁时在祖母的织机上学会了织造。如今，她经营着一个由 20 名女织工组成的合作社，保护着古老的伊卡图案。"
+      },
+      "a2": {
+        "name": "Rithy Chann",
+        "region": "金边",
+        "craft": "银器工艺",
+        "story": "Rithy 是最后一批接受皇家宫廷传统培训的银匠大师之一。他的作品被国际收藏。"
+      },
+      "a3": {
+        "name": "Borey Sok",
+        "region": "暹粒",
+        "craft": "木雕与藤编",
+        "story": "生活在吴哥窟的阴影下，Borey 从寺庙雕刻中汲取灵感，创作当代木艺作品。"
+      },
+      "a4": {
+        "name": "Dara Keo",
+        "region": "贡布与磅士卑",
+        "craft": "手工食品",
+        "story": "Dara 直接从小农采购原料，将其包装成精美的礼品套装，向全球推广柬埔寨美食。"
+      }
+    },
+    "collections": {
+      "c1": {
+        "name": "送给他",
+        "description": "为您生活中的男士精心挑选的礼物——实用、手工制作。",
+        "tag": "精选"
+      },
+      "c2": {
+        "name": "送给她",
+        "description": "优雅的柬埔寨工艺——丝绸、银器和珠宝，献给您所爱的女性。",
+        "tag": "精选"
+      },
+      "c3": {
+        "name": "宋干节礼品套装",
+        "description": "用精选的有意义的节日礼品套装庆祝高棉新年。",
+        "tag": "季节性"
+      },
+      "c4": {
+        "name": "游客必备",
+        "description": "把柬埔寨带回家——小巧、正宗、精美包装。",
+        "tag": "旅游"
+      },
+      "c5": {
+        "name": "婚礼礼品套装",
+        "description": "传统优雅的礼物，致敬柬埔寨婚礼。",
+        "tag": "婚礼"
+      }
+    },
+    "branches": {
+      "b1": {
+        "name": "金边旗舰店",
+        "address": "金边诺罗敦大道 136 号",
+        "openHours": "08:00 – 20:00"
+      },
+      "b2": {
+        "name": "暹粒工匠市场",
+        "address": "暹粒老市场区",
+        "openHours": "09:00 – 21:00"
+      },
+      "b3": {
+        "name": "贡布胡椒屋",
+        "address": "贡布河滨路 5 号",
+        "openHours": "08:00 – 18:00"
+      },
+      "b4": {
+        "name": "马德望丝绸工作室",
+        "address": "马德望 Psar Nath 街 22 号",
+        "openHours": "09:00 – 18:00"
+      }
+    }
+  },
+  "ja": {
+    "products": {
+      "p1": {
+        "name": "シルク・クロマー・スカーフ — 藍染め",
+        "description": "天然藍で染めた手織りのシルクスカーフ。どんな装いにもカンボジアの優雅さを添えます。",
+        "materials": "カンボジアシルク 100%",
+        "dimensions": "170 cm × 80 cm",
+        "story": "タケオ州で6世代にわたって受け継がれた伝統的な藍染め技法を用いて手織りされています。",
+        "tags": ["シルク","クロマー","織物","伝統"]
+      },
+      "p2": {
+        "name": "銀のアプサラペンダント",
+        "description": "天のアプサラダンサーを描いた精巧な手彫りの銀ペンダント。クメール芸術の永遠の象徴です。",
+        "materials": "スターリングシルバー 925",
+        "dimensions": "3 cm × 2 cm",
+        "story": "各ペンダントはアンコールワットの天のアプサラダンサーを描くために手彫りされています。",
+        "tags": ["銀","ジュエリー","アプサラ","アンコール"]
+      },
+      "p3": {
+        "name": "手彫りの木製象",
+        "description": "美しい手彫りのチーク材の象。伝統的なクメール工芸をご家庭の装飾に取り入れます。",
+        "materials": "チーク材",
+        "dimensions": "15 cm × 10 cm",
+        "story": "コンポントム州の職人によって持続可能な方法で調達されたチーク材から彫られています。",
+        "tags": ["木","象","彫刻","装飾"]
+      },
+      "p4": {
+        "name": "カンポットペッパーギフトセット",
+        "description": "厳選されたプレミアムカンポットペッパー——黒、赤、白の3種類——カンボジアの真の味。",
+        "materials": "100% オーガニック カンポットペッパー",
+        "dimensions": "3瓶 × 50g セット",
+        "story": "カンポットペッパーは世界的に称賛されています。このセットには赤、黒、白の品種が含まれています。",
+        "tags": ["食品","ペッパー","カンポット","食品","ギフトセット"]
+      },
+      "p5": {
+        "name": "シルクショルダーバッグ — 蓮のモチーフ",
+        "description": "手刺繍の蓮のモチーフで飾られた豪華なシルクショルダーバッグ。伝統とモダンスタイルを融合。",
+        "materials": "カンボジアシルク、綿の裏地",
+        "dimensions": "30 cm × 25 cm",
+        "story": "神聖な蓮の花を特徴とするこのバッグは、機能的でありながら着用できる芸術作品です。",
+        "tags": ["シルク","バッグ","蓮","ファッション"]
+      }
+    },
+    "artisans": {
+      "a1": {
+        "name": "Sophea Meas",
+        "region": "タケオ州",
+        "craft": "シルク織り",
+        "story": "Sopheaは7歳の時に祖母の織機で織り方を学びました。現在、彼女は古代のイカット模様を守る20人の女性織工の協同組合を運営しています。"
+      },
+      "a2": {
+        "name": "Rithy Chann",
+        "region": "プノンペン",
+        "craft": "銀細工",
+        "story": "Rithyは王宮の伝統で訓練された最後の銀細工師の一人です。彼の作品は国際的に収集されています。"
+      },
+      "a3": {
+        "name": "Borey Sok",
+        "region": "シェムリアップ",
+        "craft": "木彫りとラタン編み",
+        "story": "アンコールワットの影に住むBoreyは、寺院の彫刻からインスピレーションを得て現代的な木の芸術を創造しています。"
+      },
+      "a4": {
+        "name": "Dara Keo",
+        "region": "カンポット & コンポンスプー",
+        "craft": "職人食品",
+        "story": "Daraは小規模農家から直接原料を調達し、カンボジア料理を世界に広める美しいギフトセットに包装しています。"
+      }
+    },
+    "collections": {
+      "c1": {
+        "name": "彼のために",
+        "description": "あなたの人生の男性のために厳選された思慮深いギフト——実用的で職人製。",
+        "tag": "厳選"
+      },
+      "c2": {
+        "name": "彼女のために",
+        "description": "エレガントなカンボジアの工芸品——シルク、シルバー、ジュエリーをあなたの愛する女性へ。",
+        "tag": "厳選"
+      },
+      "c3": {
+        "name": "ソンクラーンギフトセット",
+        "description": "厳選された意味のあるお祝いのギフトでクメール正月を祝いましょう。",
+        "tag": "季節限定"
+      },
+      "c4": {
+        "name": "観光客向け必需品",
+        "description": "カンボジアの一片を家に持ち帰りましょう——コンパクトで本格的、美しく包装されています。",
+        "tag": "観光"
+      },
+      "c5": {
+        "name": "ウェディングギフトセット",
+        "description": "カンボジアの結婚式を祝福する伝統的でエレガントなギフト。",
+        "tag": "ウェディング"
+      }
+    },
+    "branches": {
+      "b1": {
+        "name": "プノンペン旗艦店",
+        "address": "136 Norodom Blvd, Phnom Penh",
+        "openHours": "08:00 – 20:00"
+      },
+      "b2": {
+        "name": "シェムリアップ職人市場",
+        "address": "Old Market Area, Siem Reap",
+        "openHours": "09:00 – 21:00"
+      },
+      "b3": {
+        "name": "カンポットペッパーハウス",
+        "address": "5 River Road, Kampot",
+        "openHours": "08:00 – 18:00"
+      },
+      "b4": {
+        "name": "バッタンバンシルクスタジオ",
+        "address": "22 Psar Nath Street, Battambang",
+        "openHours": "09:00 – 18:00"
+      }
+    }
+  },
+  "vi": {
+    "products": {
+      "p1": {
+        "name": "Khăn Krama Lụa — Chàm",
+        "description": "Khăn lụa dệt tay nhuộm chàm tự nhiên, hoàn hảo để thêm nét thanh lịch Campuchia cho bất kỳ trang phục nào.",
+        "materials": "100% lụa Campuchia",
+        "dimensions": "170 cm × 80 cm",
+        "story": "Dệt tay tại tỉnh Takeo sử dụng kỹ thuật nhuộm chàm truyền thống qua sáu thế hệ.",
+        "tags": ["lụa","krama","dệt may","truyền thống"]
+      },
+      "p2": {
+        "name": "Mặt Dây Chuyền Bạc Apsara",
+        "description": "Mặt dây chuyền bạc chạm khắc tay tinh xảo mô tả vũ công Apsara thiên thể, biểu tượng vượt thời gian của nghệ thuật Khmer.",
+        "materials": "Bạc Sterling 925",
+        "dimensions": "3 cm × 2 cm",
+        "story": "Mỗi mặt dây chuyền được chạm khắc tay để mô tả các vũ công Apsara thiên thể của Angkor Wat.",
+        "tags": ["bạc","trang sức","apsara","angkor"]
+      },
+      "p3": {
+        "name": "Voi Gỗ Chạm Khắc",
+        "description": "Voi gỗ tếch chạm khắc tay tuyệt đẹp, mang nghề thủ công Khmer truyền thống vào trang trí nhà cửa của bạn.",
+        "materials": "Gỗ tếch",
+        "dimensions": "15 cm × 10 cm",
+        "story": "Được chạm khắc từ gỗ tếch có nguồn gốc bền vững bởi các nghệ nhân ở Kampong Thom.",
+        "tags": ["gỗ","voi","chạm khắc","trang trí"]
+      },
+      "p4": {
+        "name": "Bộ Quà Tặng Tiêu Kampot",
+        "description": "Bộ quà tặng tiêu Kampot cao cấp được tuyển chọn — đen, đỏ và trắng — hương vị đích thực của Campuchia.",
+        "materials": "100% tiêu Kampot hữu cơ",
+        "dimensions": "Bộ 3 lọ × 50g",
+        "story": "Tiêu Kampot được ca ngợi trên toàn thế giới. Bộ này có các loại đỏ, đen và trắng.",
+        "tags": ["thực phẩm","tiêu","kampot","thực phẩm","bộ quà tặng"]
+      },
+      "p5": {
+        "name": "Túi Đeo Vai Lụa — Họa Tiết Hoa Sen",
+        "description": "Túi đeo vai lụa sang trọng được tô điểm bằng họa tiết hoa sen thêu tay, kết hợp truyền thống với phong cách hiện đại.",
+        "materials": "Lụa Campuchia, lót cotton",
+        "dimensions": "30 cm × 25 cm",
+        "story": "Mang hình ảnh hoa sen thiêng liêng, chiếc túi này vừa có chức năng vừa là một tác phẩm nghệ thuật có thể đeo được.",
+        "tags": ["lụa","túi","hoa sen","thời trang"]
+      }
+    },
+    "artisans": {
+      "a1": {
+        "name": "Sophea Meas",
+        "region": "Tỉnh Takeo",
+        "craft": "Dệt Lụa",
+        "story": "Sophea học dệt trên khung cửi của bà ngoại khi mới bảy tuổi. Ngày nay cô điều hành một hợp tác xã gồm 20 nữ thợ dệt bảo tồn các mẫu ikat cổ xưa."
+      },
+      "a2": {
+        "name": "Rithy Chann",
+        "region": "Phnom Penh",
+        "craft": "Nghề Bạc",
+        "story": "Rithy là một trong những thợ bạc bậc thầy cuối cùng được đào tạo theo truyền thống cung đình. Tác phẩm của ông được sưu tầm quốc tế."
+      },
+      "a3": {
+        "name": "Borey Sok",
+        "region": "Siem Reap",
+        "craft": "Chạm Khắc Gỗ & Đan Mây",
+        "story": "Sống dưới bóng Angkor Wat, Borey lấy cảm hứng từ các bức chạm khắc đền thờ để tạo ra nghệ thuật gỗ đương đại."
+      },
+      "a4": {
+        "name": "Dara Keo",
+        "region": "Kampot & Kampong Speu",
+        "craft": "Thực Phẩm Thủ Công",
+        "story": "Dara thu mua nguyên liệu trực tiếp từ nông dân nhỏ và đóng gói thành những bộ quà tặng đẹp mắt quảng bá ẩm thực Campuchia trên toàn thế giới."
+      }
+    },
+    "collections": {
+      "c1": {
+        "name": "Cho Anh Ấy",
+        "description": "Quà tặng được tuyển chọn chu đáo cho những người đàn ông trong cuộc sống của bạn — thiết thực, làm thủ công.",
+        "tag": "Tuyển Chọn"
+      },
+      "c2": {
+        "name": "Cho Cô Ấy",
+        "description": "Nghề thủ công Campuchia thanh lịch — lụa, bạc và trang sức cho những người phụ nữ bạn yêu thương.",
+        "tag": "Tuyển Chọn"
+      },
+      "c3": {
+        "name": "Bộ Quà Tặng Songkran",
+        "description": "Kỷ niệm Tết Khmer với bộ quà tặng ý nghĩa và lễ hội được tuyển chọn.",
+        "tag": "Theo Mùa"
+      },
+      "c4": {
+        "name": "Đồ Thiết Yếu Cho Du Khách",
+        "description": "Mang một phần Campuchia về nhà — nhỏ gọn, đích thực và được đóng gói đẹp mắt.",
+        "tag": "Du Lịch"
+      },
+      "c5": {
+        "name": "Bộ Quà Tặng Đám Cưới",
+        "description": "Quà tặng truyền thống và thanh lịch để tôn vinh đám cưới Campuchia.",
+        "tag": "Đám Cưới"
+      }
+    },
+    "branches": {
+      "b1": {
+        "name": "Chi Nhánh Chính Phnom Penh",
+        "address": "136 Đại lộ Norodom, Phnom Penh",
+        "openHours": "08:00 – 20:00"
+      },
+      "b2": {
+        "name": "Chợ Nghệ Nhân Siem Reap",
+        "address": "Khu Chợ Cũ, Siem Reap",
+        "openHours": "09:00 – 21:00"
+      },
+      "b3": {
+        "name": "Nhà Tiêu Kampot",
+        "address": "5 Đường Ven Sông, Kampot",
+        "openHours": "08:00 – 18:00"
+      },
+      "b4": {
+        "name": "Xưởng Lụa Battambang",
+        "address": "22 Đường Psar Nath, Battambang",
+        "openHours": "09:00 – 18:00"
+      }
+    }
+  }
+}

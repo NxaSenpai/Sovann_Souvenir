@@ -1,0 +1,54 @@
+[
+  {
+    "id": "b1",
+    "name": "Phnom Penh Flagship",
+    "address": "136 Norodom Blvd, Phnom Penh",
+    "lat": 11.5625,
+    "lng": 104.9282,
+    "phone": "+855 23 123 456",
+    "openHours": "08:00 – 20:00",
+    "isOpenNow": true,
+    "rating": 4.8,
+    "distance": 0.3,
+    "imageUrl": "https://picsum.photos/seed/branch1/400/200"
+  },
+  {
+    "id": "b2",
+    "name": "Siem Reap Artisan Market",
+    "address": "Old Market Area, Siem Reap",
+    "lat": 13.3628,
+    "lng": 103.8597,
+    "phone": "+855 63 987 654",
+    "openHours": "09:00 – 21:00",
+    "isOpenNow": true,
+    "rating": 4.9,
+    "distance": 315.0,
+    "imageUrl": "https://picsum.photos/seed/branch2/400/200"
+  },
+  {
+    "id": "b3",
+    "name": "Kampot Pepper House",
+    "address": "5 River Road, Kampot",
+    "lat": 10.6098,
+    "lng": 104.1812,
+    "phone": "+855 33 456 789",
+    "openHours": "08:00 – 18:00",
+    "isOpenNow": false,
+    "rating": 4.7,
+    "distance": 147.0,
+    "imageUrl": "https://picsum.photos/seed/branch3/400/200"
+  },
+  {
+    "id": "b4",
+    "name": "Battambang Silk Studio",
+    "address": "22 Psar Nath Street, Battambang",
+    "lat": 13.0957,
+    "lng": 103.2022,
+    "phone": "+855 53 222 333",
+    "openHours": "09:00 – 18:00",
+    "isOpenNow": true,
+    "rating": 4.6,
+    "distance": 290.0,
+    "imageUrl": "https://picsum.photos/seed/branch4/400/200"
+  }
+]

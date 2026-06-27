@@ -1,0 +1,46 @@
+[
+  {
+    "id": "a1",
+    "name": "Sophea Meas",
+    "region": "Takeo Province",
+    "craft": "Silk Weaving",
+    "coverImage": "https://picsum.photos/seed/artisan1/800/400",
+    "avatar": "https://picsum.photos/seed/artisanav1/200/200",
+    "story": "Sophea learned to weave on her grandmother's loom at the age of seven. Today she runs a cooperative of 20 women weavers who preserve ancient ikat patterns.",
+    "yearsOfExperience": 22,
+    "productIds": ["p1","p5","p10"]
+  },
+  {
+    "id": "a2",
+    "name": "Rithy Chann",
+    "region": "Phnom Penh",
+    "craft": "Silver Crafting",
+    "coverImage": "https://picsum.photos/seed/artisan2/800/400",
+    "avatar": "https://picsum.photos/seed/artisanav2/200/200",
+    "story": "Rithy is one of the last master silversmiths trained in the royal court tradition. His pieces are collected internationally.",
+    "yearsOfExperience": 35,
+    "productIds": ["p2","p6","p11"]
+  },
+  {
+    "id": "a3",
+    "name": "Borey Sok",
+    "region": "Siem Reap",
+    "craft": "Wood Carving & Rattan Weaving",
+    "coverImage": "https://picsum.photos/seed/artisan3/800/400",
+    "avatar": "https://picsum.photos/seed/artisanav3/200/200",
+    "story": "Living in the shadow of Angkor Wat, Borey draws inspiration from temple carvings to create contemporary wooden art.",
+    "yearsOfExperience": 18,
+    "productIds": ["p3","p8","p9"]
+  },
+  {
+    "id": "a4",
+    "name": "Dara Keo",
+    "region": "Kampot & Kampong Speu",
+    "craft": "Artisanal Food Products",
+    "coverImage": "https://picsum.photos/seed/artisan4/800/400",
+    "avatar": "https://picsum.photos/seed/artisanav4/200/200",
+    "story": "Dara sources ingredients directly from small-scale farmers and packages them into beautiful gift sets that promote Cambodian cuisine worldwide.",
+    "yearsOfExperience": 10,
+    "productIds": ["p4","p7","p12"]
+  }
+]
