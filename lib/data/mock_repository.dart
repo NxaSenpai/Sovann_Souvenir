@@ -38,6 +38,8 @@ class MockRepository {
       _fetchPromotions(),
       _fetchReviews(),
     ]);
+    // Enrich products with collection IDs from junction table
+    _enrichProductCollections();
   }
 
   Future<void> _fetchProducts() async {
@@ -47,6 +49,28 @@ class MockRepository {
     } catch (e) {
       _products = [];
     }
+  }
+
+  Future<void> _enrichProductCollections() async {
+    if (_products == null || _products!.isEmpty) return;
+    try {
+      final juncData = await _supabase.from('product_collections').select();
+      final colMap = <String, List<String>>{};
+      for (final row in (juncData as List)) {
+        final pid = row['product_id'] as String;
+        final cid = row['collection_id'] as String;
+        colMap.putIfAbsent(pid, () => []).add(cid);
+      }
+      _products = _products!.map((p) {
+        return Product(
+          id: p.id, name: p.name, artisanId: p.artisanId, categoryId: p.categoryId,
+          collectionIds: colMap[p.id] ?? [],
+          price: p.price, rating: p.rating, reviewCount: p.reviewCount,
+          images: p.images, description: p.description, materials: p.materials,
+          dimensions: p.dimensions, story: p.story, isFeatured: p.isFeatured, tags: p.tags,
+        );
+      }).toList();
+    } catch (_) {}
   }
 
   Future<void> _fetchArtisans() async {
@@ -117,7 +141,7 @@ class MockRepository {
 
   Future<void> _fetchReviews() async {
     try {
-      final data = await _supabase.from('reviews').select();
+      final data = await _supabase.from('reviews').select('*, profiles(full_name, avatar_url)');
       _reviews = (data as List).map((j) => Review.fromJson(j)).toList();
     } catch (_) {
       _reviews = [];

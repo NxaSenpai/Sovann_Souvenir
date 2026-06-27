@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import '../data/mock_repository.dart';
 
 class ChatbotService {
   static String get _apiKey =>
@@ -8,36 +9,35 @@ class ChatbotService {
   static const _endpoint = 'https://openrouter.ai/api/v1/chat/completions';
   static const _model = 'nvidia/nemotron-3-ultra-550b-a55b:free';
 
-  static const _systemPrompt = '''
-You are Sovann, a friendly gift-shopping assistant for **Sovann Souvenir**, a Cambodian artisan souvenir shop. Help users find gifts by asking about who it's for, budget, and style.
+  static String _buildSystemPrompt() {
+    final products = MockRepository.instance.productsTr;
+    final productList = products.map((p) =>
+        '${p.name} (\$${p.price.toStringAsFixed(2)}, ${p.rating}★, ID:${p.id})'
+    ).join('; ');
 
-## Categories:
-- Textile 🧵 — krama scarves, silk wraps, plush toys
-- Silver 🥈 — jewelry, engraved boxes, ornaments
-- Wood 🪵 — carved statues, decorative boxes
-- Edible 🫙 — palm sugar, spices, tea sets
-- Jewelry 💎 — gemstone pendants, gold accessories
+    return '''
+You are Sovann, a friendly gift-shopping assistant for Sovann Souvenir, a Cambodian souvenir shop.
+Categories: textile🧵, silver🥈, wood🪵, edible🫙, jewelry💎
 
-## Featured products:
-1. Surprise Doll Balloon Box — \$24.00 (textile)
-2. Romantic Pink Roses & Big Teddy Set — \$42.00 (silver)
-3. Hand-carved Wooden Elephant Statue — \$35.00 (wood)
-4. Organic Palm Sugar Gift Set — \$12.00 (edible)
-5. Khmer Silk Krama Scarf — \$18.50 (textile)
-6. Sterling Silver Earrings — \$28.00 (jewelry)
-7. Spice Collection Box — \$15.00 (edible)
-8. Buddha Wood Carving — \$48.00 (wood)
+Our products: $productList
 
-Keep replies warm and concise (2-4 sentences). Use occasional emoji. Be conversational.
+When recommending products:
+- First write your recommendation text naturally mentioning the product names
+- Then list ALL product tags together at the END like: [PRODUCT:p1] [PRODUCT:p3]
+- Example: "I think you'll love our Surprise Doll Balloon Box for its charm, and the Wooden Flower Sculpture for elegance. [PRODUCT:p1] [PRODUCT:p9]"
+Keep replies short (2-4 sentences). Be warm. If no match, suggest browsing.
 ''';
+  }
 
-  /// Send a conversation with automatic history trimming.
+  /// Send conversation history, returns AI response text.
   static Future<String> sendChat(List<Map<String, String>> messages) async {
-    // Keep only last 8 messages to stay within free model context limits
-    final trimmed = messages.length > 8 ? messages.sublist(messages.length - 8) : messages;
+    // Keep last 10 messages to stay within context limits
+    final trimmed = messages.length > 10
+        ? messages.sublist(messages.length - 10)
+        : messages;
 
     final formatted = [
-      {'role': 'system', 'content': _systemPrompt},
+      {'role': 'system', 'content': _buildSystemPrompt()},
       ...trimmed.map((m) => {'role': m['role'], 'content': m['content']}),
     ];
 
@@ -54,7 +54,7 @@ Keep replies warm and concise (2-4 sentences). Use occasional emoji. Be conversa
           'model': _model,
           'messages': formatted,
           'temperature': 0.7,
-          'max_tokens': 600,
+          'max_tokens': 700,
         }),
       );
 
@@ -64,11 +64,39 @@ Keep replies warm and concise (2-4 sentences). Use occasional emoji. Be conversa
       } else if (response.statusCode == 429) {
         return 'I\'m a bit busy right now! Please wait a moment and try again. 🙏';
       } else {
-        final body = response.body;
-        return 'Sorry, I had a hiccup. Try again? ($body)';
+        return 'Sorry, I had a hiccup (${response.statusCode}). Please try again.';
       }
     } catch (e) {
       return 'Connection issue — please check your internet and try again. ✨';
     }
+  }
+}
+
+/// Parses AI response text into structured segments — text and product cards.
+class ChatMessageParser {
+  static final _productRegex = RegExp(r'\[PRODUCT:(\w+)\]');
+
+  /// Returns a list of segments. Each segment is either a text string
+  /// or a Product ID (prefixed with '@' to distinguish).
+  static List<String> parse(String text) {
+    final segments = <String>[];
+    int lastEnd = 0;
+
+    for (final match in _productRegex.allMatches(text)) {
+      // Text before this product tag
+      if (match.start > lastEnd) {
+        segments.add(text.substring(lastEnd, match.start));
+      }
+      // Product ID
+      segments.add('@${match.group(1)}');
+      lastEnd = match.end;
+    }
+
+    // Remaining text
+    if (lastEnd < text.length) {
+      segments.add(text.substring(lastEnd));
+    }
+
+    return segments.isEmpty ? [text] : segments;
   }
 }

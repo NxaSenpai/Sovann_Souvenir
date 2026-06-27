@@ -39,9 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
     final artisans = repo.artisansTr;
 
     _heroItems = [
-      {'image': 'https://picsum.photos/seed/hero1/800/400', 'title': l10n.heroTitle1, 'sub': l10n.heroSub1},
-      {'image': 'https://picsum.photos/seed/hero2/800/400', 'title': l10n.heroTitle2, 'sub': l10n.heroSub2},
-      {'image': 'https://picsum.photos/seed/hero3/800/400', 'title': l10n.heroTitle3, 'sub': l10n.heroSub3},
+      {'image': 'https://www.thefairtradevillage.com/wp-content/uploads/2019/06/FTV-Wood-Product_AHA_7025-600x300.jpg', 'title': l10n.heroTitle1, 'sub': l10n.heroSub1},
+      {'image': 'https://www.asiakingtravel.com/cuploads/images/Blog/Cambodia%20art/Cambodian-Silk-with-go-cambodia-tours-1.jpg', 'title': l10n.heroTitle2, 'sub': l10n.heroSub2},
+      {'image': 'https://stc-vendors.oss-ap-southeast-1.aliyuncs.com/uploads/20241224/666230214599ee9f41bc1a009000dd01.jpg', 'title': l10n.heroTitle3, 'sub': l10n.heroSub3},
     ];
     final cats = repo.categoriesTr;
     final l10nMap = <String, String>{

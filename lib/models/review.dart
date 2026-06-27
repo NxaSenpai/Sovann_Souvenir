@@ -16,12 +16,20 @@ class Review {
     required this.comment, this.photoUrl,
   });
 
-  factory Review.fromJson(Map<String, dynamic> json) => Review(
-    id: json['id'], productId: json['productId'], userName: json['userName'],
-    userAvatar: json['userAvatar'], rating: json['rating'],
-    date: json['date'], comment: json['comment'],
-    photoUrl: json['photoUrl'],
-  );
+  factory Review.fromJson(Map<String, dynamic> json) {
+    // Handle nested profiles data from Supabase join
+    final profile = json['profiles'] as Map<String, dynamic>?;
+    return Review(
+      id: json['id'] ?? '',
+      productId: json['product_id'] ?? json['productId'] ?? '',
+      userName: profile?['full_name'] as String? ?? json['userName'] ?? 'Anonymous',
+      userAvatar: profile?['avatar_url'] as String? ?? json['userAvatar'] ?? '',
+      rating: (json['rating'] as num?)?.toInt() ?? 5,
+      date: json['created_at'] ?? json['date'] ?? '',
+      comment: json['comment'] ?? '',
+      photoUrl: json['photo_url'] ?? json['photoUrl'],
+    );
+  }
 
   Review translated(String locale) {
     final t = ContentTranslations.instance.get(locale, 'reviews', id);

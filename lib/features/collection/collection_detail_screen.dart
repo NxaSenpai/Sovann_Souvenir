@@ -13,24 +13,28 @@ class CollectionDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final repo = MockRepository.instance;
     final col = repo.collectionByIdTr(collectionId)!;
     final products = repo.byCollectionTr(collectionId);
 
     return Scaffold(
+      backgroundColor: isDark ? AppColors.darkBg : AppColors.cream,
       body: CustomScrollView(slivers: [
         SliverAppBar(
           expandedHeight: 280,
           pinned: true,
           stretch: true,
+          backgroundColor: isDark ? AppColors.darkBg : AppColors.cream,
           leading: IconButton(
             icon: Container(
               width: 40, height: 40,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.9),
+                color: isDark ? Colors.black.withAlpha(180) : Colors.white.withAlpha(230),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.arrow_back_rounded, color: AppColors.charcoal, size: 22),
+              child: Icon(Icons.arrow_back_rounded,
+                  color: isDark ? Colors.white : AppColors.charcoal, size: 22),
             ),
             onPressed: () => context.pop(),
           ),
@@ -64,7 +68,7 @@ class CollectionDetailScreen extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [Colors.transparent, Colors.black.withOpacity(0.65)],
+                    colors: [Colors.transparent, Colors.black.withAlpha(180)],
                   ),
                 ),
               ),
@@ -77,25 +81,28 @@ class CollectionDetailScreen extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(20, 24, 20, 20),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [
-              Icon(Icons.info_outline_rounded, size: 16, color: AppColors.gold.withOpacity(0.7)),
+              Icon(Icons.info_outline_rounded, size: 16,
+                  color: AppColors.gold.withAlpha(isDark ? 200 : 180)),
               const SizedBox(width: 8),
               Text('About this collection',
-                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.warmGray)),
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700,
+                      color: isDark ? AppColors.cream.withAlpha(170) : AppColors.warmGray)),
             ]),
             const SizedBox(height: 10),
             Text(col.description,
-                style: const TextStyle(fontSize: 15, color: AppColors.charcoal, height: 1.6)),
+                style: TextStyle(fontSize: 15, height: 1.6,
+                    color: isDark ? AppColors.cream : AppColors.charcoal)),
             const SizedBox(height: 20),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               decoration: BoxDecoration(
-                color: AppColors.gold.withOpacity(0.08),
+                color: AppColors.gold.withAlpha(isDark ? 40 : 20),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(mainAxisSize: MainAxisSize.min, children: [
                 Icon(Icons.inventory_2_outlined, size: 18, color: AppColors.gold),
                 const SizedBox(width: 8),
-                Text('${products.length} items',
+                Text('${l10n.itemsCount(products.length)}',
                     style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: AppColors.gold)),
               ]),
             ),
