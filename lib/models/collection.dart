@@ -14,10 +14,10 @@ class GiftCollection {
   });
 
   factory GiftCollection.fromJson(Map<String, dynamic> json) => GiftCollection(
-    id: json['id'], name: json['name'], description: json['description'],
-    coverImage: json['coverImage'],
-    productIds: List<String>.from(json['productIds']),
-    tag: json['tag'],
+    id: json['id'], name: json['name'], description: json['description'] ?? '',
+    coverImage: json['cover_image'] ?? json['coverImage'] ?? '',
+    productIds: (json['product_ids'] ?? json['productIds']) is List ? List<String>.from((json['product_ids'] ?? json['productIds'])) : [],
+    tag: json['tag'] ?? '',
   );
 
   GiftCollection translated(String locale) {

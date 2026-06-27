@@ -12,6 +12,7 @@ import '../features/chat/chat_list_screen.dart';
 import '../features/chat/chat_thread_screen.dart';
 import '../features/reviews/reviews_screen.dart';
 import '../features/gallery/gallery_screen.dart';
+import '../features/category/category_screen.dart';
 import '../features/checkout/checkout_screen.dart';
 import '../features/chatbot/chatbot_screen.dart';
 import '../features/profile/profile_screen.dart';
@@ -50,6 +51,11 @@ final appRouter = GoRouter(
       path: '/artisan/:id',
       parentNavigatorKey: _rootKey,
       builder: (c, s) => ArtisanProfileScreen(artisanId: s.pathParameters['id']!),
+    ),
+    GoRoute(
+      path: '/category/:id',
+      parentNavigatorKey: _rootKey,
+      builder: (c, s) => CategoryScreen(categoryId: s.pathParameters['id']!),
     ),
     GoRoute(
       path: '/collection/:id',

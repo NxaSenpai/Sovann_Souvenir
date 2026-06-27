@@ -20,10 +20,12 @@ class Artisan {
 
   factory Artisan.fromJson(Map<String, dynamic> json) => Artisan(
     id: json['id'], name: json['name'], region: json['region'],
-    craft: json['craft'], coverImage: json['coverImage'],
-    avatar: json['avatar'], story: json['story'],
-    yearsOfExperience: json['yearsOfExperience'],
-    productIds: List<String>.from(json['productIds']),
+    craft: json['craft'],
+    coverImage: json['cover_image'] ?? json['coverImage'] ?? '',
+    avatar: json['avatar'] ?? '',
+    story: json['story'] ?? '',
+    yearsOfExperience: json['years_of_experience'] ?? json['yearsOfExperience'] ?? 0,
+    productIds: (json['product_ids'] ?? json['productIds']) is List ? List<String>.from((json['product_ids'] ?? json['productIds'])) : [],
   );
 
   Artisan translated(String locale) {

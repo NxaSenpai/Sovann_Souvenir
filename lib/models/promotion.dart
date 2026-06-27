@@ -18,10 +18,12 @@ class Promotion {
   });
 
   factory Promotion.fromJson(Map<String, dynamic> json) => Promotion(
-    id: json['id'], title: json['title'], subtitle: json['subtitle'],
-    code: json['code'], discount: json['discount'],
-    expiryDate: json['expiryDate'], imageUrl: json['imageUrl'],
-    colorHex: json['color'], occasion: json['occasion'],
+    id: json['id'], title: json['title'] ?? '', subtitle: json['subtitle'] ?? '',
+    code: json['code'] ?? '', discount: json['discount'] ?? '',
+    expiryDate: json['expiry_date'] ?? json['expiryDate'] ?? '',
+    imageUrl: json['image_url'] ?? json['imageUrl'] ?? '',
+    colorHex: json['color_hex'] ?? json['color'] ?? '#C8960C',
+    occasion: json['occasion'] ?? '',
   );
 
   Promotion translated(String locale) {

@@ -1,8 +1,8 @@
-import 'dart:convert';
-import 'package:flutter/services.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/product.dart';
 import '../models/artisan.dart';
 import '../models/collection.dart';
+import '../models/category.dart';
 import '../models/branch.dart';
 import '../models/review.dart';
 import '../models/promotion.dart';
@@ -11,9 +11,11 @@ class MockRepository {
   MockRepository._();
   static final MockRepository instance = MockRepository._();
 
+  final _supabase = Supabase.instance.client;
   List<Product>? _products;
   List<Artisan>? _artisans;
   List<GiftCollection>? _collections;
+  List<Category>? _categories;
   List<Branch>? _branches;
   List<Review>? _reviews;
   List<Promotion>? _promotions;
@@ -27,18 +29,99 @@ class MockRepository {
   }
 
   Future<void> init() async {
-    _products   = await _load('assets/mock/products.json',   Product.fromJson);
-    _artisans   = await _load('assets/mock/artisans.json',   Artisan.fromJson);
-    _collections= await _load('assets/mock/collections.json',GiftCollection.fromJson);
-    _branches   = await _load('assets/mock/branches.json',   Branch.fromJson);
-    _reviews    = await _load('assets/mock/reviews.json',    Review.fromJson);
-    _promotions = await _load('assets/mock/promotions.json', Promotion.fromJson);
+    await Future.wait([
+      _fetchProducts(),
+      _fetchArtisans(),
+      _fetchCollections(),
+      _fetchCategories(),
+      _fetchBranches(),
+      _fetchPromotions(),
+      _fetchReviews(),
+    ]);
   }
 
-  Future<List<T>> _load<T>(String path, T Function(Map<String, dynamic>) fromJson) async {
-    final raw = await rootBundle.loadString(path);
-    final list = json.decode(raw) as List;
-    return list.map((e) => fromJson(e as Map<String, dynamic>)).toList();
+  Future<void> _fetchProducts() async {
+    try {
+      final data = await _supabase.from('products').select();
+      _products = (data as List).map((j) => Product.fromJson(j)).toList();
+    } catch (e) {
+      _products = [];
+    }
+  }
+
+  Future<void> _fetchArtisans() async {
+    try {
+      final data = await _supabase.from('artisans').select();
+      _artisans = (data as List).map((j) => Artisan.fromJson(j)).toList();
+    } catch (_) {
+      _artisans = [];
+    }
+  }
+
+  Future<void> _fetchCollections() async {
+    try {
+      final colData = await _supabase.from('collections').select();
+      _collections = (colData as List).map((j) {
+        // collections don't have productIds from DB — build from product_collections later
+        return GiftCollection.fromJson({...j, 'productIds': <String>[]});
+      }).toList();
+      // Fetch junction table for product IDs per collection
+      final juncData = await _supabase.from('product_collections').select();
+      final map = <String, List<String>>{};
+      for (final row in (juncData as List)) {
+        final cid = row['collection_id'] as String;
+        final pid = row['product_id'] as String;
+        map.putIfAbsent(cid, () => []).add(pid);
+      }
+      _collections = _collections!.map((c) {
+        return GiftCollection(
+          id: c.id,
+          name: c.name,
+          description: c.description,
+          coverImage: c.coverImage,
+          tag: c.tag,
+          productIds: map[c.id] ?? [],
+        );
+      }).toList();
+    } catch (_) {
+      _collections = [];
+    }
+  }
+
+  Future<void> _fetchCategories() async {
+    try {
+      final data = await _supabase.from('categories').select();
+      _categories = (data as List).map((j) => Category.fromJson(j)).toList();
+    } catch (_) {
+      _categories = [];
+    }
+  }
+
+  Future<void> _fetchBranches() async {
+    try {
+      final data = await _supabase.from('branches').select();
+      _branches = (data as List).map((j) => Branch.fromJson(j)).toList();
+    } catch (_) {
+      _branches = [];
+    }
+  }
+
+  Future<void> _fetchPromotions() async {
+    try {
+      final data = await _supabase.from('promotions').select();
+      _promotions = (data as List).map((j) => Promotion.fromJson(j)).toList();
+    } catch (_) {
+      _promotions = [];
+    }
+  }
+
+  Future<void> _fetchReviews() async {
+    try {
+      final data = await _supabase.from('reviews').select();
+      _reviews = (data as List).map((j) => Review.fromJson(j)).toList();
+    } catch (_) {
+      _reviews = [];
+    }
   }
 
   // ── Raw (English) getters ──
@@ -58,6 +141,8 @@ class MockRepository {
       collections.map((c) => c.translated(_locale)).toList();
   List<Branch> get branchesTr =>
       branches.map((b) => b.translated(_locale)).toList();
+  List<Category> get categories => _categories ?? [];
+  List<Category> get categoriesTr => categories;
   List<Promotion> get promotionsTr =>
       promotions.map((p) => p.translated(_locale)).toList();
 

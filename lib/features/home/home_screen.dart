@@ -7,6 +7,7 @@ import '../../data/mock_repository.dart';
 import '../../theme/app_colors.dart';
 import '../../state/cart_provider.dart';
 import '../../widgets/product_card.dart';
+import '../../widgets/search_bar.dart';
 import '../../l10n/generated/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,7 +18,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _heroController = PageController();
-  final _searchController = TextEditingController();
   final repo = MockRepository.instance;
 
   late List<Map<String, String>> _heroItems;
@@ -26,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     _heroController.dispose();
-    _searchController.dispose();
     super.dispose();
   }
 
@@ -44,13 +43,14 @@ class _HomeScreenState extends State<HomeScreen> {
       {'image': 'https://picsum.photos/seed/hero2/800/400', 'title': l10n.heroTitle2, 'sub': l10n.heroSub2},
       {'image': 'https://picsum.photos/seed/hero3/800/400', 'title': l10n.heroTitle3, 'sub': l10n.heroSub3},
     ];
-    _categories = [
-      {'id': 'textile', 'label': l10n.textile, 'emoji': '🧵'},
-      {'id': 'silver',  'label': l10n.silver,  'emoji': '🥈'},
-      {'id': 'wood',    'label': l10n.wood,    'emoji': '🪵'},
-      {'id': 'edible',  'label': l10n.edible,  'emoji': '🫙'},
-      {'id': 'jewelry', 'label': l10n.jewelry, 'emoji': '💎'},
-    ];
+    final cats = repo.categoriesTr;
+    final l10nMap = <String, String>{
+      'textile': l10n.textile, 'silver': l10n.silver, 'wood': l10n.wood,
+      'edible': l10n.edible, 'jewelry': l10n.jewelry,
+    };
+    _categories = cats.map((c) => {
+      'id': c.id, 'label': l10nMap[c.id] ?? c.name, 'emoji': c.emoji,
+    }).toList();
 
     // Surfaces
     final cardBg   = isDark ? AppColors.darkCard    : Colors.white;
@@ -154,28 +154,11 @@ class _HomeScreenState extends State<HomeScreen> {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-              child: Container(
-                height: 48,
-                decoration: BoxDecoration(
-                  color: cardBg,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: subtleHr),
-                  boxShadow: isDark ? null : [
-                    BoxShadow(color: Colors.black.withAlpha(10), blurRadius: 8, offset: const Offset(0, 2)),
-                  ],
-                ),
-                child: TextField(
-                  controller: _searchController,
-                  style: TextStyle(fontSize: 14, color: isDark ? AppColors.cream : AppColors.charcoal),
-                  decoration: InputDecoration(
-                    hintText: l10n.searchGifts,
-                    hintStyle: TextStyle(color: AppColors.warmGray, fontSize: 14),
-                    prefixIcon: const Icon(Icons.search, color: AppColors.gold, size: 20),
-                    suffixIcon: Icon(Icons.tune_rounded, color: AppColors.warmGray, size: 18),
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 14),
-                  ),
-                ),
+              child: ProductSearchBar(
+                isDark: isDark,
+                cardBg: cardBg,
+                subtleBorder: subtleHr,
+                hintText: l10n.searchGifts,
               ),
             ),
           ),
@@ -284,7 +267,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, i) {
                   final cat = _categories[i];
                   return GestureDetector(
-                    onTap: () {},
+                    onTap: () => context.push('/category/${cat['id']}'),
                     child: Container(
                       width: 78,
                       margin: const EdgeInsets.only(right: 12),

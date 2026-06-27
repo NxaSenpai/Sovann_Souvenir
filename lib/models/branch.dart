@@ -21,14 +21,15 @@ class Branch {
   });
 
   factory Branch.fromJson(Map<String, dynamic> json) => Branch(
-    id: json['id'], name: json['name'], address: json['address'],
+    id: json['id'], name: json['name'], address: json['address'] ?? '',
     lat: (json['lat'] as num).toDouble(),
     lng: (json['lng'] as num).toDouble(),
-    phone: json['phone'], openHours: json['openHours'],
-    isOpenNow: json['isOpenNow'],
+    phone: json['phone'] ?? '',
+    openHours: json['open_hours'] ?? json['openHours'] ?? '',
+    isOpenNow: json['is_open_now'] ?? json['isOpenNow'] ?? false,
     rating: (json['rating'] as num).toDouble(),
     distance: (json['distance'] as num).toDouble(),
-    imageUrl: json['imageUrl'],
+    imageUrl: json['image_url'] ?? json['imageUrl'] ?? '',
   );
 
   Branch translated(String locale) {
