@@ -64,7 +64,6 @@ Keep replies warm and concise (2-4 sentences). Use occasional emoji. Be conversa
       } else if (response.statusCode == 429) {
         return 'I\'m a bit busy right now! Please wait a moment and try again. 🙏';
       } else {
-        // Log the actual error for debugging
         final body = response.body;
         return 'Sorry, I had a hiccup. Try again? ($body)';
       }
