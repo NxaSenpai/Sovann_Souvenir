@@ -323,7 +323,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
           // ── Featured Products ──────────────────────────────────────────────────
           SliverToBoxAdapter(
-            child: _SectionHeader(title: l10n.featured, action: l10n.seeAll),
+            child: _SectionHeader(title: l10n.featured, action: l10n.seeAll,
+              onAction: () => context.push('/featured'),),
           ),
           const SliverToBoxAdapter(child: SizedBox(height: 14)),
           SliverToBoxAdapter(
@@ -345,7 +346,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
           // ── Collections ───────────────────────────────────────────────────────
           SliverToBoxAdapter(
-            child: _SectionHeader(title: l10n.collections, action: l10n.seeAll),
+            child: _SectionHeader(title: l10n.collections, action: l10n.seeAll,
+              onAction: () => context.push('/collections'),),
           ),
           const SliverToBoxAdapter(child: SizedBox(height: 14)),
           SliverToBoxAdapter(
@@ -490,7 +492,8 @@ class _HomeScreenState extends State<HomeScreen> {
 class _SectionHeader extends StatelessWidget {
   final String title;
   final String? action;
-  const _SectionHeader({required this.title, this.action});
+  final VoidCallback? onAction;
+  const _SectionHeader({required this.title, this.action, this.onAction});
 
   @override
   Widget build(BuildContext context) {
@@ -520,14 +523,17 @@ class _SectionHeader extends StatelessWidget {
             ),
           ),
           if (action != null)
-            Text(
-              action!,
-              style: const TextStyle(
-                color: AppColors.gold,
-                fontWeight: FontWeight.w700,
-                fontSize: 13,
+            GestureDetector(
+              onTap: onAction,
+              child: Text(
+                action!,
+                style: const TextStyle(
+                  color: AppColors.gold,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 13,
+                ),
               ),
-            ),
+            ), // GestureDetector
         ],
       ),
     );

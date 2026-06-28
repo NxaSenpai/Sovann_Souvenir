@@ -14,6 +14,8 @@ import '../features/reviews/reviews_screen.dart';
 import '../features/gallery/gallery_screen.dart';
 import '../features/category/category_screen.dart';
 import '../features/checkout/checkout_screen.dart';
+import '../features/featured/featured_screen.dart';
+import '../features/collections/collections_screen.dart';
 import '../features/chatbot/chatbot_screen.dart';
 import '../features/profile/profile_screen.dart';
 import '../features/profile/profile_edit_screen.dart';
@@ -51,6 +53,16 @@ final appRouter = GoRouter(
       path: '/artisan/:id',
       parentNavigatorKey: _rootKey,
       builder: (c, s) => ArtisanProfileScreen(artisanId: s.pathParameters['id']!),
+    ),
+    GoRoute(
+      path: '/featured',
+      parentNavigatorKey: _rootKey,
+      builder: (c, s) => const FeaturedScreen(),
+    ),
+    GoRoute(
+      path: '/collections',
+      parentNavigatorKey: _rootKey,
+      builder: (c, s) => const CollectionsScreen(),
     ),
     GoRoute(
       path: '/category/:id',

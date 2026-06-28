@@ -31,7 +31,6 @@ Keep replies short (2-4 sentences). Be warm. If no match, suggest browsing.
 
   /// Send conversation history, returns AI response text.
   static Future<String> sendChat(List<Map<String, String>> messages) async {
-    // Keep last 10 messages to stay within context limits
     final trimmed = messages.length > 10
         ? messages.sublist(messages.length - 10)
         : messages;
