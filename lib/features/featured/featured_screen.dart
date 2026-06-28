@@ -11,12 +11,12 @@ class FeaturedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final products = MockRepository.instance.featuredTr;
+    final products = MockRepository.instance.productsTr;
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.darkBg : AppColors.cream,
       appBar: AppBar(
-        title: Text(l10n.featured, style: const TextStyle(fontWeight: FontWeight.w800)),
+        title: Text(l10n.seeAll, style: const TextStyle(fontWeight: FontWeight.w800)),
         backgroundColor: isDark ? AppColors.darkBg : AppColors.cream,
       ),
       body: products.isEmpty
