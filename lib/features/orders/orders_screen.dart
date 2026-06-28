@@ -112,14 +112,14 @@ class _OrdersScreenState extends State<OrdersScreen>
               return ListView(
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height * 0.3,
-                    child: const Center(
+                    child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CircularProgressIndicator(color: AppColors.gold, strokeWidth: 2.5),
-                          SizedBox(height: 16),
-                          Text('Fetching your orders…',
-                              style: TextStyle(color: AppColors.warmGray, fontSize: 14)),
+                          const CircularProgressIndicator(color: AppColors.gold, strokeWidth: 2.5),
+                          const SizedBox(height: 16),
+                          Text(l10n.fetchingOrders,
+                              style: const TextStyle(color: AppColors.warmGray, fontSize: 14)),
                         ],
                       ),
                     ),
@@ -134,10 +134,10 @@ class _OrdersScreenState extends State<OrdersScreen>
               return ListView(
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height * 0.3,
-                    child: const EmptyState(
+                    child: EmptyState(
                       icon: Icons.receipt_long_outlined,
-                      title: 'No orders yet',
-                      subtitle: 'Your handcrafted gifts will appear here once ordered',
+                      title: l10n.noOrdersYet,
+                      subtitle: l10n.noOrdersSubtitle,
                     ),
                   ),
                 ],
@@ -463,7 +463,7 @@ class _OrderCardState extends State<_OrderCard> {
                       const SizedBox(width: 10),
                       Expanded(
                         child: Text(
-                          item.productName ?? 'Product',
+                          item.productName ?? l10n.product,
                           style: TextStyle(fontSize: 13, color: isDark ? AppColors.cream : AppColors.charcoal),
                           maxLines: 1, overflow: TextOverflow.ellipsis,
                         ),
@@ -534,8 +534,7 @@ class _OrderCardState extends State<_OrderCard> {
   }
 
   String _formatDate(DateTime dt) {
-    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    return '${dt.day} ${months[dt.month - 1]} ${dt.year}  •  '
+    return '${dt.day}/${dt.month}/${dt.year}  •  '
         '${dt.hour}:${dt.minute.toString().padLeft(2, '0')}';
   }
 }

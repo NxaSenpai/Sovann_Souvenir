@@ -65,6 +65,13 @@
   "saveChanges": "保存更改",
   "profileUpdated": "资料更新成功！",
   "pickPhoto": "选择照片",
+  "madeBy": "由 {name} 制作",
+  "@madeBy": {"placeholders": {"name": {"type": "String"}}},
+  "view": "查看",
+  "addToCart": "加入购物车",
+  "added": "已添加!",
+  "orderAsGift": "作为礼物订购",
+  "product": "产品",
 
   "signIn": "登录",
   "signInPrompt": "登录以继续",

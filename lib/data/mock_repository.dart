@@ -23,9 +23,22 @@ class MockRepository {
   /// Current locale for translating content. Defaults to English.
   String _locale = 'en';
 
+  // Translation cache — clear when locale changes
+  List<Product>? _productsTr;
+  List<Artisan>? _artisansTr;
+  List<GiftCollection>? _collectionsTr;
+  List<Branch>? _branchesTr;
+  List<Promotion>? _promotionsTr;
+
   /// Update the locale used by translated getters.
   void setLocale(String code) {
+    if (_locale == code) return;
     _locale = code;
+    _productsTr = null;
+    _artisansTr = null;
+    _collectionsTr = null;
+    _branchesTr = null;
+    _promotionsTr = null;
   }
 
   Future<void> init() async {
@@ -70,6 +83,7 @@ class MockRepository {
           dimensions: p.dimensions, story: p.story, isFeatured: p.isFeatured, tags: p.tags,
         );
       }).toList();
+      _productsTr = null; // clear translation cache after enrichment
     } catch (_) {}
   }
 
@@ -156,19 +170,19 @@ class MockRepository {
   List<Review>        get reviews     => _reviews     ?? [];
   List<Promotion>     get promotions  => _promotions  ?? [];
 
-  // ── Translated getters ──
+  // ── Translated getters (cached per locale) ──
   List<Product> get productsTr =>
-      products.map((p) => p.translated(_locale)).toList();
+      _productsTr ??= products.map((p) => p.translated(_locale)).toList();
   List<Artisan> get artisansTr =>
-      artisans.map((a) => a.translated(_locale)).toList();
+      _artisansTr ??= artisans.map((a) => a.translated(_locale)).toList();
   List<GiftCollection> get collectionsTr =>
-      collections.map((c) => c.translated(_locale)).toList();
+      _collectionsTr ??= collections.map((c) => c.translated(_locale)).toList();
   List<Branch> get branchesTr =>
-      branches.map((b) => b.translated(_locale)).toList();
+      _branchesTr ??= branches.map((b) => b.translated(_locale)).toList();
   List<Category> get categories => _categories ?? [];
   List<Category> get categoriesTr => categories;
   List<Promotion> get promotionsTr =>
-      promotions.map((p) => p.translated(_locale)).toList();
+      _promotionsTr ??= promotions.map((p) => p.translated(_locale)).toList();
 
   // ── Derived queries (translated) ──
   List<Product> get featuredTr =>

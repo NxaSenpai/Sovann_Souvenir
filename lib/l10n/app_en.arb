@@ -66,6 +66,13 @@
   "saveChanges": "Save Changes",
   "profileUpdated": "Profile updated successfully!",
   "pickPhoto": "Pick a photo",
+  "madeBy": "Made by {name}",
+  "@madeBy": {"placeholders": {"name": {"type": "String"}}},
+  "view": "View",
+  "addToCart": "Add to Cart",
+  "added": "Added!",
+  "orderAsGift": "Order as Gift",
+  "product": "Product",
 
   "signIn": "Sign In",
   "signInPrompt": "Sign in to continue",

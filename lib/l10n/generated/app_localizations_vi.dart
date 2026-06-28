@@ -197,6 +197,26 @@ class AppLocalizationsVi extends AppLocalizations {
   String get pickPhoto => 'Chọn ảnh';
 
   @override
+  String madeBy(String name) {
+    return 'Làm bởi $name';
+  }
+
+  @override
+  String get view => 'Xem';
+
+  @override
+  String get addToCart => 'Thêm vào giỏ';
+
+  @override
+  String get added => 'Đã thêm!';
+
+  @override
+  String get orderAsGift => 'Đặt làm quà';
+
+  @override
+  String get product => 'Sản phẩm';
+
+  @override
   String get signIn => 'Đăng nhập';
 
   @override

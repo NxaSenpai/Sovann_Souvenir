@@ -197,6 +197,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pickPhoto => 'Pick a photo';
 
   @override
+  String madeBy(String name) {
+    return 'Made by $name';
+  }
+
+  @override
+  String get view => 'View';
+
+  @override
+  String get addToCart => 'Add to Cart';
+
+  @override
+  String get added => 'Added!';
+
+  @override
+  String get orderAsGift => 'Order as Gift';
+
+  @override
+  String get product => 'Product';
+
+  @override
   String get signIn => 'Sign In';
 
   @override

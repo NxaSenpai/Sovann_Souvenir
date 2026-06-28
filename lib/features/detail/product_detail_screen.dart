@@ -512,6 +512,7 @@ class _ArtisanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return GestureDetector(
       onTap: () => context.push('/artisan/${artisan.id}'),
       child: Container(
@@ -527,7 +528,6 @@ class _ArtisanCard extends StatelessWidget {
           ],
         ),
         child: Row(children: [
-          // Gold-ring avatar
           Container(
             padding: const EdgeInsets.all(2.5),
             decoration: const BoxDecoration(
@@ -546,7 +546,7 @@ class _ArtisanCard extends StatelessWidget {
           const SizedBox(width: 14),
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(
-              'Made by ${artisan.name}',
+              l10n.madeBy(artisan.name),
               style: TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: 14,
@@ -570,7 +570,7 @@ class _ArtisanCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(50),
             ),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
-              Text('View', style: TextStyle(color: AppColors.gold, fontSize: 12, fontWeight: FontWeight.w700)),
+              Text(l10n.view, style: TextStyle(color: AppColors.gold, fontSize: 12, fontWeight: FontWeight.w700)),
               const SizedBox(width: 2),
               const Icon(Icons.chevron_right_rounded, color: AppColors.gold, size: 14),
             ]),
@@ -775,6 +775,7 @@ class _BottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final bottomPad = MediaQuery.of(context).padding.bottom;
 
     return Container(
@@ -797,7 +798,6 @@ class _BottomBar extends StatelessWidget {
       ),
       child: Row(children: [
 
-        // ── Add to Cart ──────────────────────────────────────────────────
         Expanded(
           flex: 1,
           child: AnimatedContainer(
@@ -829,7 +829,7 @@ class _BottomBar extends StatelessWidget {
                         color: isDark ? AppColors.cream : AppColors.charcoal),
                     const SizedBox(width: 6),
                     Text(
-                      cartQty > 0 ? 'Cart ($cartQty)' : 'Add to Cart',
+                      cartQty > 0 ? '${l10n.addToCart} ($cartQty)' : l10n.addToCart,
                       style: TextStyle(
                         fontSize: 13, fontWeight: FontWeight.w700,
                         color: isDark ? AppColors.cream : AppColors.charcoal,
@@ -840,10 +840,10 @@ class _BottomBar extends StatelessWidget {
                 AnimatedOpacity(
                   opacity: addedToCart ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 200),
-                  child: Row(mainAxisAlignment: MainAxisAlignment.center, children: const [
-                    Icon(Icons.check_circle_rounded, size: 18, color: Colors.green),
-                    SizedBox(width: 6),
-                    Text('Added!', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: Colors.green)),
+                  child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    const Icon(Icons.check_circle_rounded, size: 18, color: Colors.green),
+                    const SizedBox(width: 6),
+                    Text(l10n.added, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: Colors.green)),
                   ]),
                 ),
               ]),
@@ -853,7 +853,6 @@ class _BottomBar extends StatelessWidget {
 
         const SizedBox(width: 12),
 
-        // ── Order as Gift ────────────────────────────────────────────────
         Expanded(
           flex: 2,
           child: SizedBox(
@@ -877,7 +876,7 @@ class _BottomBar extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: onOrder,
                 icon: const Icon(Icons.card_giftcard_rounded, size: 18),
-                label: const Text('Order as Gift', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800)),
+                label: Text(l10n.orderAsGift, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.transparent,
                   foregroundColor: Colors.white,

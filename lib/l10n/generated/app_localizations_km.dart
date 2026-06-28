@@ -198,6 +198,26 @@ class AppLocalizationsKm extends AppLocalizations {
   String get pickPhoto => 'ជ្រើសរើសរូបថត';
 
   @override
+  String madeBy(String name) {
+    return 'ធ្វើដោយ $name';
+  }
+
+  @override
+  String get view => 'មើល';
+
+  @override
+  String get addToCart => 'បន្ថែមទៅកន្ត្រក';
+
+  @override
+  String get added => 'បានបន្ថែម!';
+
+  @override
+  String get orderAsGift => 'បញ្ជាទិញជាអំណោយ';
+
+  @override
+  String get product => 'ផលិតផល';
+
+  @override
   String get signIn => 'ចូលគណនី';
 
   @override

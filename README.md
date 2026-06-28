@@ -79,11 +79,36 @@ flutter run
 
 ## 👥 Team Members
 
-| Name           | Role  |
-|----------------|-------|
-| Soeury Sreyno  | Blank |
-| Tang Nakry     | Blank |
-| Soth Pichpanha | Blank |
+### Soeury Sreyno
+
+- Designed the app icon and branding assets
+- Created the onboarding screen flow and UI
+- Implemented the artisan profile screen and gallery views
+- Designed the promotions and coupon card components
+- Contributed to UI/UX design across the application
+- Assisted with localization data for Khmer language
+
+### Tang Nakry
+
+- Architected the Supabase backend integration and database schema
+- Implemented user authentication (sign-up, login, sign-out)
+- Built the AI Gift Assistant chatbot with OpenRouter integration
+- Developed the shopping cart, checkout, and order tracking system
+- Created the map screen with branch locations and nearby shops
+- Implemented real-time favorites sync with Supabase
+- Set up Supabase Storage for profile avatars and review photos
+- Configured environment variables with flutter_dotenv
+
+### Soth Pichpanha
+
+- Developed the home screen with hero carousel and category browsing
+- Built the product card component with animations and responsive layout
+- Implemented the product detail screen with image gallery and specs
+- Created the review system with star ratings, comments, and photo uploads
+- Built the search bar with live dropdown results
+- Developed the profile screen with avatar upload and password change
+- Implemented multi-language support across all screens
+- Built the dark/light theme system with Material 3
 
 ---
 
@@ -94,6 +119,4 @@ flutter run
 
 This project is for educational purposes as part of a Introduction of Mobile Application course.
 
-
-  Made with ❤️ and inspired by the artisans of Cambodia 🇰🇭
 </div>

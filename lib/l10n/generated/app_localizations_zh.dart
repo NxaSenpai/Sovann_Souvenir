@@ -195,6 +195,26 @@ class AppLocalizationsZh extends AppLocalizations {
   String get pickPhoto => '选择照片';
 
   @override
+  String madeBy(String name) {
+    return '由 $name 制作';
+  }
+
+  @override
+  String get view => '查看';
+
+  @override
+  String get addToCart => '加入购物车';
+
+  @override
+  String get added => '已添加!';
+
+  @override
+  String get orderAsGift => '作为礼物订购';
+
+  @override
+  String get product => '产品';
+
+  @override
   String get signIn => '登录';
 
   @override

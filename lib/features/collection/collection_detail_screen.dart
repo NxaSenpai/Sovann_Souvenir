@@ -84,7 +84,7 @@ class CollectionDetailScreen extends StatelessWidget {
               Icon(Icons.info_outline_rounded, size: 16,
                   color: AppColors.gold.withAlpha(isDark ? 200 : 180)),
               const SizedBox(width: 8),
-              Text('About this collection',
+              Text(l10n.collections,
                   style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700,
                       color: isDark ? AppColors.cream.withAlpha(170) : AppColors.warmGray)),
             ]),

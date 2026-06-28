@@ -65,6 +65,13 @@
   "saveChanges": "変更を保存",
   "profileUpdated": "プロフィールが更新されました！",
   "pickPhoto": "写真を選択",
+  "madeBy": "{name} 作",
+  "@madeBy": {"placeholders": {"name": {"type": "String"}}},
+  "view": "見る",
+  "addToCart": "カートに追加",
+  "added": "追加完了!",
+  "orderAsGift": "ギフトとして注文",
+  "product": "商品",
 
   "signIn": "ログイン",
   "signInPrompt": "ログインして続行",

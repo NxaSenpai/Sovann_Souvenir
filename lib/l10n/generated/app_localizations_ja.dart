@@ -195,6 +195,26 @@ class AppLocalizationsJa extends AppLocalizations {
   String get pickPhoto => '写真を選択';
 
   @override
+  String madeBy(String name) {
+    return '$name 作';
+  }
+
+  @override
+  String get view => '見る';
+
+  @override
+  String get addToCart => 'カートに追加';
+
+  @override
+  String get added => '追加完了!';
+
+  @override
+  String get orderAsGift => 'ギフトとして注文';
+
+  @override
+  String get product => '商品';
+
+  @override
   String get signIn => 'ログイン';
 
   @override

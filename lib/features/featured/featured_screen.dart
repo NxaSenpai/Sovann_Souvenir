@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../data/mock_repository.dart';
 import '../../theme/app_colors.dart';
+import '../../l10n/generated/app_localizations.dart';
 import '../../widgets/product_card.dart';
 import '../../l10n/generated/app_localizations.dart';
 
@@ -20,7 +21,7 @@ class FeaturedScreen extends StatelessWidget {
         backgroundColor: isDark ? AppColors.darkBg : AppColors.cream,
       ),
       body: products.isEmpty
-          ? Center(child: Text('No featured products', style: TextStyle(color: AppColors.warmGray)))
+          ? Center(child: Text(l10n.noSavedGifts, style: TextStyle(color: AppColors.warmGray)))
           : GridView.builder(
               padding: const EdgeInsets.all(16),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

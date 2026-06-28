@@ -9,13 +9,20 @@ class ChatbotService {
   static const _endpoint = 'https://openrouter.ai/api/v1/chat/completions';
   static const _model = 'nvidia/nemotron-3-ultra-550b-a55b:free';
 
+  static String? _cachedPrompt;
+  static int _cachedProductCount = -1;
+
   static String _buildSystemPrompt() {
     final products = MockRepository.instance.productsTr;
+    // Only rebuild when product count changes
+    if (_cachedPrompt != null && _cachedProductCount == products.length) {
+      return _cachedPrompt!;
+    }
     final productList = products.map((p) =>
         '${p.name} (\$${p.price.toStringAsFixed(2)}, ${p.rating}★, ID:${p.id})'
     ).join('; ');
 
-    return '''
+    final prompt = '''
 You are Sovann, a friendly gift-shopping assistant for Sovann Souvenir, a Cambodian souvenir shop.
 Categories: textile🧵, silver🥈, wood🪵, edible🫙, jewelry💎
 
@@ -27,6 +34,9 @@ When recommending products:
 - Example: "I think you'll love our Surprise Doll Balloon Box for its charm, and the Wooden Flower Sculpture for elegance. [PRODUCT:p1] [PRODUCT:p9]"
 Keep replies short (2-4 sentences). Be warm. If no match, suggest browsing.
 ''';
+    _cachedPrompt = prompt;
+    _cachedProductCount = products.length;
+    return prompt;
   }
 
   /// Send conversation history, returns AI response text.

@@ -65,6 +65,13 @@
   "saveChanges": "Lưu thay đổi",
   "profileUpdated": "Cập nhật hồ sơ thành công!",
   "pickPhoto": "Chọn ảnh",
+  "madeBy": "Làm bởi {name}",
+  "@madeBy": {"placeholders": {"name": {"type": "String"}}},
+  "view": "Xem",
+  "addToCart": "Thêm vào giỏ",
+  "added": "Đã thêm!",
+  "orderAsGift": "Đặt làm quà",
+  "product": "Sản phẩm",
 
   "signIn": "Đăng nhập",
   "signInPrompt": "Đăng nhập để tiếp tục",

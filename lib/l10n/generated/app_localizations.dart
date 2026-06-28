@@ -476,6 +476,42 @@ abstract class AppLocalizations {
   /// **'Pick a photo'**
   String get pickPhoto;
 
+  /// No description provided for @madeBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Made by {name}'**
+  String madeBy(String name);
+
+  /// No description provided for @view.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get view;
+
+  /// No description provided for @addToCart.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Cart'**
+  String get addToCart;
+
+  /// No description provided for @added.
+  ///
+  /// In en, this message translates to:
+  /// **'Added!'**
+  String get added;
+
+  /// No description provided for @orderAsGift.
+  ///
+  /// In en, this message translates to:
+  /// **'Order as Gift'**
+  String get orderAsGift;
+
+  /// No description provided for @product.
+  ///
+  /// In en, this message translates to:
+  /// **'Product'**
+  String get product;
+
   /// No description provided for @signIn.
   ///
   /// In en, this message translates to:
