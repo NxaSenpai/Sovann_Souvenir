@@ -79,36 +79,39 @@ flutter run
 
 ## 👥 Team Members
 
-### Soeury Sreyno
-
-- Designed the app icon and branding assets
-- Created the onboarding screen flow and UI
-- Implemented the artisan profile screen and gallery views
-- Designed the promotions and coupon card components
-- Contributed to UI/UX design across the application
-- Assisted with localization data for Khmer language
-
 ### Tang Nakry
 
-- Architected the Supabase backend integration and database schema
-- Implemented user authentication (sign-up, login, sign-out)
-- Built the AI Gift Assistant chatbot with OpenRouter integration
-- Developed the shopping cart, checkout, and order tracking system
-- Created the map screen with branch locations and nearby shops
-- Implemented real-time favorites sync with Supabase
-- Set up Supabase Storage for profile avatars and review photos
-- Configured environment variables with flutter_dotenv
+- Login / Sign In
+- Chatbot (AI Gift Assistant)
+- Saved Products (Favorites sync with Supabase)
+- Orders Tracking
+- Cart System (Cart, Checkout)
+- Multiple Language Support (5 languages)
+- Supabase backend integration and database schema
+- Environment configuration (.env, API keys)
+- Navigation & routing (GoRouter)
+- Dark/Light theme system
 
 ### Soth Pichpanha
 
-- Developed the home screen with hero carousel and category browsing
-- Built the product card component with animations and responsive layout
-- Implemented the product detail screen with image gallery and specs
-- Created the review system with star ratings, comments, and photo uploads
-- Built the search bar with live dropdown results
-- Developed the profile screen with avatar upload and password change
-- Implemented multi-language support across all screens
-- Built the dark/light theme system with Material 3
+- Product Card (responsive layout, animations)
+- Product Details (image gallery, specs, artisan info)
+- Review Screen (star ratings, photo upload, full-screen gallery)
+- Map Screen (interactive map, branch locations, nearby shops)
+- Home Screen (hero carousel, categories, collections)
+- Featured Products (See All page)
+- Category screen
+
+### Soeury Sreyno
+
+- Profile Screen (avatar upload, edit profile, settings)
+- Collection Card (curated collections UI)
+- Artisan Profile (artisan stories and products)
+- Onboarding Screen (welcome flow)
+- App Icon (branding and launcher icon)
+- Suggestion Search Bar (live dropdown search)
+- Promotions & coupon card components
+- Gallery screen (masonry layout, photo viewer)
 
 ---
 
